@@ -10,9 +10,10 @@ import '@quasar/extras/eva-icons/eva-icons.css'
 import '@quasar/extras/bootstrap-icons/bootstrap-icons.css'
 import 'quasar/src/css/index.sass'
 import App from './App.vue'
+import {store} from './store'
 
 const myApp = createApp(App)
-
+myApp.use(store)
 myApp.use(Quasar, {
     plugins: {}, // import Quasar plugins and add here
 })
