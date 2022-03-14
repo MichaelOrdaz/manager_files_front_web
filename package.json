@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "pretest": "node eslint-runner.js"
   },
   "dependencies": {
     "@quasar/extras": "^1.12.5",
