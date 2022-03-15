@@ -11,9 +11,11 @@ import '@quasar/extras/bootstrap-icons/bootstrap-icons.css'
 import 'quasar/src/css/index.sass'
 import App from './App.vue'
 import {store} from './store'
+import Router from './router'
 
 const myApp = createApp(App)
 myApp.use(store)
+myApp.use(Router)
 myApp.use(Quasar, {
     plugins: {}, // import Quasar plugins and add here
 })

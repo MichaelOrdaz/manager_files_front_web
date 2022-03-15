@@ -12,6 +12,7 @@ export type State = {
     account_status?: string,
     profile?: DatosGenerales,
     roles?: string[],
+    vistas: string[],
 }
 
 export const state: State = {
@@ -19,5 +20,6 @@ export const state: State = {
         id: 1,
         nombre: 'Prueba'
     },
-    access_token: 'Prueba'
+    access_token: 'Prueba',
+    vistas: ['Prueba']
 }
