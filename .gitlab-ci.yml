@@ -1,0 +1,19 @@
+stages:
+  - .pre
+  - test
+  - deploy
+
+pre:
+  stage: .pre
+  script:
+    - echo "Prueba de .pre"
+
+test:
+  stage: test
+  script:
+    - echo "Prueba de test"
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Prueba de deploy"
