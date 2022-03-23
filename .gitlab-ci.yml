@@ -3,10 +3,26 @@ stages:
   - test
   - deploy
 
-pre:
+prepare:install-node:
   stage: .pre
+  image: node:16
+  cache:
+    key: modules
+    paths:
+      - node_modules/
+  before_script:
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+    ## Make sure that ssh will trust the new host, instead of asking
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - echo "Prueba de .pre"
+    - if [[ ! -d node_modules ]] || [[ -n `git diff --name-only HEAD~1 HEAD | grep "\package.json\b"` ]];
+      then
+      npm ci;
+      fi
+
+
 
 test:
   stage: test
