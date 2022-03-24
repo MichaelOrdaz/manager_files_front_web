@@ -12,8 +12,10 @@ import 'quasar/src/css/index.sass'
 import App from './App.vue'
 import {store} from './store'
 import Router from './router'
+import PButton from './components/PButton.vue'
 
 const myApp = createApp(App)
+myApp.component('PButton', PButton)
 myApp.use(store)
 myApp.use(Router)
 myApp.use(Quasar, {
