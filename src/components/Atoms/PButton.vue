@@ -1,7 +1,7 @@
 <template>
   <button
     :type="props.type"
-    :class="estilosComputados"
+    :class="computedStyles"
   >
     <div>
       <PIcon
@@ -39,7 +39,7 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {variant: 'primary', size: 'psm', leftIcon: null, rightIcon: null, type: 'button'})
 
-const estilosComputados = computed<string>(() => `${props.variant} ${props.size}`
+const computedStyles = computed<string>(() => `${props.variant} ${props.size}`
 )
 </script>
 

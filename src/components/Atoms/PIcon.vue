@@ -1,6 +1,6 @@
 <template>
   <span
-    :class="estilosComputados"
+    :class="computedStyles"
     class="material-icons"
   >
     {{ props.iconName }}
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
     size: 'pmd',
     color: 'negro',
 })
-const estilosComputados = computed<string>(() => `${props.color} ${props.size}`)
+const computedStyles = computed<string>(() => `${props.color} ${props.size}`)
 </script>
 
 <style scoped lang="scss">
