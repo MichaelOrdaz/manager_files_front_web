@@ -43,7 +43,7 @@ const estilosComputados = computed<string>(() => `${props.variant} ${props.size}
 )
 </script>
 
-<style scoped lang="scss">0
+<style scoped lang="scss">
 button{
     border-radius: 4px;
     border: none;
