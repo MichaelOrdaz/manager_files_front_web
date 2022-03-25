@@ -1,4 +1,4 @@
-import { App } from 'vue'
+import type {App} from 'vue'
 import PButton from './Atoms/PButton.vue'
 import PText from './Atoms/PText.vue'
 import PIcon from './Atoms/PIcon.vue'
