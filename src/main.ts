@@ -13,7 +13,7 @@ import 'quasar/src/css/index.sass'
 import App from './App.vue'
 import store from './store'
 import Router from './router'
-import registerComponents from './components/registerComponents'
+import registroDeComponentesGlobales from './components/registroDeComponentesGlobales'
 
 const myApp = createApp(App)
 myApp.use(store)
@@ -21,5 +21,5 @@ myApp.use(Router)
 myApp.use(Quasar, {
     plugins: {}, // import Quasar plugins and add here
 })
-registerComponents(myApp)
+registroDeComponentesGlobales(myApp)
 myApp.mount('#app')
