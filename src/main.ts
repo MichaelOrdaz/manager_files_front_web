@@ -8,17 +8,18 @@ import '@quasar/extras/fontawesome-v5/fontawesome-v5.css'
 import '@quasar/extras/ionicons-v4/ionicons-v4.css'
 import '@quasar/extras/eva-icons/eva-icons.css'
 import '@quasar/extras/bootstrap-icons/bootstrap-icons.css'
+import '@quasar/extras/roboto-font/roboto-font.css'
 import 'quasar/src/css/index.sass'
 import App from './App.vue'
 import {store} from './store'
 import Router from './router'
-import PButton from './components/PButton.vue'
+import registerComponents from './components/registerComponents'
 
 const myApp = createApp(App)
-myApp.component('PButton', PButton)
 myApp.use(store)
 myApp.use(Router)
 myApp.use(Quasar, {
     plugins: {}, // import Quasar plugins and add here
 })
+registerComponents(myApp)
 myApp.mount('#app')
