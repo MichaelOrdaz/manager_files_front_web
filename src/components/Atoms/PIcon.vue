@@ -1,22 +1,25 @@
 <template>
-  <span :class="estilosComputados">
-    {{ props.nombreDeIcono }}
+  <span
+    :class="estilosComputados"
+    class="material-icons"
+  >
+    {{ props.iconName }}
   </span>
 </template>
 
 <script setup lang="ts">
 import {computed, withDefaults} from 'vue'
 interface Props {
-    nombreDeIcono?: string,
-    tamanio?: string,
+    iconName?: string,
+    size?: string,
     color?: string,
 }
 const props = withDefaults(defineProps<Props>(), {
-    nombreDeIcono: 'link',
-    tamanio: 'pmd',
+    iconName: 'link',
+    size: 'pmd',
     color: 'negro',
 })
-const estilosComputados = computed<string>(() => `material-icons ${props.color} ${props.tamanio}`)
+const estilosComputados = computed<string>(() => `${props.color} ${props.size}`)
 </script>
 
 <style scoped lang="scss">
@@ -24,9 +27,9 @@ const estilosComputados = computed<string>(() => `material-icons ${props.color} 
 .psm{
     font-size: 12px;
 }
-.pequeno{
+.pmd{
     font-size: 24px;
 }
-.blanco{color: white}
-.negro{color: black}
+.white{color: white}
+.black{color: black}
 </style>

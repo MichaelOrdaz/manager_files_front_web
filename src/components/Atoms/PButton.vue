@@ -1,23 +1,26 @@
 <template>
-  <button :class="estilosComputados">
+  <button
+    :type="props.type"
+    :class="estilosComputados"
+  >
     <div>
       <PIcon
-        v-if="props.iconoIzquierda"
-        :nombreDeIcono="props.iconoIzquierda"
-        tamanio="pequeno"
-        color="blanco"
+        v-if="props.leftIcon"
+        :iconName="props.leftIcon"
+        size="pmd"
+        color="white"
       />
     </div>
     <div>
       <slot>
-        Texto de boton
+        Button Text
       </slot>
     </div>
     <div>
       <PIcon
-        v-if="props.iconoDerecha"
-        :nombreDeIcono="props.iconoDerecha"
-        tamanio="pequeno"
+        v-if="props.rightIcon"
+        :iconName="props.rightIcon"
+        size="pequeno"
         class="icono"
         color="blanco"
       />
@@ -28,18 +31,19 @@
 <script setup lang="ts">
 import {computed, withDefaults} from 'vue'
 interface Props {
-    variante?: string,
-    tamano?: string,
-    iconoDerecha?: string | null,
-    iconoIzquierda?: string | null,
+    variant?: string,
+    size?: string,
+    rightIcon?: string | null,
+    leftIcon?: string | null,
+    type?: string,
 }
-const props = withDefaults(defineProps<Props>(), {variante: 'primario', tamano: 'psm', iconoIzquierda: null, iconoDerecha: null})
+const props = withDefaults(defineProps<Props>(), {variant: 'primary', size: 'psm', leftIcon: null, rightIcon: null, type: 'button'})
 
-const estilosComputados = computed<string>(() => `${props.variante} ${props.tamano}`
+const estilosComputados = computed<string>(() => `${props.variant} ${props.size}`
 )
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss">0
 button{
     border-radius: 4px;
     border: none;
@@ -53,7 +57,7 @@ button{
 div :deep(.material-icons) {
     margin: 0 4px;
 }
-// Tamaños
+// Sizes
 .pxsm{
     height: 30px;
     min-width: 65px;
@@ -83,26 +87,26 @@ div :deep(.material-icons) {
     font-size: 14px;
     font-weight: bold;
 }
-// Colores
-.primario{
-    background-color: $primario;
+// Colors
+.primary{
+    background-color: $primary;
     color: white;
 }
-.secundario{
-    background-color: $secundario;
+.secondary{
+    background-color: $secondary;
     color: white;
 }
-.desactivado{
-    background-color: $desactivado;
+.disabled{
+    background-color: $disabled;
     color: white;
     pointer-events: none;
 }
-.blanco{
+.white{
     background-color: white;
     border: 1px solid #DBD9D9;
     color: #374151;
 }
-// Efectos y Eventos
+// Effects and Events
 button:hover{ opacity: 0.8; cursor: pointer }
 button:active{ opacity: 0.9; cursor: pointer }
 button:after{

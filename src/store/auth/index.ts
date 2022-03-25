@@ -1,5 +1,4 @@
-/* eslint-disable */
-import { Module } from 'vuex'
+import type { Module } from 'vuex'
 import {StateInterface} from '../index'
 
 import state, {Auth} from './auth'

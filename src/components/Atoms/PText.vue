@@ -1,7 +1,10 @@
 <template>
-  <div :class="clasesComputadas">
+  <div
+    :class="computedClasses"
+    class="general-style"
+  >
     <slot>
-      Texto
+      Text
     </slot>
   </div>
 </template>
@@ -10,93 +13,69 @@
 import {computed, withDefaults} from 'vue'
 
 interface Props{
-    variante?: string,
+    variant?: string,
     color?: string,
 }
 const props = withDefaults(defineProps<Props>(), {
-    color: 'blanco',
-    variante: 'titulo-1'
+    color: 'white',
+    variant: 'title-1'
 })
-const clasesComputadas = computed<string>(() => `estilo-general ${props.variante} ${props.color}`)
+const computedClasses = computed<string>(() => `${props.variant} ${props.color}`)
 </script>
 
 <style scoped lang="scss">
-.estilo-general{
+.general-style{
     display: inline-block;
+    font-weight: 400;
+    font-style: normal;
 }
-.titulo-1{
+.title-1{
     font-size: 60px;
-    font-weight: 400;
-    font-style: normal;
 }
-.titulo-2{
+.title-2{
     font-size: 50px;
-    font-weight: 400;
-    font-style: normal;
 }
-.titulo-3{
+.title-3{
     font-size: 44px;
-    font-weight: 400;
-    font-style: normal;
 }
-.titulo-4{
+.title-4{
     font-size: 40px;
-    font-weight: 400;
-    font-style: normal;
 }
-.titulo-5{
+.title-5{
     font-size: 36px;
-    font-weight: 400;
-    font-style: normal;
 }
-.titulo-6{
+.title-6{
     font-size: 32px;
-    font-weight: 400;
-    font-style: normal;
 }
-.subtitulo-1{
+.subtitle-1{
     font-size: 30px;
-    font-weight: 400;
-    font-style: normal;
 }
-.subtitulo-2{
+.subtitle-2{
     font-size: 24px;
-    font-weight: 400;
-    font-style: normal;
 }
-.texto-1{
+.text-1{
     font-size: 20px;
-    font-weight: 400;
-    font-style: normal;
 }
-.texto-2{
+.text-2{
     font-size: 18px;
-    font-weight: 400;
-    font-style: normal;
 }
-.texto-3{
+.text-3{
     font-size: 16px;
-    font-weight: 400;
-    font-style: normal;
 }
-.texto-4{
+.text-4{
     font-size: 14px;
-    font-weight: 400;
-    font-style: normal;
 }
-.texto-5{
+.text-5{
     font-size: 12px;
-    font-weight: 400;
-    font-style: normal;
 }
-.primario{color: $primario}
-.secundario{color: $secundario}
-.mar{color: $mar}
-.vegetacion{color: $vegetacion}
-.riqueza{color: $riqueza}
-.cruz{color: $cruz}
-.dorado{color: $dorado}
-.blanco{color: white}
-.negro{color: black}
+.primary{color: $primary }
+.secondary{color: $secondary }
+.ocean{color: $ocean }
+.vegetation{color: $vegetation }
+.wealth{color: $wealth }
+.red{color: $red }
+.gold{color: $gold }
+.white{color: white}
+.black{color: black}
 
 </style>

@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/named
-import {MutationTree} from 'vuex'
+import type {MutationTree} from 'vuex'
 import {Auth} from './auth'
 
 const mutations: MutationTree<Auth> = {

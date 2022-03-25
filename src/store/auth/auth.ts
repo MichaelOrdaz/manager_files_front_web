@@ -1,8 +1,8 @@
-export interface DatosGenerales {
+export interface UserData {
     id: number,
-    nombre?: string,
-    apellidoPaterno?: string,
-    apellidoMaterno?: string,
+    name?: string,
+    lastName?: string,
+    secondLastName?: string,
 }
 export interface Auth {
     access_token?: string,
@@ -10,18 +10,18 @@ export interface Auth {
     permissions?: object,
     status?: string,
     account_status?: string,
-    profile?: DatosGenerales,
+    user_data?: UserData,
     roles?: string[],
-    vistas: string[],
+    views: string[],
 }
 
 export default function state(): Auth {
     return {
-        profile: {
+        user_data: {
             id: 1,
-            nombre: 'Prueba'
+            name: 'Test'
         },
-        access_token: 'Prueba',
-        vistas: ['Prueba']
+        access_token: 'Test',
+        views: ['Test']
     }
 }

@@ -1,10 +1,9 @@
-/* eslint-disable */
-import {GetterTree} from 'vuex'
+import type {GetterTree} from 'vuex'
 import {Auth} from './auth'
 import {StateInterface} from '../index'
 
 const getters: GetterTree<Auth, StateInterface> = {
-    getterSencillo(state){
+    getterExample(state){
         return state.access_token
     },
 }
