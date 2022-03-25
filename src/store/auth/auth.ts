@@ -4,7 +4,7 @@ export interface DatosGenerales {
     apellidoPaterno?: string,
     apellidoMaterno?: string,
 }
-export type State = {
+export interface Auth {
     access_token?: string,
     expires_at?: string,
     permissions?: object,
@@ -15,11 +15,13 @@ export type State = {
     vistas: string[],
 }
 
-export const state: State = {
-    profile: {
-        id: 1,
-        nombre: 'Prueba'
-    },
-    access_token: 'Prueba',
-    vistas: ['Prueba']
+export default function state(): Auth {
+    return {
+        profile: {
+            id: 1,
+            nombre: 'Prueba'
+        },
+        access_token: 'Prueba',
+        vistas: ['Prueba']
+    }
 }

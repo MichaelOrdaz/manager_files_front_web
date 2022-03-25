@@ -1,16 +1,12 @@
+/* eslint-disable */
 import {GetterTree} from 'vuex'
-import {State} from './state'
+import {Auth} from './auth'
+import {StateInterface} from '../index'
 
-export type Getters = {
-    paginaInicio(state: State): string | undefined,
-    sePuedeMostrar(state: State, nombreDeRuta: string): boolean
-}
-
-export const getters: GetterTree<State, State> & Getters = {
-    paginaInicio(state: State): string | undefined {
-        return state.profile?.nombre
+const getters: GetterTree<Auth, StateInterface> = {
+    getterSencillo(state){
+        return state.access_token
     },
-    sePuedeMostrar(state, nombreDeRuta): boolean {
-        return state.vistas.includes(nombreDeRuta)
-    }
 }
+
+export default getters
