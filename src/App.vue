@@ -1,23 +1,31 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
 import PInput from './components/Molecules/PInput.vue'
-import {ref} from 'vue'
+import PForm from '@/components/Organism/PForm.vue'
+import { ref } from 'vue'
 
-const nombre = ref<string>('')
+const nombre = ref('')
+const nombre2 = ref('')
+const form = ref<InstanceType<typeof PForm>>(null)
+function validarFormulario(): void {
+    const isValid = form.value.validate()
+    // eslint-disable-next-line no-console
+    console.log(isValid)
+}
 </script>
 
 <template>
-  <img
-    alt="Vue logo"
-    src="./assets/logo.png"
-  >
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-  <PInput
-    v-model="nombre"
-    :rules="[value => !!value || 'Error']"
-  />
+    <PForm ref="form">
+        <PInput
+            v-model="nombre"
+            type="number"
+            :rules="[value => value > 10]"
+        />
+        <PInput
+            v-model="nombre2"
+            :rules="[value => value === 'test']"
+        />
+    </PForm>
+    <PButton @click="validarFormulario">Click</PButton>
 </template>
 
 <style>

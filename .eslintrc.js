@@ -1,9 +1,8 @@
 module.exports = {
     extends: [
-        'plugin:vue/vue3-strongly-recommended', // Priority A: Essential (Error Prevention)
-        'plugin:vue/vue3-essential',
         'eslint:recommended',
-        '@vue/eslint-config-typescript/recommended',
+        'plugin:vue/vue3-essential',
+        '@vue/eslint-config-typescript',
     ],
     plugins: ['eslint-plugin-vue', 'vue', 'import'],
     globals: {
@@ -19,7 +18,8 @@ module.exports = {
         'max-classes-per-file': 'off',
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
-        'no-unused-vars': ['warn'],
+        'no-unused-vars': 'warn',
+        'no-console': 'warn',
         'generator-star-spacing': 'off',
         'arrow-parens': 'off',
         'one-var': 'off',

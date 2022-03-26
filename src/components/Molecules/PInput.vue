@@ -5,6 +5,7 @@
       :value="props.modelValue"
       @input="update"
       :type="props.type"
+      :maxlength="props.maxLength"
     >
     <PIcon />
     <div v-if="errorMgs.length">
@@ -19,43 +20,62 @@
 </template>
 
 <script setup lang="ts">
-import {withDefaults, ref} from 'vue'
+/* eslint-disable no-unused-vars */
+import {withDefaults, ref, inject, onMounted, getCurrentInstance, watch} from 'vue'
 import PIcon from '@/components/Atoms/PIcon.vue'
+
 interface Props {
     modelValue: string | number ,
     type?: string,
-    // eslint-disable-next-line no-unused-vars
-    rules?: {(value: number | string | RegExp): boolean | string}[] | null,
+    rules?: {(value: number | string ): boolean | string}[] | null,
+    disabled?: boolean,
+    maxLength?: string,
 }
+
 const emit = defineEmits<{(e:'update:modelValue', val: string | number):void}>()
-const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null})
+
+const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: ''})
+
+const bindInput = inject('bind-input')
+const currentComponent = getCurrentInstance()
 const errorMgs = ref<(string | boolean)[]>([])
 const errors = ref<(string | boolean)[]>([])
 const value = ref<string | number>('')
-const validInput = ref<boolean>(false)
+const validInput = ref<boolean>(true)
+
 function update(event: Event) {
     value.value = (event.target as HTMLInputElement).value
     emit('update:modelValue', value.value)
-    validateRules()
+    if (props.rules?.length) {
+        validateRules()
+    }
 }
+
 function validateRules(): boolean | undefined {
-    if (!props.rules?.length) return
     errorMgs.value = []
+    errors.value = []
+    validInput.value = false
     props.rules?.forEach(rule => {
-        console.log('Antes de la regla', rule)
-        console.log('Hola')
         const result: boolean | string | null = rule(value.value)
         errors.value.push(result)
         errorMgs.value.push(result)
-        errorMgs.value.map( msg => (typeof msg !== 'boolean' ? msg : ''))
-        if (errors.value.length === props.rules?.length) {
+        errorMgs.value = errorMgs.value.map( msg => (typeof msg !== 'boolean' ? msg : ''))
+        if (errors.value?.length === props.rules?.length) {
             validInput.value = errors.value.every(el => el === true)
             return validInput.value
         }
-        validInput.value = false
-        return validInput.value
     })
+    return validInput.value
 }
+onMounted(() => {
+    bindInput(currentComponent)
+})
+watch(value, () => {
+    if (props.rules?.length) {
+        validateRules()
+    }
+})
+defineExpose({validInput, validateRules})
 </script>
 
 <style scoped>
