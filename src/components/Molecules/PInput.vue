@@ -1,28 +1,27 @@
 <template>
-  <div>
-    <PIcon />
-    <input
-      :value="props.modelValue"
-      @input="update"
-      :type="props.type"
-      :maxlength="props.maxLength"
-    >
-    <PIcon />
-    <div v-if="errorMgs.length">
-      <p
-        v-for="(error, index) in errorMgs"
-        :key="index"
-      >
-        {{ error }}
-      </p>
+    <div class="main-container">
+        <PText color="black" variant="text-4">Label chido</PText>
+        <div class="pinput-container">
+            <PIcon v-if="props.prependIconName"/>
+            <input
+                :value="props.modelValue"
+                @input="update"
+                :type="props.type"
+                :maxlength="props.maxLength"
+            >
+            <PIcon v-if="props.appendIconName"/>
+        </div>
+        <div v-if="errorMgs.length">
+            <PText v-for="(msg, index) in errorMgs" :key="index" color="black" variant="text-4">{{msg}}</PText>
+        </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
 /* eslint-disable no-unused-vars */
 import {withDefaults, ref, inject, onMounted, getCurrentInstance, watch} from 'vue'
 import PIcon from '@/components/Atoms/PIcon.vue'
+import PText from '@/components/Atoms/PText.vue'
 
 interface Props {
     modelValue: string | number ,
@@ -30,11 +29,13 @@ interface Props {
     rules?: {(value: number | string ): boolean | string}[] | null,
     disabled?: boolean,
     maxLength?: string,
+    prependIconName?: string,
+    appendIconName?: string,
 }
 
 const emit = defineEmits<{(e:'update:modelValue', val: string | number):void}>()
 
-const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: ''})
+const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: ''})
 
 const bindInput = inject('bind-input')
 const currentComponent = getCurrentInstance()
@@ -78,6 +79,30 @@ watch(value, () => {
 defineExpose({validInput, validateRules})
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+input{
+    border: none;
+    outline: none;
+    width: 100%;
+}
+.main-container{
+    width: 320px;
+    margin: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.pinput-container{
+    display: flex;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #D1D5DB;
+    border-radius: 2px;
+    justify-content: space-between;
+}
+.pinput-container:hover,
+.pinput-container:focus,
+.pinput-container:active{
+    border-color: $ocean;
+}
 </style>

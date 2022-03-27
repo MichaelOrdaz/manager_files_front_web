@@ -17,12 +17,11 @@ function validarFormulario(): void {
     <PForm ref="form">
         <PInput
             v-model="nombre"
-            type="number"
-            :rules="[value => value > 10]"
+            :rules="[value => value === 'Error' || 'Valida el campo']"
         />
         <PInput
             v-model="nombre2"
-            :rules="[value => value === 'test']"
+            :rules="[value => value === 'Error' || 'Valida el campo']"
         />
     </PForm>
     <PButton @click="validarFormulario">Click</PButton>
