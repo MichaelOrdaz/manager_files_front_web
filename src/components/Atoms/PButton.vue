@@ -35,7 +35,7 @@ interface Props {
     size?: string,
     rightIcon?: string | null,
     leftIcon?: string | null,
-    type?: string,
+    type?: 'button' | 'submit' | 'reset' | undefined,
 }
 const props = withDefaults(defineProps<Props>(), {variant: 'primary', size: 'psm', leftIcon: null, rightIcon: null, type: 'button'})
 
