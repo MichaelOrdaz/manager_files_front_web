@@ -9,6 +9,7 @@ const Router = createRouter({
 Router.beforeEach((to, from, next) => {
     const haveToken: string = localStorage.getItem('access_token') || ''
     const authRequired = !!to.meta.authRequired
+    // eslint-disable-next-line no-unused-vars
     const PathMainView: string | undefined = store.getters.paginaInicio
     const PathLoginView= '/'
 
