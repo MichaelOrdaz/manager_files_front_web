@@ -58,8 +58,8 @@ deploy_qa:
     - which rsync || ( apt-get update -y && apt-get install rsync -y )
 
   script:
-    - export NODE_OPTIONS=--max_old_space_size=4096
-    - API_URL=http://api.qa-$PROJECT_NAME.$MAIN_DOMAIN/ npm run build
+    - echo "VITE_API_URL=$VITE_API_URL" >> .env
+    - npm run build
     - mkdir .public
     - cp -r dist/* .public
     - cp dist/index.html .public/404.html
