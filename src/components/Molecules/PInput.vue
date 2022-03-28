@@ -37,7 +37,7 @@ const emit = defineEmits<{(e:'update:modelValue', val: string | number):void}>()
 
 const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: ''})
 
-const bindInput = inject('bind-input')
+const bindInput = inject('bind-input', 0)
 const currentComponent = getCurrentInstance()
 const errorMgs = ref<(string | boolean)[]>([])
 const errors = ref<(string | boolean)[]>([])
@@ -69,7 +69,9 @@ function validateRules(): boolean | undefined {
     return validInput.value
 }
 onMounted(() => {
-    bindInput(currentComponent)
+    if (bindInput){
+        bindInput(currentComponent)
+    }
 })
 watch(value, () => {
     if (props.rules?.length) {
