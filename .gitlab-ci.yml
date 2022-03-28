@@ -21,6 +21,9 @@ prepare:install-node:
       then
       npm ci;
       fi
+  only:
+    - qa
+    - master
 
 
 
@@ -31,8 +34,46 @@ test:
     - npm ci --prefer-offline
     - npm start &
     - npx cypress run
+  only:
+    - qa
 
-deploy:
+deploy_qa:
+  image: node:16
   stage: deploy
+  cache:
+    key: modules
+    paths:
+      - node_modules/
+  before_script:
+    ## Install ssh agent (so we can access the Digital Ocean Droplet) and run it.
+    # Search for the ssh-agent
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    ## Write the environment variable value to the agent store, create the ssh directory and give the right permissions to it.
+    - echo "$DO_SERVER_TOOLS_SSH_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    ## Make sure that ssh will trust the new host, instead of asking
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - which rsync || ( apt-get update -y && apt-get install rsync -y )
+
   script:
-    - echo "Prueba de deploy"
+    - echo "VITE_API_URL=$VITE_API_URL" >> .env
+    - npm run build
+    - mkdir .public
+    - cp -r dist/* .public
+    - cp dist/index.html .public/404.html
+    - cp -r  .public/* public && cp .htaccess public/.htaccess &&rm -R .public
+    - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "docker exec -i 2b9cd9092a99 rm -R /var/www/qa-${PROJECT_NAME}/${BRANCH_QA} || true"
+    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "./make_path_to_deploy_frontend.sh -p \"qa-${PROJECT_NAME}\" -b \"${BRANCH_QA}\" "
+    - rsync -avrc --delete "$PWD/public/" ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP}:frontend/qa-${PROJECT_NAME}/${BRANCH_QA}/public/
+    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "docker exec -i 2b9cd9092a99 chown -R www-data:www-data /var/www/qa-${PROJECT_NAME}/${BRANCH_QA}/"
+
+
+  environment:
+    name: $BRANCH_QA
+    url: http://qa-$PROJECT_NAME.$MAIN_DOMAIN
+  only:
+    - qa
+
