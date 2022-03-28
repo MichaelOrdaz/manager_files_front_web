@@ -1,6 +1,6 @@
 <template>
     <div class="main-container">
-        <PText v-if="props.showLabel" color="black" variant="text-4">Label default</PText>
+        <PText v-if="props.showLabel" color="black" variant="text-4">{{props.label}}</PText>
         <PText v-else color="black" variant="text-4">{{''}}</PText>
         <div :class="computedClasses">
             <PIcon v-if="props.prependIconName" :iconName="props.prependIconName"/>
@@ -12,6 +12,8 @@
                 :type="props.type"
                 :maxlength="props.maxLength"
                 :placeholder="props.placeHolder ? props.placeHolder : ''"
+                :minlength="props.minLength"
+                :readonly="props.readonly"
             >
             <PIcon v-if="props.appendIconName" :iconName="props.prependIconName"/>
         </div>
@@ -36,16 +38,19 @@ interface Props {
     rules?: {(value: number | string ): boolean | string}[] | null,
     disabled?: boolean,
     maxLength?: string,
+    minLength?: string,
     prependIconName?: string,
     appendIconName?: string,
     showLabel?: boolean,
     placeHolder?: string,
     width?: string,
+    label?: string,
+    readonly?: boolean,
 }
 
 const emit = defineEmits<{(e:'update:modelValue', val: string | number):void}>()
 
-const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: '', showLabel: true, placeHolder: '', width: '320px'})
+const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: '', showLabel: true, placeHolder: '', width: '320px', label: '', minLength: undefined, readonly: false})
 
 const bindInput = inject('bind-input', (val: any) => {})
 const currentComponent = getCurrentInstance()
