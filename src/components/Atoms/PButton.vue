@@ -1,6 +1,5 @@
 <template>
   <button
-    :type="props.type"
     :class="computedStyles"
   >
     <div>
@@ -35,9 +34,8 @@ interface Props {
     size?: string,
     rightIcon?: string | null,
     leftIcon?: string | null,
-    type?: string,
 }
-const props = withDefaults(defineProps<Props>(), {variant: 'primary', size: 'psm', leftIcon: null, rightIcon: null, type: 'button'})
+const props = withDefaults(defineProps<Props>(), {variant: 'primary', size: 'psm', leftIcon: null, rightIcon: null, })
 
 const computedStyles = computed<string>(() => `${props.variant} ${props.size}`
 )
