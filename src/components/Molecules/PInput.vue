@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 /* eslint-disable no-unused-vars */
-import {withDefaults, ref, inject, onMounted, getCurrentInstance, watch, computed} from 'vue'
+import {withDefaults, ref, inject, onMounted, getCurrentInstance, watch, computed, toRef} from 'vue'
 import PIcon from '@/components/Atoms/PIcon.vue'
 import PText from '@/components/Atoms/PText.vue'
 
@@ -56,7 +56,7 @@ const bindInput = inject('bind-input', (val: any) => {})
 const currentComponent = getCurrentInstance()
 const errorMgs = ref<(string | boolean)[]>([])
 const errors = ref<(string | boolean)[]>([])
-const value = ref<string | number>('')
+const value = toRef(props, 'modelValue')
 const validInput = ref<boolean>(true)
 const pinputWidth = ref<string>(props.width)
 const inputIsFocused = ref<boolean>(false)
