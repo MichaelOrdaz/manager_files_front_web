@@ -19,5 +19,6 @@ export default defineConfig({
         quasar({
             sassVariables: 'src/css/index.sass',
         }),
+        eslintPlugin(),
     ]
 })

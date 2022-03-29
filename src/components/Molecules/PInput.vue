@@ -1,34 +1,67 @@
 <template>
-    <div class="main-container">
-        <PText v-if="props.showLabel" color="black" variant="text-4">{{props.label}}</PText>
-        <PText v-else color="black" variant="text-4">{{''}}</PText>
-        <div :class="computedClasses">
-            <PIcon v-if="props.prependIconName" :iconName="props.prependIconName"/>
-            <input
-                :value="props.modelValue"
-                @focusin="inputIsFocused = true"
-                @focusout="inputIsFocused = false"
-                @input="update"
-                :type="props.type"
-                :maxlength="props.maxLength"
-                :placeholder="props.placeHolder ? props.placeHolder : ''"
-                :minlength="props.minLength"
-                :readonly="props.readonly"
-            >
-            <PIcon v-if="props.appendIconName" :iconName="props.prependIconName"/>
-        </div>
-        <div v-if="errorMgs.length" class="errors-msgs">
-            <PText v-for="(msg, index) in errorMgs" :key="index" color="black" variant="text-4">{{msg}}</PText>
-        </div>
-        <div v-else>
-            <PText color="black" variant="text-4">{{''}} </PText>
-        </div>
+  <div class="main-container">
+    <PText
+      v-if="props.showLabel"
+      color="black"
+      variant="text-4"
+    >
+      {{ props.label }}
+    </PText>
+    <PText
+      v-else
+      color="black"
+      variant="text-4"
+    >
+      {{ '' }}
+    </PText>
+    <div :class="computedClasses">
+      <PIcon
+        v-if="props.prependIconName"
+        :iconName="props.prependIconName"
+      />
+      <input
+        :value="props.modelValue"
+        @focusin="inputIsFocused = true"
+        @focusout="inputIsFocused = false"
+        @input="update"
+        :type="props.type"
+        :maxlength="props.maxLength"
+        :placeholder="props.placeHolder ? props.placeHolder : ''"
+        :minlength="props.minLength"
+        :readonly="props.readonly"
+      >
+      <PIcon
+        v-if="props.appendIconName"
+        :iconName="props.prependIconName"
+      />
     </div>
+    <div
+      v-if="errorMgs.length"
+      class="errors-msgs"
+    >
+      <PText
+        v-for="(msg, index) in errorMgs"
+        :key="index"
+        color="black"
+        variant="text-4"
+      >
+        {{ msg }}
+      </PText>
+    </div>
+    <div v-else>
+      <PText
+        color="black"
+        variant="text-4"
+      >
+        {{ '' }}
+      </PText>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-/* eslint-disable no-unused-vars */
-import {withDefaults, ref, inject, onMounted, getCurrentInstance, watch, computed, toRef} from 'vue'
+/* eslint-disable */
+import {withDefaults, ref, inject, onMounted, getCurrentInstance, watch, computed} from 'vue'
 import PIcon from '@/components/Atoms/PIcon.vue'
 import PText from '@/components/Atoms/PText.vue'
 
