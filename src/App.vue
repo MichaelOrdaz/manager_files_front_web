@@ -6,6 +6,10 @@
   <PText color="black">
     App
   </PText>
+  <PSelect
+    label="Hola"
+    :options="[1,2,3,4,5]"
+  />
 </template>
 
 <style>
