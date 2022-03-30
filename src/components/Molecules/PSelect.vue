@@ -11,11 +11,20 @@
       {{ componentLabel }}
     </PText>
     <div
-      @click="setToggleAction"
       class="select"
-      :title="isObject ? modelValue[`${componentOptionLabel}`] : modelValue"
+      @click="setToggleAction"
     >
-      {{ isObject ? modelValue[`${componentOptionLabel}`] : modelValue }}
+      <div
+        class="option"
+        :title="isObject ? modelValue[`${componentOptionLabel}`] : modelValue"
+      >
+        {{ isObject ? modelValue[`${componentOptionLabel}`] : modelValue }}
+      </div>
+      <PIcon
+        class="icon"
+        size="pmd"
+        :iconName="iconArrowDirection"
+      />
     </div>
     <div
       v-if="!isObject"
@@ -45,17 +54,12 @@
         {{ value[`${componentOptionLabel}`] }}
       </div>
     </div>
-    <PIcon
-      class="icono"
-      size="psm"
-      :iconName="iconArrowDirection"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
 import {
-    ref, reactive, computed, watch,
+    ref, reactive, computed, watch, toRef,
 } from 'vue'
 import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 import type {ComponentInternalInstance} from 'vue'
@@ -88,11 +92,10 @@ const  props = defineProps( {
         required: false,
         default: null,
     },
-    size: {
+    width: {
         type: String,
-        default: 'sm',
+        default: '248px',
         required: false,
-        validator: (value: string) => ['sm', 'md', 'full'].includes(value),
     },
     forceSelectedIndex: {
         type: Number,
@@ -113,16 +116,13 @@ const initialOption = props.options.length > 0
     : 'Cargando...'
 const modelValue = ref<any>(initialOption)
 const componentOptions = ref(props.options)
-const sizes = reactive<any>({
-    sm: 'p-select-container',
-    md: 'selector-md',
-    full: 'selector-full',
-})
+const componentWidth = toRef(props, 'width')
 
 const iconArrowDirection = computed(() => (open.value ? 'arrow_drop_up' : 'arrow_drop_down'))
 
 function updateModel(value: string | number): void {
     modelValue.value = value
+    open.value = false
     if (isObject.value) {
         emit('update:modelValue', modelValue.value[`${componentOptionValue.value}`])
     } else {
@@ -130,12 +130,6 @@ function updateModel(value: string | number): void {
     }
 }
 
-const setSize = computed<string[]>(() => {
-    if (props.disabled) {
-        return [sizes[props.size], 'disabled']
-    }
-    return sizes[props.size]
-})
 
 const setToggleAction = computed<(() => void) | (() => boolean)>(() => {
     if (props.disabled) {
@@ -163,33 +157,33 @@ useDetectOutsideClick(componentRef, () => { open.value = false })
 <style scoped>
 .p-select-container{
     height: 62px;
-    border-radius: 3px;
-    width: 248px;
+    width: v-bind(componentWidth);
     color: black;
     position: relative;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
+}
+.label{
+    width: 100%;
+    text-align: left;
 }
 .select{
     max-width: 100%;
     height: 40px;
-    padding-left: 1em;
-    padding-right: 1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     border: solid 2px #DBD9D9;
+    display: flex;
+    align-items: center;
 }
 .select:hover{
     border: solid 2px rgba(0, 0, 0, 0.50);
 }
-.icono{
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    padding: 0 5px;
+.option{
+    width: 90%;
+}
+.icon{
+    width: 10%;
 }
 .items {
     color: #fff;
@@ -212,6 +206,10 @@ useDetectOutsideClick(componentRef, () => { open.value = false })
     padding-left: 1em;
     user-select: none;
     color: black;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .items .item:hover {
     background-color: rgba(128, 128, 128, 0.541);
