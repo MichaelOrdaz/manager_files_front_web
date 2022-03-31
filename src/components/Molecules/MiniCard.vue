@@ -10,14 +10,14 @@
         color="black"
         variant="texto-5"
       >
-        {{ props.date }}
+        {{ props.cardTitle }}
       </PText>
       <PText
         class="share-with-text"
         color="black"
         variant="texto-5"
       >
-        Se ha compartido la carpeta con:
+        {{ props.descriptionText }}
       </PText>
     </div>
   </div>
@@ -25,22 +25,23 @@
 
 <script setup lang="ts">
 interface Props{
-    date?: string,
-    usersList?: string[]
+    cardTitle?: string,
+    descriptionText?: string,
 }
 const props = withDefaults(defineProps<Props>(), {
-    date:'15-03-2021',
-    usersList: undefined,
+    cardTitle:'Title',
+    descriptionText: 'Description Text'
 })
 </script>
 
 <style scoped>
 .mini-card-container{
     width: 256px;
-    height: 46px;
+    min-height: 46px;
     display: flex;
     justify-content: flex-start;
     text-align: left;
+    border: 1px solid #F1F1F2;
 }
 .texts{
     display: flex;
