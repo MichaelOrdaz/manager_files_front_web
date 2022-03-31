@@ -12,6 +12,7 @@
     </PText>
     <div
       class="select"
+      :class="setErrorClass"
       @click="setToggleAction"
     >
       <div
@@ -24,7 +25,29 @@
         class="icon"
         size="pmd"
         :iconName="iconArrowDirection"
+        :color="isValidValue ? 'black' : 'red'"
       />
+    </div>
+    <div
+      v-if="errorMgs.length"
+      class="errors-msgs"
+    >
+      <PText
+        v-for="(msg, index) in errorMgs"
+        :key="index"
+        color="black"
+        variant="text-4"
+      >
+        {{ msg }}
+      </PText>
+    </div>
+    <div v-else>
+      <PText
+        color="black"
+        variant="text-4"
+      >
+        {{ '' }}
+      </PText>
     </div>
     <div
       v-if="!isObject"
@@ -34,7 +57,7 @@
       <div
         v-for="(value, index) in componentOptions"
         :key="index"
-        class="item"
+        class="item text-left"
         @click="updateModel(value)"
       >
         {{ value }}
@@ -48,7 +71,7 @@
       <div
         v-for="(value, index) in componentOptions"
         :key="index"
-        class="item"
+        class="item text-left"
         @click="updateModel(value)"
       >
         {{ value[`${componentOptionLabel}`] }}
@@ -59,48 +82,32 @@
 
 <script setup lang="ts">
 import {
-    ref, reactive, computed, watch, toRef,
+    ref, computed, watch, toRef, withDefaults, onMounted, inject, getCurrentInstance
 } from 'vue'
 import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 import type {ComponentInternalInstance} from 'vue'
 
-
+interface Props {
+    options?: any[],
+    label?: string,
+    disabled?: boolean,
+    optionLabel?: string,
+    optionValue?: string,
+    width?: string,
+    forceSelectedIndex?: number,
+    // eslint-disable-next-line no-unused-vars
+    rules?: {(value: number | string ): boolean | string}[] | null,
+}
 const  emit = defineEmits(['update:modelValue'])
-const  props = defineProps( {
-    options: {
-        type: Array,
-        required: true,
-        default: () => [],
-    },
-    label: {
-        type: String,
-        required: false,
-        default: 'Label aquí',
-    },
-    disabled: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
-    optionLabel: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    optionValue: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    width: {
-        type: String,
-        default: '248px',
-        required: false,
-    },
-    forceSelectedIndex: {
-        type: Number,
-        default: null,
-    },
+const  props = withDefaults(defineProps<Props>(), {
+    options: undefined,
+    label: 'Label aquí',
+    disabled: false,
+    optionLabel: undefined,
+    optionValue: undefined,
+    width: '248px',
+    forceSelectedIndex: undefined,
+    rules: null,
 })
 
 const open = ref(false)
@@ -117,12 +124,20 @@ const initialOption = props.options.length > 0
 const modelValue = ref<any>(initialOption)
 const componentOptions = ref(props.options)
 const componentWidth = toRef(props, 'width')
+const isValidValue = ref<boolean>(true)
+const errorMgs = ref<(string | boolean | null)[]>([])
+const errors = ref<(string | boolean | null)[]>([])
+const currentComponent = getCurrentInstance()
+// eslint-disable-next-line no-unused-vars
+const bindInput = inject('bind-input', (val: any) => {})
 
+const setErrorClass = computed<string>(() => isValidValue.value ? '' : 'invalid-value-error')
 const iconArrowDirection = computed(() => (open.value ? 'arrow_drop_up' : 'arrow_drop_down'))
 
 function updateModel(value: string | number): void {
     modelValue.value = value
     open.value = false
+    validateRules()
     if (isObject.value) {
         emit('update:modelValue', modelValue.value[`${componentOptionValue.value}`])
     } else {
@@ -142,6 +157,29 @@ const isObject = computed<boolean>(() => {
     return props.optionValue != null && props.optionLabel != null
 })
 
+function validateRules(): boolean | undefined {
+    errorMgs.value = []
+    errors.value = []
+    isValidValue.value = false
+    props.rules?.forEach((rule) => {
+        const result: boolean | string | null = rule(modelValue.value)
+        errors.value.push(result)
+        errorMgs.value.push(result)
+        errorMgs.value = errorMgs.value.map( msg => (typeof msg !== 'boolean' ? msg : ''))
+        if (errors.value?.length === props.rules?.length) {
+            isValidValue.value = errors.value.every(el => el === true)
+            return isValidValue.value
+        }
+    })
+    return isValidValue.value
+}
+
+onMounted(() => {
+    if (bindInput){
+        bindInput(currentComponent)
+    }
+})
+
 watch([() => props.options, () => props.forceSelectedIndex], () => {
     componentOptions.value = props.options
     if (props.forceSelectedIndex) {
@@ -154,7 +192,7 @@ useDetectOutsideClick(componentRef, () => { open.value = false })
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .p-select-container{
     height: 62px;
     width: v-bind(componentWidth);
@@ -165,6 +203,7 @@ useDetectOutsideClick(componentRef, () => { open.value = false })
 .label{
     width: 100%;
     text-align: left;
+    font-weight: 500;
 }
 .select{
     max-width: 100%;
@@ -175,6 +214,8 @@ useDetectOutsideClick(componentRef, () => { open.value = false })
     border: solid 2px #DBD9D9;
     display: flex;
     align-items: center;
+    margin-bottom: 8px;
+    margin-top: 4px;
 }
 .select:hover{
     border: solid 2px rgba(0, 0, 0, 0.50);
@@ -221,6 +262,29 @@ useDetectOutsideClick(componentRef, () => { open.value = false })
     cursor: not-allowed;
     background-color: rgba(128, 128, 128, 0.472);
     pointer-events: painted;
+}
+.select.invalid-value-error{
+    border: 1px solid $red;
+    animation: shake 0.5s;
+}
+.errors-msgs{display: flex; flex-direction: column; align-items: flex-start;}
+div :deep(.general-style){ font-weight: 500; }
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }
 ::-webkit-scrollbar {
     width: 10px;
