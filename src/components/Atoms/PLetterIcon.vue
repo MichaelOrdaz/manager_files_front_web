@@ -17,7 +17,7 @@ interface Props{
 }
 const props = withDefaults(defineProps<Props>(), {text: '?', backgroundColor: 'primary', iconSize: 'pmd'})
 
-const fisrtLetter = computed<string>(() => props.text.split('')[0])
+const fisrtLetter = computed<string>(() => props.text[0])
 const computedClasses = computed<string>(() => `${props.iconSize} ${props.backgroundColor}`)
 </script>
 
