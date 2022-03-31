@@ -5,6 +5,7 @@ import PIcon from './Atoms/PIcon.vue'
 import PInput from './Molecules/PInput.vue'
 import PSelect from './Molecules/PSelect.vue'
 import PLetterIcon from './Atoms/PLetterIcon.vue'
+import PMiniCard from './Molecules/MiniCard.vue'
 
 export default function componentsRegister (app:App): void {
     app.component('PButton', PButton)
@@ -13,4 +14,5 @@ export default function componentsRegister (app:App): void {
     app.component('PInput', PInput)
     app.component('PSelect', PSelect)
     app.component('PLetterIcon',PLetterIcon)
+    app.component('PMiniCard', PMiniCard)
 }
