@@ -6,7 +6,6 @@
   <PText color="black">
     App
   </PText>
-  <PMiniCard />
 </template>
 
 <style>
