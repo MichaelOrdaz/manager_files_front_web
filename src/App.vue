@@ -3,7 +3,9 @@
 </script>
 
 <template>
-    <PText color="black">App</PText>
+  <PText color="black">
+    App
+  </PText>
 </template>
 
 <style>
