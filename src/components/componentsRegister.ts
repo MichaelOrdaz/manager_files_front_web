@@ -9,6 +9,8 @@ import PMiniCard from './Molecules/MiniCard.vue'
 import PLinkText from './Atoms/PLinkText.vue'
 import PModal from './Molecules/PModal.vue'
 import PChip from './Atoms/PChip.vue'
+import PTab from './Atoms/PTab.vue'
+import PTabs from './Molecules/PTabs.vue'
 
 export default function componentsRegister (app:App): void {
     app.component('PButton', PButton)
@@ -21,4 +23,6 @@ export default function componentsRegister (app:App): void {
     app.component('PLinkText', PLinkText)
     app.component('PModal', PModal)
     app.component('PChip', PChip)
+    app.component('PTab', PTab)
+    app.component('PTabs', PTabs)
 }
