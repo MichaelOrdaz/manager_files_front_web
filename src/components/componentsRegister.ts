@@ -8,6 +8,7 @@ import PLetterIcon from './Atoms/PLetterIcon.vue'
 import PMiniCard from './Molecules/MiniCard.vue'
 import PLinkText from './Atoms/PLinkText.vue'
 import PModal from './Molecules/PModal.vue'
+import PChip from './Atoms/PChip.vue'
 
 export default function componentsRegister (app:App): void {
     app.component('PButton', PButton)
@@ -19,4 +20,5 @@ export default function componentsRegister (app:App): void {
     app.component('PMiniCard', PMiniCard)
     app.component('PLinkText', PLinkText)
     app.component('PModal', PModal)
+    app.component('PChip', PChip)
 }

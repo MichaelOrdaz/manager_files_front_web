@@ -24,6 +24,9 @@ const computedStyles = computed<string>(() => `${props.color} ${props.size}`)
 
 <style scoped lang="scss">
 .material-icons{ padding: 0; margin: 0; width: auto}
+.pxsm{
+    font-size: 6px;
+}
 .psm{
     font-size: 12px;
 }
