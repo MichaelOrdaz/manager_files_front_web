@@ -11,6 +11,7 @@ import PModal from './Molecules/PModal.vue'
 import PChip from './Atoms/PChip.vue'
 import PTab from './Atoms/PTab.vue'
 import PTabs from './Molecules/PTabs.vue'
+import PAvatar from './Atoms/PAvatar.vue'
 
 export default function componentsRegister (app:App): void {
     app.component('PButton', PButton)
@@ -25,4 +26,5 @@ export default function componentsRegister (app:App): void {
     app.component('PChip', PChip)
     app.component('PTab', PTab)
     app.component('PTabs', PTabs)
+    app.component('PAvatar', PAvatar)
 }
