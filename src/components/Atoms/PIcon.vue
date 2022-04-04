@@ -37,4 +37,5 @@ const computedStyles = computed<string>(() => `${props.color} ${props.size}`)
 .black{color: black}
 .red{color: $red}
 .link{color: $ocean}
+.brown-6{color: $brown6}
 </style>

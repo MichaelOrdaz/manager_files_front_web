@@ -3,9 +3,7 @@
 </script>
 
 <template>
-  <PText color="black">
-    App
-  </PText>
+  <router-view />
 </template>
 
 <style>
@@ -15,6 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+    height: 100vh;
+    width: 100vw;
 }
 </style>
