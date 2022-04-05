@@ -1,13 +1,15 @@
 <template>
-  <div class="sidebar">
-    <img
-      src="../assets/logo.svg"
-      alt="Logo"
-      class="logo"
-    >
-  </div>
-  <div class="body">
-    <router-view />
+  <div class="main-container">
+    <div class="sidebar">
+      <img
+        src="../assets/logo.svg"
+        alt="Logo"
+        class="logo"
+      >
+    </div>
+    <div class="body">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -16,6 +18,12 @@
 </script>
 
 <style scoped lang="scss">
+.main-container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
 .sidebar{
     background: #F7F7F7;
     width: 80px;
@@ -27,8 +35,8 @@
 
 }
 .body{
-    background-color: red;
-    width: 50px;
+    width: calc(100% - 80px);
+    height: 100%;
 }
 .logo{
     height: 83px;
