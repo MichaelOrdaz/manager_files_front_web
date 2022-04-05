@@ -19,9 +19,8 @@
       <PIcon
         v-if="props.rightIcon"
         :iconName="props.rightIcon"
-        size="pequeno"
-        class="icono"
-        color="blanco"
+        size="psm"
+        color="white"
       />
     </div>
   </button>
