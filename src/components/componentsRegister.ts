@@ -14,6 +14,7 @@ import PTabs from './Molecules/PTabs.vue'
 import PAvatar from './Atoms/PAvatar.vue'
 import PSidebarIconButton from './Atoms/PSidebarIconButton.vue'
 import POptionList from './Molecules/POptionList.vue'
+import PDropdown from './Molecules/PDropdown.vue'
 
 export default function componentsRegister (app:App): void {
     app.component('PButton', PButton)
@@ -31,4 +32,5 @@ export default function componentsRegister (app:App): void {
     app.component('PAvatar', PAvatar)
     app.component('PSidebarIconButton', PSidebarIconButton)
     app.component('POptionList', POptionList)
+    app.component('PDropdown', PDropdown)
 }
