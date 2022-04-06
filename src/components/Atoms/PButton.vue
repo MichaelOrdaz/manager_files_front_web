@@ -49,7 +49,7 @@ button{
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     padding: 11px 20px;
 }
 div :deep(.material-icons) {
