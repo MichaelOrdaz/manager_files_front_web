@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
     {
-        path: '/',
+        path: '/layout',
         name: 'Layout',
         component: () => import('../Layouts/DefaultLayout.vue'),
         meta: {
@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
         },
         children: [
             {
-                path: '/',
+                path: '/main',
                 name: 'Layout',
                 component: () => import('../components/HelloWorld.vue'),
                 meta: {
@@ -20,4 +20,14 @@ const routes: RouteRecordRaw[] = [
         ]
     },
 ]
-export default routes
+const PUblicViews: RouteRecordRaw[] = [
+    {
+        path: '/',
+        name: 'Login',
+        component: () => import('../Pages/LoginPage.vue'),
+        meta: {
+            authRequired: false,
+        }
+    }
+]
+export default routes.concat(PUblicViews)
