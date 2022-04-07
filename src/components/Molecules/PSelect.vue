@@ -50,7 +50,7 @@
       </PText>
     </div>
     <div
-      v-if="!isObject"
+      v-if="!isObject && componentOptions.length"
       class="items"
       :class="{selectHide: !open}"
     >
@@ -64,7 +64,7 @@
       </div>
     </div>
     <div
-      v-else
+      v-if="isObject && componentOptions.length"
       class="items"
       :class="{selectHide: !open}"
     >
@@ -122,7 +122,7 @@ const initialOption = props.options.length > 0
     )
     : 'Cargando...'
 const modelValue = ref<any>(initialOption)
-const componentOptions = ref(props.options)
+const componentOptions = ref(props.options.length ? props.options : [])
 const componentWidth = toRef(props, 'width')
 const isValidValue = ref<boolean>(true)
 const errorMgs = ref<(string | boolean | null)[]>([])
@@ -137,7 +137,9 @@ const iconArrowDirection = computed(() => (open.value ? 'arrow_drop_up' : 'arrow
 function updateModel(value: string | number): void {
     modelValue.value = value
     open.value = false
-    validateRules()
+    if (props.rules?.length) {
+        validateRules()
+    }
     if (isObject.value) {
         emit('update:modelValue', modelValue.value[`${componentOptionValue.value}`])
     } else {
@@ -158,6 +160,7 @@ const isObject = computed<boolean>(() => {
 })
 
 function validateRules(): boolean | undefined {
+    if (!props.rules?.length)return
     errorMgs.value = []
     errors.value = []
     isValidValue.value = false
@@ -189,7 +192,7 @@ watch([() => props.options, () => props.forceSelectedIndex], () => {
     modelValue.value = componentOptions.value[0]
 }, { deep: true })
 useDetectOutsideClick(componentRef, () => { open.value = false })
-
+defineExpose({validateRules})
 </script>
 
 <style scoped lang="scss">

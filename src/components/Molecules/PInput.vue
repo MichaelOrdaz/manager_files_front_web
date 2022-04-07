@@ -105,6 +105,7 @@ function update(event: Event) {
 }
 
 function validateRules(): boolean | undefined {
+    if (!props.rules?.length)return
     errorMgs.value = []
     errors.value = []
     validInput.value = false
@@ -142,7 +143,6 @@ input{
 }
 .main-container{
     width: v-bind(pinputWidth);
-    margin: 12px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
