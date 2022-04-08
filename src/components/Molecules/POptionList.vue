@@ -51,9 +51,9 @@ useDetectOutsideClick(componentRef, () => { show.value = false})
 
 <style scoped>
 .option-list-container{
-    width: 50px;
-    height: 50px;
-    margin: 100px;
+    width: 24px;
+    height: 24px;
+    position: relative;
 }
 .my-icon{
     cursor: pointer;
@@ -61,7 +61,8 @@ useDetectOutsideClick(componentRef, () => { show.value = false})
 .list{
     width: 186px;
     position: relative;
-    right: 160px;
+    right: 173px;
+    top: 3px;
     background-color: white;
     border-radius: 3px;
     box-shadow: 2px 4px 4px 2px rgba(0, 0, 0, 0.25);

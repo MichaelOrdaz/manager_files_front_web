@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
 import NewUserImgLoader from './NewUserImgLoader.vue'
-import {NewUser} from '../../../Types/NewUserType'
+import {NewUser} from '@/Types/NewUserType'
 import {ref} from 'vue'
 
 const formRef = ref<any>(null)
