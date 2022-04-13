@@ -18,6 +18,9 @@
       <PIcon
         v-if="props.prependIconName"
         :iconName="props.prependIconName"
+        class="input-icon"
+        @click.stop.prevent="$emit('prepend-icon-action')"
+        :class="props.enableCursorPointerOnIcon ? 'cursor-pointer' : ''"
       />
       <input
         :value="props.modelValue"
@@ -32,7 +35,10 @@
       >
       <PIcon
         v-if="props.appendIconName"
-        :iconName="props.prependIconName"
+        class="input-icon"
+        :iconName="props.appendIconName"
+        @click.stop.prevent="$emit('append-icon-action')"
+        :class="props.enableCursorPointerOnIcon ? 'cursor-pointer' : ''"
       />
     </div>
     <div
@@ -79,11 +85,16 @@ interface Props {
     width?: string,
     label?: string,
     readonly?: boolean,
+    enableCursorPointerOnIcon?: boolean,
 }
 
-const emit = defineEmits<{(e:'update:modelValue', val: string | number):void}>()
+const emit = defineEmits<{
+    (e:'update:modelValue', val: string | number):void,
+    (e: 'prepend-icon-action', val: any): void,
+    (e: 'append-icon-action', val: any): void,
+}>()
 
-const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: '', showLabel: true, placeHolder: '', width: '320px', label: '', minLength: undefined, readonly: false})
+const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: '', showLabel: true, placeHolder: '', width: '320px', label: '', minLength: undefined, readonly: false, enableCursosPointerOnIcon: false,})
 
 const bindInput = inject('bind-input', (val: any) => {})
 const currentComponent = getCurrentInstance()
@@ -169,6 +180,7 @@ input{
     border: 1px solid $red;
     animation: shake 0.5s;
 }
+.input-icon{padding: 0 6px}
 @keyframes shake {
     10%, 90% {
         transform: translate3d(-1px, 0, 0);
