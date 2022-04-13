@@ -34,11 +34,13 @@
       Ingresar
     </PButton>
   </PForm>
+  <ShareDocsModal />
 </template>
 
 <script setup lang="ts">
 import {ref} from 'vue'
 import PForm from '../components/Organism/PForm.vue'
+import ShareDocsModal from '@/components/Organism/ShareDocsModal/ShareDocsModalIndex.vue'
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 const formRef = ref<any>(null)
