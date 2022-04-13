@@ -28,6 +28,18 @@ const PUblicViews: RouteRecordRaw[] = [
         meta: {
             authRequired: false,
         }
+    },
+    {
+        path: '/components',
+        name: 'Components',
+        component: () => import('../Layouts/DefaultLayout.vue'),
+        children: [
+            {
+                path: '',
+                name: '',
+                component: () => import('../Pages/ComponentsPage.vue')
+            }
+        ]
     }
 ]
 export default routes.concat(PUblicViews)
