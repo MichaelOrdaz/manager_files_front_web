@@ -34,11 +34,16 @@
       Ingresar
     </PButton>
   </PForm>
+  <ModalMask>
+    <DirInfoComponent />
+  </ModalMask>
 </template>
 
 <script setup lang="ts">
 import {ref} from 'vue'
 import PForm from '../components/Organism/PForm.vue'
+import ModalMask from '@/components/Atoms/ModalMask.vue'
+import DirInfoComponent from '@/components/Organism/FolderInfoComponent/index.vue'
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 const formRef = ref<any>(null)

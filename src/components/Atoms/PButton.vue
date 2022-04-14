@@ -7,7 +7,7 @@
         v-if="props.leftIcon"
         :iconName="props.leftIcon"
         size="pmd"
-        color="white"
+        :color="props.iconColor"
       />
     </div>
     <div>
@@ -20,7 +20,7 @@
         v-if="props.rightIcon"
         :iconName="props.rightIcon"
         size="psm"
-        color="white"
+        :color="props.iconColor"
       />
     </div>
   </button>
@@ -33,9 +33,10 @@ interface Props {
     size?: string,
     rightIcon?: string | null,
     leftIcon?: string | null,
+    iconColor?: string,
     type?: 'button' | 'submit' | 'reset' | undefined,
 }
-const props = withDefaults(defineProps<Props>(), {variant: 'primary', size: 'psm', leftIcon: null, rightIcon: null, type: 'button' })
+const props = withDefaults(defineProps<Props>(), {variant: 'primary', size: 'psm', leftIcon: null, rightIcon: null, type: 'button', iconColor: 'white' })
 
 const computedStyles = computed<string>(() => `${props.variant} ${props.size}`
 )

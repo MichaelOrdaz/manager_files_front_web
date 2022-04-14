@@ -1,0 +1,82 @@
+<template>
+  <div class="header">
+    <div class="folder-options">
+      <PIcon
+        color="black"
+        iconName="folder"
+      />
+      <PText
+        class="q-mx-md"
+        variant="text-4"
+      >
+        Nombre de carpeta
+      </PText>
+      <PIcon
+        @click="showEditFolderNameModal = true"
+        class="cursor-pointer"
+        color="black"
+        iconName="edit"
+        size="pmd"
+      />
+    </div>
+    <div
+      @click="showDeleteFolderModal = true"
+      class="delete-option cursor-pointer"
+    >
+      <PIcon
+        iconName="delete"
+        color="gray-7"
+        size="psm"
+      />
+      <PText
+        color="gray-7"
+        variant="text-5"
+      >
+        Eliminar carpeta
+      </PText>
+    </div>
+  </div>
+  <PModal
+    modalTitle="Cambiar el nombre de la carpeta"
+    v-if="showEditFolderNameModal"
+    @cancel="showEditFolderNameModal = false"
+  >
+    <template #body>
+      <PInput
+        v-model="newFolderName"
+        width="100%"
+        placeHolder="Nuevo nombre"
+      />
+    </template>
+  </PModal>
+  <PModal
+    modalTitle="¿Está seguro que quiere eliminar la carpeta?"
+    v-if="showDeleteFolderModal"
+    @cancel="showDeleteFolderModal = false"
+  />
+</template>
+<script setup lang="ts">
+import PModal from '@/components/Molecules/PModal.vue'
+import {ref} from 'vue'
+
+const showEditFolderNameModal = ref<boolean>(false)
+const showDeleteFolderModal = ref<boolean>(false)
+const newFolderName = ref<string>('')
+</script>
+
+<style scoped lang="scss">
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 12px;
+    .delete-option{ margin-top: 12px }
+}
+div :deep(.title) {
+    width: 100%;
+    text-align: start;
+    margin-bottom: 12px;
+}
+</style>
