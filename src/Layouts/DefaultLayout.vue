@@ -6,6 +6,11 @@
         alt="Logo"
         class="logo"
       >
+      <PSidebarIconButton
+        v-for="(module, index) in RolesModules"
+        :key="index"
+        :iconName="module.icon"
+      />
     </div>
     <div class="body">
       <router-view />
@@ -14,13 +19,14 @@
 </template>
 
 <script setup lang="ts">
-
+import {RolesModules} from '@/Layouts/RolesModules'
+import PSidebarIconButton from '@/components/Atoms/PSidebarIconButton.vue'
 </script>
 
 <style scoped lang="scss">
 .main-container{
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
 }

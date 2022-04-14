@@ -29,6 +29,7 @@ img{
     object-fit: contain;
     padding: 1px;
 }
+.pxsm{ width: 32px }
 .psm{ width: 35px; }
 .pmd{ width: 38px; }
 </style>

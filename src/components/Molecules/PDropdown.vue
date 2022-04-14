@@ -31,7 +31,10 @@
           :key="index"
           @click="option.action"
         >
-          {{ option.label }}
+          <slot
+            name="options"
+            :option="option"
+          />
         </div>
       </div>
     </div>

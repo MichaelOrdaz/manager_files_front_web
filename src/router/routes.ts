@@ -16,6 +16,14 @@ const routes: RouteRecordRaw[] = [
                 meta: {
                     authRequired: false
                 },
+            },
+            {
+                path: '/users-management',
+                name: 'Users management',
+                component: () => import('../Pages/UsersManagementPage.vue'),
+                meta: {
+                    authRequired: false,
+                }
             }
         ]
     },
