@@ -2,12 +2,16 @@
   <div class="component-container">
     <ComponentHeader />
     <UsersList />
+    <DirData />
+    <UsersActivityList />
   </div>
 </template>
 
 <script setup lang="ts">
 import ComponentHeader from '@/components/Organism/FolderInfoComponent/ComponentHeader.vue'
 import UsersList from './UsersList.vue'
+import DirData from './DirData.vue'
+import UsersActivityList from './UsersActivityList.vue'
 </script>
 
 

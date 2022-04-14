@@ -3,6 +3,7 @@
     <PLetterIcon
       iconSize="pxsm"
       :text="props.chipText"
+      backgroundColor="golden"
     />
     <PText
       variant="text-4"

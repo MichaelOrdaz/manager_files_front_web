@@ -33,6 +33,7 @@ const computedClasses = computed<string>(() => `${props.iconSize} ${props.backgr
     color: white;
 }
 .primary{background-color: $primary}
+.golden{background-color: $gold}
 .pxsm{
     height: 15px;
     width: 15px;

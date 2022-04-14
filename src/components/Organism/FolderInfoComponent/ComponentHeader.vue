@@ -73,6 +73,7 @@ const newFolderName = ref<string>('')
     flex-direction: column;
     padding: 12px;
     .delete-option{ margin-top: 12px }
+    border-bottom: solid 1px $gray-4;
 }
 div :deep(.title) {
     width: 100%;
