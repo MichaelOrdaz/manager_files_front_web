@@ -37,5 +37,8 @@ module.exports = {
         'no-underscore-dangle': 'off',
         'no-use-before-define': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+        "vue/multi-word-component-names": ["error", {
+            "ignores": ["index"]
+        }]
     },
 }

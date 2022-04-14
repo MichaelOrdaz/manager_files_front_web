@@ -64,7 +64,7 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
     position: relative;
 }
 .dropdown{
-    background-color: $brown6;
+    background-color: $brown-6;
     display: flex;
     justify-content: space-between;
     align-items: center;
