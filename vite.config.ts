@@ -12,6 +12,7 @@ export default defineConfig({
         },
     },
     plugins: [
+        eslintPlugin(),
         vue({
             template: { transformAssetUrls }
         }),
@@ -19,6 +20,5 @@ export default defineConfig({
         quasar({
             sassVariables: 'src/css/index.sass',
         }),
-        eslintPlugin(),
     ]
 })
