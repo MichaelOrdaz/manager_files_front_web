@@ -11,11 +11,11 @@
         class="chips-modal-list flex"
       >
         <PChip
+          v-for="(tag, index) in newTags"
+          :key="index"
           chipType="secondary"
           iconColor="white"
           textColor="white"
-          v-for="(tag, index) in newTags"
-          :key="index"
           :chipText="tag"
           class="chip"
           @icon-action="removeTag(index)"

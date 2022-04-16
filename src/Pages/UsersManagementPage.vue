@@ -2,10 +2,10 @@
   <div class="view-container">
     <div class="header-container">
       <PInput
+        v-model="searchValue"
         class="q-mr-sm"
         appendIconName="tune"
         prependIconName="search"
-        v-model="searchValue"
         placeHolder="Buscar"
         width="758px"
       />

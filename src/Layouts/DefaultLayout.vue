@@ -7,9 +7,12 @@
         class="logo"
       >
       <PSidebarIconButton
-        v-for="(module, index) in RolesModules"
+        v-for="(module, index) in onLoadModules"
         :key="index"
         :iconName="module.icon"
+        :iconColor="$route.name === module.name ? 'white' : 'primary'"
+        :backgroundColor="$route.name === module.name ? 'active': 'unactive'"
+        @click="$router.push({name: module.name})"
       />
     </div>
     <div class="body">
@@ -19,8 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import {RolesModules} from '@/Layouts/RolesModules'
+import {Module, RolesModules} from '@/Layouts/RolesModules'
+import {computed} from 'vue'
 import PSidebarIconButton from '@/components/Atoms/PSidebarIconButton.vue'
+
+const rol = 'Head of Department'
+const onLoadModules = computed<Module[]>(() => RolesModules[rol])
 </script>
 
 <style scoped lang="scss">

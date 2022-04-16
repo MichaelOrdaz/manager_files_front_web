@@ -28,8 +28,8 @@
           textColor="white"
           chipType="secondary"
           :chipText="tag"
-          @icon-action="removeChip(index)"
           class="chip"
+          @icon-action="removeChip(index)"
         />
       </div>
     </div>
@@ -60,9 +60,9 @@
       <PLinkText>Descargar</PLinkText>
     </div>
     <Modal
-      @update-tags-list="updateTagsList"
-      :tags="tags"
       v-if="showTagsModal"
+      :tags="tags"
+      @update-tags-list="updateTagsList"
       @cancel="showTagsModal = false"
     />
   </div>

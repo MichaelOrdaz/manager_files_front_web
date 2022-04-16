@@ -1,7 +1,7 @@
 <template>
   <div
-    class="dropdown-container"
     ref="componentRef"
+    class="dropdown-container"
   >
     <div
       class="dropdown"
@@ -26,9 +26,9 @@
     >
       <div v-if="props?.options?.length">
         <div
-          class="dropdown-option"
           v-for="(option, index) in props.options"
           :key="index"
+          class="dropdown-option"
           @click="option.action"
         >
           <slot
@@ -47,7 +47,7 @@ import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 
 export type Option = {
     label: string,
-    action: Function,
+    action: {():void},
 }
 interface Props { options?: Option[], text?: string }
 const props = withDefaults(defineProps<Props>(), {options: undefined, text: 'Texto de demostración'})

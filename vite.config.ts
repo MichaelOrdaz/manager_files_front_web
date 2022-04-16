@@ -12,7 +12,7 @@ export default defineConfig({
         },
     },
     plugins: [
-        eslintPlugin(),
+        eslintPlugin({cache: false}),
         vue({
             template: { transformAssetUrls }
         }),

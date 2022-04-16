@@ -23,51 +23,51 @@
             />
           </div>
           <PInput
+            v-model="newUser.name"
             class="q-mt-lg"
             label="Nombre"
             width="554px"
-            v-model="newUser.name"
             :rules="[value => !!value.trim() || 'Agregar nombre']"
           />
           <div class="input-pair">
             <PInput
+              v-model="newUser.lastName"
               label="Apellido paterno"
               width="363px"
-              v-model="newUser.lastName"
               :rules="[value => !!value.trim() || 'Agregar apellido paterno']"
             />
             <PInput
+              v-model="newUser.secondLastName"
               label="Apellido materno"
               width="363px"
-              v-model="newUser.secondLastName"
               :rules="[value => !!value.trim() || 'Agregar apellido materno']"
             />
           </div>
           <div class="input-pair">
             <PInput
+              v-model="newUser.email"
               label="Correo"
               width="363px"
-              v-model="newUser.email"
               :rules="[value => !!value.trim() || 'Agregar correo']"
             />
             <PInput
+              v-model="newUser.phone"
               label="Celular"
               width="363px"
-              v-model="newUser.phone"
               :rules="[value => !!value.trim() || 'Agregar celular']"
             />
           </div>
           <div class="input-pair">
             <PInput
+              v-model="newUser.password"
               label="Contraseña"
               width="363px"
-              v-model="newUser.password"
               :rules="[value => !!value.trim() || 'Agregar celular']"
             />
             <PInput
+              v-model="password"
               label="Contraseña"
               width="363px"
-              v-model="password"
               :rules="[value => !!value.trim() || 'Agregar celular']"
             />
           </div>

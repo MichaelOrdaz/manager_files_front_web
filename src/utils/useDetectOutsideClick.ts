@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {onBeforeUnmount, onMounted} from 'vue'
 
 export default function useDetectOutsideClick(component: any , callback: Function) {

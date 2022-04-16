@@ -1,7 +1,7 @@
 <template>
   <div
-    class="tab-content"
     v-show="selectedTitle === props.title"
+    class="tab-content"
   >
     <slot />
   </div>
