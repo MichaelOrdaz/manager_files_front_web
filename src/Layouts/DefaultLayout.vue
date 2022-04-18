@@ -34,8 +34,8 @@ const onLoadModules = computed<Module[]>(() => RolesModules[rol])
 .main-container{
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 80px 1fr;
 }
 .sidebar{
     background: #F7F7F7;
@@ -48,8 +48,8 @@ const onLoadModules = computed<Module[]>(() => RolesModules[rol])
 
 }
 .body{
-    width: calc(100% - 80px);
     height: 100%;
+    overflow-y: scroll;
 }
 .logo{
     height: 83px;

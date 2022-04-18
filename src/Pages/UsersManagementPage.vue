@@ -53,7 +53,7 @@ import DefaultImg from '@/assets/profileicon.svg'
 import UserItem from '@/components/Organism/ShareDocsModal/UserItem.vue'
 import type {Option} from '@/components/Molecules/PDropdown.vue'
 const searchValue = ref<string>('')
-const options = ref<Option[]>([{action: () => {}, label: 'Prueba de texto'}])
+const options = ref<Option[]>([{action: () => [], label: 'Prueba de texto'}])
 </script>
 
 <style scoped lang="scss">

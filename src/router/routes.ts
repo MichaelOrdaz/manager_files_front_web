@@ -49,11 +49,6 @@ const PublicViews: RouteRecordRaw[] = [
             }
         ]
     },
-    {
-        path: '/:pathMatch(.*)*',
-        name: 'not-found',
-        component: () => import('../Pages/404NotFoundPage.vue')
-    }
 ]
 
 const HeadOfDepartament: RouteRecordRaw[] = [
@@ -75,5 +70,10 @@ const HeadOfDepartament: RouteRecordRaw[] = [
             },
         ]
     },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('../Pages/404NotFoundPage.vue')
+    }
 ]
 export default routes.concat(PublicViews, HeadOfDepartament)

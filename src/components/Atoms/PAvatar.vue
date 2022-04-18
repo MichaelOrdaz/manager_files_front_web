@@ -11,11 +11,12 @@
 </template>
 
 <script setup lang="ts">
+import DefaultImg from '@/assets/profileicon.svg'
 interface Props{
     src?: string,
     size?: string,
 }
-const props = withDefaults(defineProps<Props>(), {src: undefined, size: 'pmd'})
+const props = withDefaults(defineProps<Props>(), {src: DefaultImg, size: 'pmd'})
 </script>
 
 <style scoped>
