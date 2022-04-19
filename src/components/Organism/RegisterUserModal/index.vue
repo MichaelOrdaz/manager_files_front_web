@@ -27,20 +27,20 @@
             class="q-mt-lg"
             label="Nombre"
             width="554px"
-            :rules="[value => !!value.trim() || 'Agregar nombre']"
+            :rules="[(value:string) => !!value.trim() || 'Agregar nombre']"
           />
           <div class="input-pair">
             <PInput
               v-model="newUser.lastName"
               label="Apellido paterno"
               width="363px"
-              :rules="[value => !!value.trim() || 'Agregar apellido paterno']"
+              :rules="[(value:string) => !!value.trim() || 'Agregar apellido paterno']"
             />
             <PInput
               v-model="newUser.secondLastName"
               label="Apellido materno"
               width="363px"
-              :rules="[value => !!value.trim() || 'Agregar apellido materno']"
+              :rules="[(value:string) => !!value.trim() || 'Agregar apellido materno']"
             />
           </div>
           <div class="input-pair">
@@ -48,13 +48,13 @@
               v-model="newUser.email"
               label="Correo"
               width="363px"
-              :rules="[value => !!value.trim() || 'Agregar correo']"
+              :rules="[(value:string) => !!value.trim() || 'Agregar correo']"
             />
             <PInput
               v-model="newUser.phone"
               label="Celular"
               width="363px"
-              :rules="[value => !!value.trim() || 'Agregar celular']"
+              :rules="[(value:string) => !!value.trim() || 'Agregar celular']"
             />
           </div>
           <div class="input-pair">
@@ -62,13 +62,13 @@
               v-model="newUser.password"
               label="Contraseña"
               width="363px"
-              :rules="[value => !!value.trim() || 'Agregar celular']"
+              :rules="[(value:string) => !!value.trim() || 'Agregar celular']"
             />
             <PInput
               v-model="password"
               label="Contraseña"
               width="363px"
-              :rules="[value => !!value.trim() || 'Agregar celular']"
+              :rules="[(value:string) => !!value.trim() || 'Agregar celular']"
             />
           </div>
           <div class="buttons">

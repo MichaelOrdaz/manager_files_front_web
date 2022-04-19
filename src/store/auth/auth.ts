@@ -2,7 +2,10 @@ export interface UserData {
     id: number,
     name?: string,
     lastName?: string,
-    secondLastName?: string,
+    second_lastname?: string,
+    phone?: string,
+    image?: string,
+    department_id?: number
 }
 export interface Auth {
     access_token?: string,
@@ -13,6 +16,12 @@ export interface Auth {
     user_data?: UserData,
     roles?: string[],
     views: string[],
+    initialPage: {
+        Admin: 'Home',
+        Administrador: 'Home',
+        Analyst: 'Home',
+        'Head of Department': 'Home'
+    }
 }
 
 export default function state(): Auth {
@@ -22,6 +31,12 @@ export default function state(): Auth {
             name: 'Test'
         },
         access_token: 'Test',
-        views: ['Test']
+        views: ['Test'],
+        initialPage: {
+            Admin: 'Home',
+            Administrador: 'Home',
+            Analyst: 'Home',
+            'Head of Department': 'Home'
+        }
     }
 }

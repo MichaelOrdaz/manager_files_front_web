@@ -23,9 +23,9 @@
 <script setup lang="ts">
 import PModal from '@/components/Molecules/PModal.vue'
 interface Props{
-    tags?: string[] | never[]
+    tags?: string[] | never[] | undefined[]
 }
-const props = withDefaults(defineProps<Props>(), {tags: []})
+const props = withDefaults(defineProps<Props>(), {tags: () => []})
 </script>
 
 <style scoped lang="scss">
