@@ -16,7 +16,7 @@
       <UserItem
         v-for="(user, index) in users"
         :key="index"
-        :itemTitleText="user.id"
+        itemTitleText="user.id"
         @click="addEvent(user, index)"
       />
     </div>

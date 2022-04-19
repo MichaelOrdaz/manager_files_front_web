@@ -65,16 +65,16 @@
 import {QTable} from 'quasar'
 import {ref} from 'vue'
 import type {User} from '@/Types/User'
-const columns = [
-    { name: 'Foto del usuario', align: 'left', label: 'Foto del usuario' },
+const columns: any[] = [
+    { name: 'Foto del usuario', align: 'left', label: 'Foto del usuario', field: 'name'},
     {
-        name: 'Nombre de usuario', align: 'left', label: 'Nombre de usuario'
+        name: 'Nombre de usuario', align: 'left', label: 'Nombre de usuario', field: 'name'
     },
-    { name: 'Rol', align: 'left', label: 'Rol' },
-    { name: 'Departamento', align: 'left', label: 'Departamento' },
-    { name: 'Teléfono', align: 'left', label: 'Teléfono' },
-    { name: 'Correo', align: 'left', label: 'Correo' },
-    { name: 'Acciones', align: 'center', label: 'Acciones' },
+    { name: 'Rol', align: 'left', label: 'Rol', field: 'name' },
+    { name: 'Departamento', align: 'left', label: 'Departamento', field: 'name' },
+    { name: 'Teléfono', align: 'left', label: 'Teléfono', field: 'name' },
+    { name: 'Correo', align: 'left', label: 'Correo', field: 'name' },
+    { name: 'Acciones', align: 'center', label: 'Acciones', field: 'name' },
 ]
 const users = ref<User[]>([{id: 1, name: 'José'}])
 

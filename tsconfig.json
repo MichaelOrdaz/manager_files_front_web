@@ -4,13 +4,13 @@
     "useDefineForClassFields": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "strict": true,
+    "strict": false,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": ["vite/cli"],
     "skipLibCheck": true,
+    "baseUrl": "./",
     "lib": ["esnext", "dom"],
     "paths": {
       "@/*": ["src/*"]
