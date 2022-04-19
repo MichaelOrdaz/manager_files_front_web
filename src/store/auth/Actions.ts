@@ -21,17 +21,21 @@ const actions: ActionTree<Auth, StateInterface> = {
     async user_request({commit, dispatch}) {
         try {
             const resp = await api.get('/account')
-            console.log(resp, 'user_request')
             commit('USER_SUCCESS', resp.data.data)
         } catch (e) {
             commit('USER_ERROR')
-            dispatch('user_logout')
+            await dispatch('user_logout')
         }
     },
     async user_logout({commit, dispatch}){
         try {
-            const resp = api.post('/logout')
+            await api.post('/logout')
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('vuex')
+            api.defaults.headers.common.Authorization = ''
+            commit('AUTH_LOGOUT')
         } catch (e) {
+            commit('AUTH_LOGOUT')
         }
     }
 }

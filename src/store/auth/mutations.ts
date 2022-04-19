@@ -16,6 +16,15 @@ const mutations: MutationTree<Auth> = {
     },
     AUTH_REQUEST(state): void {
         state.status = 'loading'
+    },
+    AUTH_LOGOUT(state):void {
+        state.status = ''
+        state.access_token = ''
+        state.views = []
+        state.user_data = {name: '', id: 0}
+        state.expires_at = ''
+        state.status = ''
+        state.permissions = []
     }
 }
 
