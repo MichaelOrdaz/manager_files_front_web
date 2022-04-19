@@ -26,13 +26,13 @@ import ProfileIcon from '../../../assets/profileicon.svg'
 const newUserImg = ref<string>(ProfileIcon)
 const emit = defineEmits(['capture-new-image'])
 function loadUserImg() {
-    const fileInput: HTMLInputElement = document.createElement('input')!
+    const fileInput: HTMLInputElement = document.createElement('input')
     fileInput.type = 'file'
     fileInput.style.display = 'none'
     fileInput.accept = 'image/*'
     fileInput.click()
     fileInput.onchange = () => {
-        const img = fileInput.files?.item(0)!
+        const img = fileInput.files?.item(0)
         newUserImg.value = URL.createObjectURL(img)
         emit('capture-new-image', img)
     }
