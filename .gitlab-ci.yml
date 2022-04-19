@@ -65,10 +65,10 @@ deploy_qa:
     - cp dist/index.html .public/404.html
     - cp -r  .public/* public && cp .htaccess public/.htaccess &&rm -R .public
     - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
-    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "docker exec -i 2b9cd9092a99 rm -R /var/www/qa-${PROJECT_NAME}/${BRANCH_QA} || true"
-    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "./make_path_to_deploy_frontend.sh -p \"qa-${PROJECT_NAME}\" -b \"${BRANCH_QA}\" "
-    - rsync -avrc --delete "$PWD/public/" ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP}:frontend/qa-${PROJECT_NAME}/${BRANCH_QA}/public/
-    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "docker exec -i 2b9cd9092a99 chown -R www-data:www-data /var/www/qa-${PROJECT_NAME}/${BRANCH_QA}/"
+    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "docker exec -i 2b9cd9092a99 rm -R /var/www/${PROJECT_NAME}/${BRANCH_QA} || true"
+    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "./make_path_to_deploy_frontend.sh -p \"${PROJECT_NAME}\" -b \"${BRANCH_QA}\" "
+    - rsync -avrc --delete "$PWD/public/" ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP}:frontend/${PROJECT_NAME}/${BRANCH_QA}/public/
+    - ssh ${DO_SERVER_TOOLS_USER}@${DO_SERVER_TOOLS_IP} "docker exec -i 2b9cd9092a99 chown -R www-data:www-data /var/www/${PROJECT_NAME}/${BRANCH_QA}/"
 
 
   environment:
