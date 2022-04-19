@@ -34,22 +34,21 @@
       Ingresar
     </PButton>
   </PForm>
-  <ModalMask>
-    <DirInfoComponent />
-  </ModalMask>
 </template>
 
 <script setup lang="ts">
 import {ref} from 'vue'
 import PForm from '../components/Organism/PForm.vue'
-import ModalMask from '@/components/Atoms/ModalMask.vue'
-import DirInfoComponent from '@/components/Organism/FolderInfoComponent/index.vue'
+import {useStore} from 'vuex'
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 const formRef = ref<InstanceType<typeof PForm> | null>(null)
+const store = useStore()
 
 async function logIn () {
-    formRef.value.validate()
+    if (formRef.value.validate()) {
+        store.dispatch('auth_request', {email: userEmail.value, password: userPassword.value})
+    }
 }
 </script>
 
