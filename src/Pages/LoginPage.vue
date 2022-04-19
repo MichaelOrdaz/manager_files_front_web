@@ -18,13 +18,13 @@
       v-model="userEmail"
       width="345px"
       label="Correo electrónico"
-      :rules="[value => !!value || 'Agraga un correo']"
+      :rules="[(value:string) => !!value || 'Agraga un correo']"
     />
     <PInput
       v-model="userPassword"
       width="345px"
       label="Contraseña"
-      :rules="[value => !!value || 'Ingresa tu contraseña']"
+      :rules="[(value:string) => !!value || 'Ingresa tu contraseña']"
     />
     <PButton
       size="plg"
@@ -34,22 +34,25 @@
       Ingresar
     </PButton>
   </PForm>
-  <ModalMask>
-    <DirInfoComponent />
-  </ModalMask>
 </template>
 
 <script setup lang="ts">
 import {ref} from 'vue'
 import PForm from '../components/Organism/PForm.vue'
-import ModalMask from '@/components/Atoms/ModalMask.vue'
-import DirInfoComponent from '@/components/Organism/FolderInfoComponent/index.vue'
+interface PFormComp{ validate: () => boolean, component: typeof PForm }
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
-const formRef = ref<InstanceType<typeof PForm> | null>(null)
+const formRef = ref<PFormComp | null>(null)
+const store = useStore()
+const router = useRouter()
 
 async function logIn () {
-    formRef.value.validate()
+    if (formRef.value?.validate()) {
+        await store.dispatch('auth_request', {email: userEmail.value, password: userPassword.value})
+        await router.push({name: store.getters['initialPage']})
+    }
 }
 </script>
 

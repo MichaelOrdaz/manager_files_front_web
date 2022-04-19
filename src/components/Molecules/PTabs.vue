@@ -27,7 +27,7 @@ interface Props{
 const props = withDefaults(defineProps<Props>(), {tabTitleVariant: 'text-1'})
 const currenComponent= getCurrentInstance()
 const tabTitles = ref<string[]>([])
-const selectedTitle = ref<string>('')
+const selectedTitle = ref<string | undefined>('')
 provide('selectedTitle', selectedTitle)
 onMounted(() => {
     tabTitles.value = currenComponent?.slots.default().map(e => e.props?.title)

@@ -90,8 +90,8 @@ interface Props {
 
 const emit = defineEmits<{
     (e:'update:modelValue', val: string | number):void,
-    (e: 'prepend-icon-action', val: any): void,
-    (e: 'append-icon-action', val: any): void,
+    (e: 'prepend-icon-action'): void,
+    (e: 'append-icon-action'): void,
 }>()
 
 const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: '', showLabel: true, placeHolder: '', width: '320px', label: '', minLength: undefined, readonly: false, enableCursosPointerOnIcon: false,})
