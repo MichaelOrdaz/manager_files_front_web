@@ -9,7 +9,6 @@ const Router = createRouter({
 Router.beforeEach((to, from, next) => {
     const haveToken: string = localStorage.getItem('access_token') || ''
     const authRequired = !!to.meta.authRequired
-    const PathMainView: string | undefined = store.getters.paginaInicio
     const PathLoginView= '/'
 
     if (to.path === PathLoginView && haveToken){

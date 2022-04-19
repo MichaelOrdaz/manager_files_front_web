@@ -16,10 +16,10 @@ import Router from './router'
 import componentsRegister from './components/componentsRegister'
 
 const myApp = createApp(App)
+componentsRegister(myApp)
 myApp.use(store)
 myApp.use(Router)
 myApp.use(Quasar, {
     plugins: {}, // import Quasar plugins and add here
 })
-componentsRegister(myApp)
 myApp.mount('#app')
