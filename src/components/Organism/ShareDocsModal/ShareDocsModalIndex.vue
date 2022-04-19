@@ -12,9 +12,9 @@
         <PChip
           v-for="(user, index) in users"
           :key="user.id"
-          @icon-action="removeUser(index)"
           :chipText="user.id"
           class="chip"
+          @icon-action="removeUser(index)"
         />
       </div>
       <Radios v-model="userPer" />

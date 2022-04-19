@@ -5,9 +5,9 @@
     </PText>
     <div class="radio">
       <input
+        v-model="radioValue"
         value="Editor"
         type="radio"
-        v-model="radioValue"
       >
       <PText variant="text-3">
         Editor
@@ -15,9 +15,9 @@
     </div>
     <div class="radio">
       <input
+        v-model="radioValue"
         value="Lector"
         type="radio"
-        v-model="radioValue"
       >
       <PText variant="text-3">
         Lector

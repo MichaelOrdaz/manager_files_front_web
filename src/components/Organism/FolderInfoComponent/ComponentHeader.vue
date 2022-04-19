@@ -12,16 +12,16 @@
         Nombre de carpeta
       </PText>
       <PIcon
-        @click="showEditFolderNameModal = true"
         class="cursor-pointer"
         color="black"
         iconName="edit"
         size="pmd"
+        @click="showEditFolderNameModal = true"
       />
     </div>
     <div
-      @click="showDeleteFolderModal = true"
       class="delete-option cursor-pointer"
+      @click="showDeleteFolderModal = true"
     >
       <PIcon
         iconName="delete"
@@ -37,8 +37,8 @@
     </div>
   </div>
   <PModal
-    modalTitle="Cambiar el nombre de la carpeta"
     v-if="showEditFolderNameModal"
+    modalTitle="Cambiar el nombre de la carpeta"
     @cancel="showEditFolderNameModal = false"
   >
     <template #body>
@@ -50,8 +50,8 @@
     </template>
   </PModal>
   <PModal
-    modalTitle="¿Está seguro que quiere eliminar la carpeta?"
     v-if="showDeleteFolderModal"
+    modalTitle="¿Está seguro que quiere eliminar la carpeta?"
     @cancel="showDeleteFolderModal = false"
   />
 </template>

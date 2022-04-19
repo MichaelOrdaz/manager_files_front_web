@@ -15,21 +15,21 @@
       Ingresar
     </PText>
     <PInput
-      width="345px"
       v-model="userEmail"
+      width="345px"
       label="Correo electrónico"
       :rules="[value => !!value || 'Agraga un correo']"
     />
     <PInput
-      width="345px"
       v-model="userPassword"
+      width="345px"
       label="Contraseña"
       :rules="[value => !!value || 'Ingresa tu contraseña']"
     />
     <PButton
-      @click.prevent="logIn"
       size="plg"
       class="login-btn"
+      @click.prevent="logIn"
     >
       Ingresar
     </PButton>
@@ -46,7 +46,7 @@ import ModalMask from '@/components/Atoms/ModalMask.vue'
 import DirInfoComponent from '@/components/Organism/FolderInfoComponent/index.vue'
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
-const formRef = ref<any>(null)
+const formRef = ref<InstanceType<typeof PForm> | null>(null)
 
 async function logIn () {
     formRef.value.validate()

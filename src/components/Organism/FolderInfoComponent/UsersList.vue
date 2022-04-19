@@ -5,9 +5,9 @@
     </PText>
     <div class="chip-list">
       <PChip
-        chipText="Hola"
         v-for="number in 2"
         :key="number"
+        chipText="Hola"
       />
     </div>
     <div class="flex justify-between">

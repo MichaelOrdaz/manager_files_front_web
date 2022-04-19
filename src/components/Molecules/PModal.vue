@@ -43,8 +43,8 @@
               <PButton
                 class="p-mx"
                 variant="white"
-                @click="$emit('cancel')"
                 size="plg"
+                @click="$emit('cancel')"
               >
                 {{ props.cancelButtonText }}
               </PButton>

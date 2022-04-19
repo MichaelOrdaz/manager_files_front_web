@@ -1,7 +1,7 @@
 <template>
   <div
-    class="p-select-container"
     ref="componentRef"
+    class="p-select-container"
   >
     <PText
       class="label"
@@ -81,6 +81,7 @@
 </template>
 
 <script setup lang="ts">
+/* eslint-disable */
 import {
     ref, computed, watch, toRef, withDefaults, onMounted, inject, getCurrentInstance
 } from 'vue'

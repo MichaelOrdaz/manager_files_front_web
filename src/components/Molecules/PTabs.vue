@@ -4,8 +4,8 @@
       <li
         v-for="(title, index) in tabTitles"
         :key="index"
-        @click="selectedTitle = title"
         :class="{'p-selected-tab': selectedTitle === title}"
+        @click="selectedTitle = title"
       >
         <PText
           color="black"

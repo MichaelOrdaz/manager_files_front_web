@@ -4,10 +4,10 @@
     class="input-filter-container"
   >
     <PInput
+      v-model="filterValue"
       label="Busca a usuario"
       width="100%"
       placeHolder="Buscar"
-      v-model="filterValue"
     />
     <div
       v-if="showUsersList && users.length"

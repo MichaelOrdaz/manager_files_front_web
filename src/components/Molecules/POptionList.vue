@@ -10,15 +10,15 @@
       @click="show = !show"
     />
     <div
-      class="list"
       v-if="props?.options?.length && show"
+      class="list"
       @click="show = false"
     >
       <div
         v-for="(option, index) in props.options"
         :key="index"
-        @click="option.action"
         class="option"
+        @click="option.action"
       >
         <PIcon
           size="pmd"
@@ -36,7 +36,7 @@
 import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 import { ref} from 'vue'
 export type Option = {
- action: Function,
+ action: { ():void },
  optionLabel: string,
  icon: string,
 }

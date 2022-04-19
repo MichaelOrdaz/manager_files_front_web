@@ -19,26 +19,26 @@
         v-if="props.prependIconName"
         :iconName="props.prependIconName"
         class="input-icon"
-        @click.stop.prevent="$emit('prepend-icon-action')"
         :class="props.enableCursorPointerOnIcon ? 'cursor-pointer' : ''"
+        @click.stop.prevent="$emit('prepend-icon-action')"
       />
       <input
         :value="props.modelValue"
-        @focusin="inputIsFocused = true"
-        @focusout="inputIsFocused = false"
-        @input="update"
         :type="props.type"
         :maxlength="props.maxLength"
         :placeholder="props.placeHolder ? props.placeHolder : ''"
         :minlength="props.minLength"
         :readonly="props.readonly"
+        @focusin="inputIsFocused = true"
+        @focusout="inputIsFocused = false"
+        @input="update"
       >
       <PIcon
         v-if="props.appendIconName"
         class="input-icon"
         :iconName="props.appendIconName"
-        @click.stop.prevent="$emit('append-icon-action')"
         :class="props.enableCursorPointerOnIcon ? 'cursor-pointer' : ''"
+        @click.stop.prevent="$emit('append-icon-action')"
       />
     </div>
     <div

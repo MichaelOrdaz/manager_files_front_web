@@ -1,7 +1,8 @@
 module.exports = {
     extends: [
-        "plugin:vue/vue3-strongly-recommended",
-        '@vue/eslint-config-typescript',
+        "@vue/typescript/recommended",
+        "eslint:recommended",
+        "plugin:vue/vue3-recommended",
     ],
     plugins: ['eslint-plugin-vue', 'vue', 'import', '@typescript-eslint'],
     globals: {
@@ -9,6 +10,7 @@ module.exports = {
         defineProps: 'readonly',
         defineEmits: 'readonly',
         defineExpose: 'readonly',
+        withDefaults: 'readonly'
     },
     rules: {
         'no-param-reassign': 'off',

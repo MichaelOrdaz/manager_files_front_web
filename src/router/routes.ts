@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
         ]
     },
 ]
-const PUblicViews: RouteRecordRaw[] = [
+const PublicViews: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'Login',
@@ -48,6 +48,32 @@ const PUblicViews: RouteRecordRaw[] = [
                 component: () => import('../Pages/ComponentsPage.vue')
             }
         ]
+    },
+]
+
+const HeadOfDepartament: RouteRecordRaw[] = [
+    {
+        path: '/layout',
+        name: 'Layout',
+        component: () => import('../Layouts/DefaultLayout.vue'),
+        meta: {
+            authRequired: false
+        },
+        children: [
+            {
+                path: '/home',
+                name: 'Home',
+                component: () => import('../Pages/HeadOfDepartment/HomePage.vue'),
+                meta: {
+                    authRequired: false
+                },
+            },
+        ]
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('../Pages/404NotFoundPage.vue')
     }
 ]
-export default routes.concat(PUblicViews)
+export default routes.concat(PublicViews, HeadOfDepartament)
