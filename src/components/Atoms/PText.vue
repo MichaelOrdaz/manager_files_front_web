@@ -17,7 +17,7 @@ interface Props{
     color?: string,
 }
 const props = withDefaults(defineProps<Props>(), {
-    color: 'white',
+    color: 'black',
     variant: 'title-1'
 })
 const computedClasses = computed<string>(() => `${props.variant} ${props.color}`)
@@ -77,5 +77,6 @@ const computedClasses = computed<string>(() => `${props.variant} ${props.color}`
 .gold{color: $gold }
 .white{color: white}
 .black{color: black}
+.gray-7{color: $gray-7}
 
 </style>

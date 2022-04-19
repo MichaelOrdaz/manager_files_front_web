@@ -16,12 +16,12 @@ function puts(error, stdout, stderr) {
 
 if (os.type() === 'Windows_NT') {
     exec(
-        'npx eslint --ext .js,.vue --ignore-path .eslintignore . --fix --color',
+        'npx eslint --ext .js,.ts,.vue --ignore-path .eslintignore . --fix --color',
         puts,
     )
 } else {
     exec(
-        './node_modules/.bin/eslint --ext .js,.vue --ignore-path .eslintignore . --fix --color',
+        './node_modules/.bin/eslint --ext .js,.ts,.vue --ignore-path .eslintignore . --fix --color',
         puts,
     )
 }

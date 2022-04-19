@@ -23,7 +23,10 @@ const computedStyles = computed<string>(() => `${props.color} ${props.size}`)
 </script>
 
 <style scoped lang="scss">
-.material-icons{ padding: 0; margin: 0; width: auto}
+.material-icons{ padding: 0; margin: 0; width: auto; background-color: transparent; border: none}
+.pxsm{
+    font-size: 6px;
+}
 .psm{
     font-size: 12px;
 }
@@ -32,4 +35,9 @@ const computedStyles = computed<string>(() => `${props.color} ${props.size}`)
 }
 .white{color: white}
 .black{color: black}
+.red{color: $red}
+.link{color: $ocean}
+.gold{color: $gold}
+.brown-6{color: $brown-6}
+.gray7{color: $gray-7}
 </style>

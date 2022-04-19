@@ -1,16 +1,16 @@
 module.exports = {
     extends: [
-        'plugin:vue/vue3-strongly-recommended', // Priority A: Essential (Error Prevention)
-        'plugin:vue/vue3-essential',
-        'eslint:recommended',
-        '@vue/eslint-config-typescript/recommended',
+        "@vue/typescript/recommended",
+        "eslint:recommended",
+        "plugin:vue/vue3-recommended",
     ],
-    plugins: ['eslint-plugin-vue', 'vue', 'import'],
+    plugins: ['eslint-plugin-vue', 'vue', 'import', '@typescript-eslint'],
     globals: {
         chrome: 'readonly',
         defineProps: 'readonly',
         defineEmits: 'readonly',
         defineExpose: 'readonly',
+        withDefaults: 'readonly'
     },
     rules: {
         'no-param-reassign': 'off',
@@ -19,7 +19,8 @@ module.exports = {
         'max-classes-per-file': 'off',
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
-        'no-unused-vars': ['warn'],
+        'no-unused-vars': 'warn',
+        'no-console': 'warn',
         'generator-star-spacing': 'off',
         'arrow-parens': 'off',
         'one-var': 'off',
@@ -38,5 +39,8 @@ module.exports = {
         'no-underscore-dangle': 'off',
         'no-use-before-define': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+        "vue/multi-word-component-names": ["error", {
+            "ignores": ["index"]
+        }]
     },
 }
