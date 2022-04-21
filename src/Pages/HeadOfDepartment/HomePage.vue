@@ -2,7 +2,7 @@
   <QSplitter
     v-model="splitterModel"
     class="full-height"
-    :limits="[15, 50]"
+    :limits="[15, 40]"
   >
     <template #before>
       <SplitterFoldersSection />

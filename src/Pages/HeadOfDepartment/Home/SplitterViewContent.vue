@@ -1,6 +1,6 @@
 <template>
   <div class="header-container">
-    <div class="flex">
+    <div class="filter-input">
       <PInput
         v-model="searchValue"
         class="q-mr-sm"
@@ -14,6 +14,7 @@
       </PButton>
     </div>
     <POptionList
+      class="avatar"
       :options="options"
       type="avatar"
     />
@@ -57,9 +58,16 @@ const options = ref<Option[]>([
     padding-right: 16px;
     margin: 12px 0;
     border-bottom: solid 1px $grey-4;
+    .filter-input{display: flex}
     .avatar{height: 30px}
 }
-div :deep(.white){
-    border: none;
+@media (max-width: 1216px){
+    .header-container{
+        height: 120px;
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        .avatar{margin-right: 12px}
+        .filter-input{display: flex; width: 100%}
+    }
 }
 </style>
