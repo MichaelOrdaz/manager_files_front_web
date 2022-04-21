@@ -1,6 +1,6 @@
 <template>
   <div class="header-container">
-    <div class="flex">
+    <div class="filter-input">
       <PInput
         v-model="searchValue"
         class="q-mr-sm"
@@ -8,14 +8,22 @@
         prependIconName="search"
         placeHolder="Buscar"
         width="758px"
+        enableCursorPointerOnIcon
+        @append-icon-action="showAdvancedSearch = true"
       />
       <PButton class="p-mt-4">
         Buscar
       </PButton>
+      <AdvancedSearch
+        v-if="showAdvancedSearch"
+        class="search"
+        @cancel="showAdvancedSearch = false"
+      />
     </div>
-    <PAvatar
-      size="pxsm"
+    <POptionList
       class="avatar"
+      :options="options"
+      type="avatar"
     />
   </div>
   <div>
@@ -34,9 +42,16 @@
 import {ref} from 'vue'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFoldersDescAndActions.vue'
+import AdvancedSearch from './AdvancedSearch.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
+import type {Option} from '@/components/Molecules/POptionList.vue'
+import {useLogOut} from '@/Composables/useUserSessionMethods'
 
 const searchValue = ref<string>('')
+const showAdvancedSearch = ref<boolean>(false)
+const options = ref<Option[]>([
+    {optionLabel: 'Cerrar sesión', action: useLogOut, icon: ''},
+])
 
 </script>
 
@@ -52,9 +67,26 @@ const searchValue = ref<string>('')
     padding-right: 16px;
     margin: 12px 0;
     border-bottom: solid 1px $grey-4;
+    .filter-input{display: flex}
     .avatar{height: 30px}
+    .filter-input{
+        display: flex;
+        width: 100%;
+        position: relative;
+        .search{
+            position: absolute;
+            right: 0;
+            left: 0;
+        }
+    }
 }
-div :deep(.white){
-    border: none;
+@media (max-width: 1216px){
+    .header-container{
+        height: 120px;
+        flex-direction: column-reverse;
+        align-items: flex-end;
+        .avatar{margin-right: 12px}
+        .filter-input{display: flex; width: 100%}
+    }
 }
 </style>

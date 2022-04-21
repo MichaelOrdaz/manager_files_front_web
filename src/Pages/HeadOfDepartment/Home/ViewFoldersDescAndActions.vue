@@ -21,25 +21,21 @@
       </PText>
     </div>
     <div class="action-buttons">
-      <PButton
-        leftIcon="create_new_folder"
-        variant="white"
+      <PTextIcon
+        iconName="create_new_folder"
         iconColor="link"
-      >
-        Nueva carpeta
-      </PButton>
-      <PButton
-        leftIcon="file_upload"
-        variant="white"
+        text="Nueva carpeta"
+      />
+      <PTextIcon
+        iconName="file_upload"
         iconColor="gold"
-      >
-        Subir archivos
-      </PButton>
+        text="Subir archivos"
+      />
     </div>
   </div>
 </template>
-<script>
-
+<script setup lang="ts">
+import PTextIcon from '@/components/Atoms/PTextIcon.vue'
 </script>
 <style scoped lang="scss">
 .p-pt-5{padding-top: 5px}
@@ -56,13 +52,10 @@
         text-align: center;
     }
     .action-buttons{
-        width: 28%;
+        width: 25%;
         display: flex;
         justify-content: space-between;
         margin-right: 70px;
     }
-}
-div :deep(.white) {
-    border: none;
 }
 </style>

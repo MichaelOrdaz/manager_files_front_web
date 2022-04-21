@@ -17,14 +17,6 @@ const routes: RouteRecordRaw[] = [
                     authRequired: false
                 },
             },
-            {
-                path: '/users-management',
-                name: 'Users management',
-                component: () => import('../Pages/UsersManagementPage.vue'),
-                meta: {
-                    authRequired: false,
-                }
-            }
         ]
     },
 ]
@@ -49,6 +41,22 @@ const PublicViews: RouteRecordRaw[] = [
             }
         ]
     },
+    {
+        path: '/forbidden',
+        name: 'Forbidden',
+        component: () => import('../Pages/ForbiddenPage.vue'),
+        meta: {
+            authRequired: false
+        },
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('../Pages/404NotFoundPage.vue'),
+        meta: {
+            authRequired: false
+        },
+    }
 ]
 
 const HeadOfDepartament: RouteRecordRaw[] = [
@@ -62,18 +70,21 @@ const HeadOfDepartament: RouteRecordRaw[] = [
         children: [
             {
                 path: '/home',
-                name: 'Home',
+                name: 'Dashboard',
                 component: () => import('../Pages/HeadOfDepartment/HomePage.vue'),
                 meta: {
-                    authRequired: false
+                    authRequired: true
                 },
             },
+            {
+                path: '/users-management',
+                name: 'Users management',
+                component: () => import('../Pages/UsersManagementPage.vue'),
+                meta: {
+                    authRequired: true,
+                }
+            }
         ]
     },
-    {
-        path: '/:pathMatch(.*)*',
-        name: 'not-found',
-        component: () => import('../Pages/404NotFoundPage.vue')
-    }
 ]
-export default routes.concat(PublicViews, HeadOfDepartament)
+export default routes.concat(HeadOfDepartament, PublicViews)
