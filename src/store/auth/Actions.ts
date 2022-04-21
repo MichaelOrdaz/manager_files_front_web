@@ -1,8 +1,7 @@
-/* eslint-disable */
 import type {ActionTree} from 'vuex'
 import {Auth} from './auth'
 import {StateInterface} from '@/store'
-import {api} from '@/Api'
+import {api} from '@/Axios'
 
 const actions: ActionTree<Auth, StateInterface> = {
     async auth_request({ commit, dispatch }, {email, password}) {
@@ -27,7 +26,7 @@ const actions: ActionTree<Auth, StateInterface> = {
             await dispatch('user_logout')
         }
     },
-    async user_logout({commit, dispatch}){
+    async user_logout({commit}){
         try {
             await api.post('/logout')
             localStorage.removeItem('access_token')
