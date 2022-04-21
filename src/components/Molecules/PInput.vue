@@ -54,14 +54,6 @@
         {{ msg }}
       </PText>
     </div>
-    <div v-else>
-      <PText
-        color="black"
-        variant="text-4"
-      >
-        {{ '' }}
-      </PText>
-    </div>
   </div>
 </template>
 

@@ -8,10 +8,17 @@
         prependIconName="search"
         placeHolder="Buscar"
         width="758px"
+        enableCursorPointerOnIcon
+        @append-icon-action="showAdvancedSearch = true"
       />
       <PButton class="p-mt-4">
         Buscar
       </PButton>
+      <AdvancedSearch
+        v-if="showAdvancedSearch"
+        class="search"
+        @cancel="showAdvancedSearch = false"
+      />
     </div>
     <POptionList
       class="avatar"
@@ -35,11 +42,13 @@
 import {ref} from 'vue'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFoldersDescAndActions.vue'
+import AdvancedSearch from './AdvancedSearch.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
 import type {Option} from '@/components/Molecules/POptionList.vue'
 import {useLogOut} from '@/Composables/useUserSessionMethods'
 
 const searchValue = ref<string>('')
+const showAdvancedSearch = ref<boolean>(false)
 const options = ref<Option[]>([
     {optionLabel: 'Cerrar sesión', action: useLogOut, icon: ''},
 ])
@@ -60,6 +69,16 @@ const options = ref<Option[]>([
     border-bottom: solid 1px $grey-4;
     .filter-input{display: flex}
     .avatar{height: 30px}
+    .filter-input{
+        display: flex;
+        width: 100%;
+        position: relative;
+        .search{
+            position: absolute;
+            right: 0;
+            left: 0;
+        }
+    }
 }
 @media (max-width: 1216px){
     .header-container{
