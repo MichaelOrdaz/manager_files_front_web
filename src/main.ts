@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { Quasar } from 'quasar'
+import { Quasar, Notify, Loading } from 'quasar'
 import '@quasar/extras/material-icons/material-icons.css'
 import '@quasar/extras/material-icons-outlined/material-icons-outlined.css'
 import '@quasar/extras/material-icons-round/material-icons-round.css'
@@ -20,6 +20,6 @@ componentsRegister(myApp)
 myApp.use(store)
 myApp.use(Router)
 myApp.use(Quasar, {
-    plugins: {}, // import Quasar plugins and add here
+    plugins: {Notify, Loading}, // import Quasar plugins and add here
 })
 myApp.mount('#app')

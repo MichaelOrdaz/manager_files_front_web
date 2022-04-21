@@ -22,6 +22,12 @@
         :class="props.enableCursorPointerOnIcon ? 'cursor-pointer' : ''"
         @click.stop.prevent="$emit('prepend-icon-action')"
       />
+      <div
+        v-if="$slots.prepend"
+        class="prepend-slot"
+      >
+        <slot name="prepend" />
+      </div>
       <input
         :value="props.modelValue"
         :type="props.type"
@@ -40,6 +46,12 @@
         :class="props.enableCursorPointerOnIcon ? 'cursor-pointer' : ''"
         @click.stop.prevent="$emit('append-icon-action')"
       />
+      <div
+        v-if="$slots.append"
+        class="append-slot"
+      >
+        <slot name="append" />
+      </div>
     </div>
     <div
       v-if="errorMgs.length"
@@ -52,14 +64,6 @@
         variant="text-4"
       >
         {{ msg }}
-      </PText>
-    </div>
-    <div v-else>
-      <PText
-        color="black"
-        variant="text-4"
-      >
-        {{ '' }}
       </PText>
     </div>
   </div>

@@ -24,12 +24,16 @@
       v-model="userPassword"
       width="345px"
       label="Contraseña"
+      :appendIconName="hidePassword ? 'visibility_off' : 'visibility'"
+      :type="hidePassword ? 'password' : 'text'"
+      enableCursorPointerOnIcon
       :rules="[(value:string) => !!value || 'Ingresa tu contraseña']"
+      @append-icon-action="hidePassword = !hidePassword"
     />
     <PButton
       size="plg"
       class="login-btn"
-      @click.prevent="logIn"
+      @click.prevent="validateForm"
     >
       Ingresar
     </PButton>
@@ -39,19 +43,17 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import PForm from '../components/Organism/PForm.vue'
+import {useLogIn} from '@/Composables/useUserSessionMethods'
+
 interface PFormComp{ validate: () => boolean, component: typeof PForm }
-import {useStore} from 'vuex'
-import {useRouter} from 'vue-router'
 const userEmail = ref<string>('')
 const userPassword = ref<string>('')
 const formRef = ref<PFormComp | null>(null)
-const store = useStore()
-const router = useRouter()
+const hidePassword = ref<boolean>(true)
 
-async function logIn () {
+async function validateForm () {
     if (formRef.value?.validate()) {
-        await store.dispatch('auth_request', {email: userEmail.value, password: userPassword.value})
-        await router.push({name: store.getters['initialPage']})
+        await useLogIn(userEmail.value, userPassword.value)
     }
 }
 </script>

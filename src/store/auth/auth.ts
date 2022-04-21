@@ -15,12 +15,12 @@ export interface Auth {
     account_status?: string,
     user_data?: UserData,
     roles?: string[],
-    views: string[],
+    views: object,
     initialPage: {
-        Admin: 'Home',
-        Administrador: 'Home',
-        Analyst: 'Home',
-        'Head of Department': 'Home'
+        Admin: 'Dashboard',
+        Administrador: 'Dashboard',
+        Analyst: 'Dashboard',
+        'Head of Department': 'Dashboard'
     }
 }
 
@@ -30,13 +30,14 @@ export default function state(): Auth {
             id: 1,
             name: 'Test'
         },
-        access_token: 'Test',
-        views: ['Test'],
+        access_token: localStorage.getItem('access_token') ?? '',
+        views: [],
         initialPage: {
-            Admin: 'Home',
-            Administrador: 'Home',
-            Analyst: 'Home',
-            'Head of Department': 'Home'
-        }
+            Admin: 'Dashboard',
+            Administrador: 'Dashboard',
+            Analyst: 'Dashboard',
+            'Head of Department': 'Dashboard'
+        },
+        roles: []
     }
 }
