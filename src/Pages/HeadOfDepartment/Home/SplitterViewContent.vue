@@ -13,9 +13,9 @@
         Buscar
       </PButton>
     </div>
-    <PAvatar
-      size="pxsm"
-      class="avatar"
+    <POptionList
+      :options="options"
+      type="avatar"
     />
   </div>
   <div>
@@ -35,8 +35,13 @@ import {ref} from 'vue'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFoldersDescAndActions.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
+import type {Option} from '@/components/Molecules/POptionList.vue'
+import {useLogOut} from '@/Composables/useUserSessionMethods'
 
 const searchValue = ref<string>('')
+const options = ref<Option[]>([
+    {optionLabel: 'Cerrar sesión', action: useLogOut, icon: ''},
+])
 
 </script>
 

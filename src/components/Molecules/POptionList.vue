@@ -4,9 +4,16 @@
     class="option-list-container"
   >
     <PIcon
+      v-if="props.type === 'icon'"
       class="my-icon"
       iconName="more_vert"
       color="black"
+      @click="show = !show"
+    />
+    <PAvatar
+      v-if="props.type === 'avatar'"
+      :src="props.avatarSrc"
+      class="cursor-pointer"
       @click="show = !show"
     />
     <div
@@ -33,7 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
+import useDetectOutsideClick from '@/utils/useDetectOutsideClick'
+import DefaultImg from '@/assets/profileicon.svg'
 import { ref} from 'vue'
 export type Option = {
  action: { ():void },
@@ -41,9 +49,11 @@ export type Option = {
  icon: string,
 }
 interface Props {
-    options?: Option[]
+    options?: Option[],
+    type?: string,
+    avatarSrc?: string
 }
-const props = withDefaults(defineProps<Props>(), {options: undefined})
+const props = withDefaults(defineProps<Props>(), {options: undefined, type: 'icon', avatarSrc: DefaultImg})
 const show = ref<boolean>(false)
 const componentRef = ref(null)
 useDetectOutsideClick(componentRef, () => { show.value = false})
