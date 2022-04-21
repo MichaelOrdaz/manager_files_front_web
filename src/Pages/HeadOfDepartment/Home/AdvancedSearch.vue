@@ -44,10 +44,19 @@
       <PText variant="text-4">
         Ordenes
       </PText>
-      <PInput
-        label="Números de orden"
-        width="258px"
-      />
+      <div class="row">
+        <PInputDate
+          v-model="startDate"
+          inputLabel="Inicio"
+          width="126px"
+        />
+        <PInputDate
+          v-model="endDate"
+          class="q-ml-sm"
+          inputLabel="Fin"
+          width="126px"
+        />
+      </div>
     </div>
     <div class="row justify-end">
       <div class="flex">
@@ -68,29 +77,15 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import PForm from '@/components/Organism/PForm.vue'
+import PInputDate from '@/components/Molecules/PInputDate.vue'
 defineEmits(['cancel'])
 
 interface PFormComp{ validate: () => boolean, component: typeof PForm }
 const formRef = ref<PFormComp | null>(null)
+const startDate = ref<string>('')
+const endDate = ref<string>('')
 </script>
 
 <style scoped lang="scss">
-.advanced-search-container{
-    width: 450px;
-    height: 577px;
-    background-color: white;
-    border-radius: 3px;
-    z-index: 50;
-    box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.25);
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    padding: 41px 58px 20px 22px;
-    .filter-row{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-}
-.p-mt-24{margin-top: 24px}
+@import "AdvancedSearchStyles";
 </style>
