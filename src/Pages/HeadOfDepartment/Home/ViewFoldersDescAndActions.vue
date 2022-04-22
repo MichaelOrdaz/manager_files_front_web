@@ -25,6 +25,7 @@
         iconName="create_new_folder"
         iconColor="link"
         text="Nueva carpeta"
+        @click="showCreateFolderModal = true"
       />
       <PTextIcon
         iconName="file_upload"
@@ -37,16 +38,28 @@
       v-if="showLoadFileModal"
       @cancel="showLoadFileModal = false"
     />
+    <PModal
+      v-if="showCreateFolderModal"
+      modalTitle="Crear nueva carpeta"
+      @cancel="showCreateFolderModal = false"
+    >
+      <template #body>
+        <PInput width="100%" />
+      </template>
+    </PModal>
   </div>
 </template>
 <script setup lang="ts">
 import PTextIcon from '@/components/Atoms/PTextIcon.vue'
 import LoadPdfFileModal from '@/components/Organism/LoadPdfFileModal/LoadPdfFileModal.vue'
+import PModal from '@/components/Molecules/PModal.vue'
 import {ref} from 'vue'
 
-const showLoadFileModal = ref<boolean>(true)
+const showLoadFileModal = ref<boolean>(false)
+const showCreateFolderModal = ref<boolean>(false)
 </script>
 <style scoped lang="scss">
+div :deep(.modal-container){text-align: start}
 .p-pt-5{padding-top: 5px}
 .folders-actions{
     padding-left: 42px;
