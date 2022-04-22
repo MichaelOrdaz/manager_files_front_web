@@ -51,7 +51,7 @@ const simple = [
 
 <style scoped lang="scss">
 .folders-section-container{
-    background-color: $grey-5;
+    background-color: $grey-10;
     display: flex;
     align-items: flex-start;
     flex-direction: column;

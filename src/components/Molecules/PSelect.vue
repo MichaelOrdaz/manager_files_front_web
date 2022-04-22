@@ -133,7 +133,7 @@ const currentComponent = getCurrentInstance()
 const bindInput = inject('bind-input', (val: any) => {})
 
 const setErrorClass = computed<string>(() => isValidValue.value ? '' : 'invalid-value-error')
-const iconArrowDirection = computed(() => (open.value ? 'arrow_drop_up' : 'arrow_drop_down'))
+const iconArrowDirection = computed(() => (open.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'))
 
 function updateModel(value: string | number): void {
     modelValue.value = value
@@ -215,7 +215,8 @@ defineExpose({validateRules})
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: solid 2px #DBD9D9;
+    border: solid 1px #DBD9D9;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     margin-bottom: 8px;
@@ -234,10 +235,7 @@ defineExpose({validateRules})
     color: #fff;
     border-radius: 0px 0px 6px 6px;
     overflow: hidden;
-    border-right: 2px solid gray;
-    border-left: 2px solid gray;
-    border-bottom: 2px solid gray;
-    border-top: solid 2px gray;
+    border: solid 1px #DBD9D9;
     position: absolute;
     background-color: white;
     left: 0;
@@ -253,7 +251,7 @@ defineExpose({validateRules})
     color: black;
     height: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 .items .item:hover {
