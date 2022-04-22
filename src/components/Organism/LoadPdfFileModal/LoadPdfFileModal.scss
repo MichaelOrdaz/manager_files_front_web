@@ -1,0 +1,33 @@
+.p-mt-18{margin-top: 18px}
+.p-mt-46{margin-top: 49px}
+.close-icon{
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  cursor: pointer;
+}
+.load-files-container{
+  position: relative;
+  z-index: 9999;
+  background-color: white;
+  width: 696px;
+  height: 573px;
+  border-radius: 15px;
+  display: grid;
+  grid-template-columns: 133px 1fr;
+  padding: 24px;
+  .inputs-column{
+    width: 100%;
+    padding: 0 24px;
+  }
+}
+.puller-textarea {
+  border: 2px solid #dbd9d9;
+  width: 100%;
+  resize: none;
+  height: 146px;
+}
+textarea, textarea:hover{
+  outline: none;
+  border: solid 1px $ocean;
+}

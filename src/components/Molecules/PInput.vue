@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="pinput-main-container">
     <PText
       v-if="props.showLabel"
       color="black"
@@ -156,7 +156,7 @@ input{
     outline: none;
     width: 100%;
 }
-.main-container{
+.pinput-main-container{
     width: v-bind(pinputWidth);
     display: flex;
     flex-direction: column;

@@ -29,13 +29,22 @@
       <PTextIcon
         iconName="file_upload"
         iconColor="gold"
-        text="Subir archivos"
+        text="Subir archivo"
+        @click="showLoadFileModal = true"
       />
     </div>
+    <LoadPdfFileModal
+      v-if="showLoadFileModal"
+      @cancel="showLoadFileModal = false"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import PTextIcon from '@/components/Atoms/PTextIcon.vue'
+import LoadPdfFileModal from '@/components/Organism/LoadPdfFileModal/LoadPdfFileModal.vue'
+import {ref} from 'vue'
+
+const showLoadFileModal = ref<boolean>(true)
 </script>
 <style scoped lang="scss">
 .p-pt-5{padding-top: 5px}

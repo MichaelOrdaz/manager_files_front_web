@@ -93,10 +93,14 @@
 
 <script setup lang="ts">
 import NewUserImgLoader from './NewUserImgLoader.vue'
+import PForm from '@/components/Organism/PForm.vue'
 import {NewUser} from '@/Types/NewUserType'
 import {ref} from 'vue'
-
-const formRef = ref<any>(null)
+interface PFormComp{
+    validate: () => boolean
+    component: typeof PForm
+}
+const formRef = ref<PFormComp>(null)
 const password = ref<string>('')
 const newUser = ref<NewUser>({
     name: '', lastName: '', secondLastName: '', password: '', phone: '', department: '', email: '', rol: ''
