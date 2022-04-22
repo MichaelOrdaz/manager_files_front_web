@@ -95,11 +95,8 @@
 import NewUserImgLoader from './NewUserImgLoader.vue'
 import PForm from '@/components/Organism/PForm.vue'
 import {NewUser} from '@/Types/NewUserType'
+import PFormComp from '@/Types/PFormComp'
 import {ref} from 'vue'
-interface PFormComp{
-    validate: () => boolean
-    component: typeof PForm
-}
 const formRef = ref<PFormComp>(null)
 const password = ref<string>('')
 const newUser = ref<NewUser>({
