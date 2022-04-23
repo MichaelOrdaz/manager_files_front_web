@@ -14,19 +14,25 @@
 /**
  * 
  * @export
- * @interface InlineResponse400
+ * @interface InlineResponse2006
  */
-export interface InlineResponse400 {
+export interface InlineResponse2006 {
+    /**
+     * 
+     * @type {Array&lt;Department&gt;}
+     * @memberof InlineResponse2006
+     */
+    data?: any;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse400
+     * @memberof InlineResponse2006
      */
-    errors?: any;
+    message?: any;
     /**
      * 
      * @type {boolean}
-     * @memberof InlineResponse400
+     * @memberof InlineResponse2006
      */
     success?: any;
 }

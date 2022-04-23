@@ -14,19 +14,19 @@
 /**
  * 
  * @export
- * @interface InlineResponse400
+ * @interface Role
  */
-export interface InlineResponse400 {
+export interface Role {
+    /**
+     * 
+     * @type {number}
+     * @memberof Role
+     */
+    id?: any;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse400
+     * @memberof Role
      */
-    errors?: any;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof InlineResponse400
-     */
-    success?: any;
+    name?: any;
 }

@@ -12,10 +12,10 @@
       <PButton class="p-mt-4">
         Buscar
       </PButton>
-      <PAvatar
-        size="pxsm"
-        :src="DefaultImg"
-        class="avatar cursor-pointer"
+      <POptionList
+        class="avatar"
+        :options="options"
+        type="avatar"
       />
     </div>
     <PText
@@ -34,7 +34,7 @@
         itemSubtitleVariant="text-2"
       >
         <template #default>
-          <PDropdown :options="options">
+          <PDropdown :options="optionsDropdown">
             <template #options="data">
               <PText variant="text-4">
                 {{ data.option.label }}
@@ -49,11 +49,18 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import DefaultImg from '@/assets/profileicon.svg'
 import UserItem from '@/components/Organism/ShareDocsModal/UserItem.vue'
-import type {Option} from '@/components/Molecules/PDropdown.vue'
+import type {DropdownOption} from '@/components/Molecules/PDropdown.vue'
+import {useGetUsersList} from '@/Composables/useUsersClientMethods'
+import {useLogOut} from '@/Composables/useUserSessionMethods'
+import type {Option} from '@/components/Molecules/POptionList.vue'
 const searchValue = ref<string>('')
-const options = ref<Option[]>([{action: () => [], label: 'Prueba de texto'}])
+const options = ref<Option[]>([
+    {optionLabel: 'Cerrar sesión', action: useLogOut, icon: ''},
+])
+const optionsDropdown = ref<DropdownOption[]>([{action: () => [], label: 'Prueba de texto'}])
+// eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
+const users = useGetUsersList('', null)
 </script>
 
 <style scoped lang="scss">

@@ -4,6 +4,7 @@
       <PLetterIcon
         :iconSize="props.letterIconSize"
         :text="props.iconText"
+        :backgroundColor="props.iconColor"
       />
       <div class="texts">
         <PText
@@ -42,10 +43,11 @@ interface Props{
     letterIconSize?: string,
     itemTitleVariant?: string,
     itemSubtitleVariant?: string,
+    iconColor?: string
 }
 const props = withDefaults(defineProps<Props>(), {
     iconText: 'Text', itemSubtitleText: 'Subtitle', itemTitleText: 'Title', helpText: 'Suport text', itemHight: '54px', letterIconSize: 'psm',
-    itemSubtitleVariant: 'text-5', itemTitleVariant: 'text-5'
+    itemSubtitleVariant: 'text-5', itemTitleVariant: 'text-5', iconColor: 'primary'
 })
 const itemHight = ref<string>(props.itemHight)
 </script>

@@ -45,11 +45,11 @@
 import {computed, ref} from 'vue'
 import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 
-export type Option = {
+export type DropdownOption = {
     label: string,
     action: {():void},
 }
-interface Props { options?: Option[], text?: string }
+interface Props { options?: DropdownOption[], text?: string }
 const props = withDefaults(defineProps<Props>(), {options: undefined, text: 'Texto de demostración'})
 
 const componentRef = ref(null)

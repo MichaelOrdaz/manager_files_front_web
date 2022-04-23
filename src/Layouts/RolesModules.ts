@@ -4,9 +4,9 @@ export type Module = {
 }
 const AdminModules: Module[] = []
 const HeadOfDepartmentModules: Module[] = [
-    {name: 'Home', icon: 'home'},
-    {name: 'Collaborators', icon: 'people'},
-    {name: 'Shared files', icon: 'folder_shared'}
+    {name: 'Dashboard', icon: 'home'},
+    {name: 'Shared files', icon: 'folder_shared'},
+    {name: 'Users management', icon: 'people'}
 ]
 const AnalystModules: Module[] = []
 export const RolesModules = {

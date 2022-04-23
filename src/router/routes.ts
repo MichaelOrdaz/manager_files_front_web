@@ -59,7 +59,7 @@ const PublicViews: RouteRecordRaw[] = [
     }
 ]
 
-const HeadOfDepartament: RouteRecordRaw[] = [
+const HeadOfDepartment: RouteRecordRaw[] = [
     {
         path: '/layout',
         name: 'Layout',
@@ -79,12 +79,12 @@ const HeadOfDepartament: RouteRecordRaw[] = [
             {
                 path: '/users-management',
                 name: 'Users management',
-                component: () => import('../Pages/UsersManagementPage.vue'),
+                component: () => import('../Pages/HeadOfDepartment/UsersManagementPage.vue'),
                 meta: {
-                    authRequired: true,
+                    authRequired: false,
                 }
             }
         ]
     },
 ]
-export default routes.concat(HeadOfDepartament, PublicViews)
+export default routes.concat(HeadOfDepartment, PublicViews)

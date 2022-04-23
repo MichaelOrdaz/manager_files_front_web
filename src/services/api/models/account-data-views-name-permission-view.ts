@@ -14,19 +14,19 @@
 /**
  * 
  * @export
- * @interface InlineResponse400
+ * @interface AccountDataViewsNamePermissionView
  */
-export interface InlineResponse400 {
+export interface AccountDataViewsNamePermissionView {
+    /**
+     * 
+     * @type {number}
+     * @memberof AccountDataViewsNamePermissionView
+     */
+    id?: any;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse400
+     * @memberof AccountDataViewsNamePermissionView
      */
-    errors?: any;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof InlineResponse400
-     */
-    success?: any;
+    path?: any;
 }

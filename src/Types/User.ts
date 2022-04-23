@@ -7,7 +7,7 @@ export type User = {
     phone?: string,
     image?: string | File,
     password?: string,
-    departament_id?: number,
+    department_id?: number,
     updated_at?: string,
     created_at?: string,
     deleted_at?: string,

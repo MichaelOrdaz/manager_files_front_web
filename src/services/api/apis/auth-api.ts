@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * DIXA API
- * Proyecto DIXA API, gestión de documentación
+ * Project DIXA API, documentation management
  *
  * OpenAPI spec version: 0.0.1
  * 
@@ -16,9 +16,9 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { Account } from '../models';
 import { Auth } from '../models';
 import { InlineResponse200 } from '../models';
+import { InlineResponse2001 } from '../models';
 import { InlineResponse400 } from '../models';
 import { InlineResponse401 } from '../models';
 import { InlineResponse403 } from '../models';
@@ -32,45 +32,9 @@ import { Login } from '../models';
 export const AuthApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * información del  usuario para la plataforma actualmente autenticado
-         * @summary Cuenta
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        account: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/account`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication bearerAuth required
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * login de usuario para la plataforma
-         * @summary Login de usuarios
-         * @param {Login} [body] Petición en formato json
+         * user login for the platform
+         * @summary Login of user
+         * @param {Login} [body] Structure of request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -107,8 +71,8 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * elimina el token del usuario que realiza la petición
-         * @summary Logout de usuarios
+         * removes the token of the user making the request
+         * @summary Logout of user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -142,6 +106,40 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * verify that the user is still authenticated
+         * @summary verifyAuth
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyAuth: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/verify-auth`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -152,22 +150,9 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
 export const AuthApiFp = function(configuration?: Configuration) {
     return {
         /**
-         * información del  usuario para la plataforma actualmente autenticado
-         * @summary Cuenta
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async account(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Account>> {
-            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).account(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * login de usuario para la plataforma
-         * @summary Login de usuarios
-         * @param {Login} [body] Petición en formato json
+         * user login for the platform
+         * @summary Login of user
+         * @param {Login} [body] Structure of request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -179,13 +164,26 @@ export const AuthApiFp = function(configuration?: Configuration) {
             };
         },
         /**
-         * elimina el token del usuario que realiza la petición
-         * @summary Logout de usuarios
+         * removes the token of the user making the request
+         * @summary Logout of user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async logout(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
             const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).logout(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * verify that the user is still authenticated
+         * @summary verifyAuth
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifyAuth(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).verifyAuth(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -201,18 +199,9 @@ export const AuthApiFp = function(configuration?: Configuration) {
 export const AuthApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
-         * información del  usuario para la plataforma actualmente autenticado
-         * @summary Cuenta
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        account(options?: any): AxiosPromise<Account> {
-            return AuthApiFp(configuration).account(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * login de usuario para la plataforma
-         * @summary Login de usuarios
-         * @param {Login} [body] Petición en formato json
+         * user login for the platform
+         * @summary Login of user
+         * @param {Login} [body] Structure of request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -220,13 +209,22 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
             return AuthApiFp(configuration).login(body, options).then((request) => request(axios, basePath));
         },
         /**
-         * elimina el token del usuario que realiza la petición
-         * @summary Logout de usuarios
+         * removes the token of the user making the request
+         * @summary Logout of user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         logout(options?: any): AxiosPromise<InlineResponse200> {
             return AuthApiFp(configuration).logout(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * verify that the user is still authenticated
+         * @summary verifyAuth
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyAuth(options?: any): AxiosPromise<InlineResponse2001> {
+            return AuthApiFp(configuration).verifyAuth(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -239,19 +237,9 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
  */
 export class AuthApi extends BaseAPI {
     /**
-     * información del  usuario para la plataforma actualmente autenticado
-     * @summary Cuenta
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthApi
-     */
-    public account(options?: any) {
-        return AuthApiFp(this.configuration).account(options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * login de usuario para la plataforma
-     * @summary Login de usuarios
-     * @param {Login} [body] Petición en formato json
+     * user login for the platform
+     * @summary Login of user
+     * @param {Login} [body] Structure of request
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
@@ -260,13 +248,23 @@ export class AuthApi extends BaseAPI {
         return AuthApiFp(this.configuration).login(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     * elimina el token del usuario que realiza la petición
-     * @summary Logout de usuarios
+     * removes the token of the user making the request
+     * @summary Logout of user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi
      */
     public logout(options?: any) {
         return AuthApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * verify that the user is still authenticated
+     * @summary verifyAuth
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public verifyAuth(options?: any) {
+        return AuthApiFp(this.configuration).verifyAuth(options).then((request) => request(this.axios, this.basePath));
     }
 }

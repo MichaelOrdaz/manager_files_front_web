@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * DIXA API
- * Proyecto DIXA API, gestión de documentación
+ * Project DIXA API, documentation management
  *
  * OpenAPI spec version: 0.0.1
  * 
@@ -25,7 +25,7 @@ export interface Auth {
     accessToken?: any;
     /**
      * 
-     * @type {AuthUser}
+     * @type {User}
      * @memberof Auth
      */
     user?: any;

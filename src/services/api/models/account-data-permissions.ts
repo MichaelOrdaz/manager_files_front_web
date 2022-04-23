@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * DIXA API
- * Proyecto DIXA API, gestión de documentación
+ * Project DIXA API, documentation management
  *
  * OpenAPI spec version: 0.0.1
  * 
@@ -19,8 +19,8 @@
 export interface AccountDataPermissions {
     /**
      * 
-     * @type {AccountDataPermissionsNombrePermiso}
+     * @type {AccountDataPermissionsNamePermission}
      * @memberof AccountDataPermissions
      */
-    nombrePermiso?: any;
+    namePermission?: any;
 }
