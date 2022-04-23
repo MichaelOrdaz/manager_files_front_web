@@ -71,7 +71,7 @@ const HeadOfDepartament: RouteRecordRaw[] = [
             {
                 path: '/home',
                 name: 'Dashboard',
-                component: () => import('../Pages/HeadOfDepartment/HomePage.vue'),
+                component: () => import('../Pages/HeadOfDepartment/Home/index.vue'),
                 meta: {
                     authRequired: true
                 },

@@ -93,10 +93,11 @@
 
 <script setup lang="ts">
 import NewUserImgLoader from './NewUserImgLoader.vue'
+import PForm from '@/components/Organism/PForm.vue'
 import {NewUser} from '@/Types/NewUserType'
+import PFormComp from '@/Types/PFormComp'
 import {ref} from 'vue'
-
-const formRef = ref<any>(null)
+const formRef = ref<PFormComp>(null)
 const password = ref<string>('')
 const newUser = ref<NewUser>({
     name: '', lastName: '', secondLastName: '', password: '', phone: '', department: '', email: '', rol: ''

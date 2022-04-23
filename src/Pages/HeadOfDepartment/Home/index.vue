@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import SplitterFoldersSection from './Home/SplitterFoldersSection.vue'
-import SplitterViewContent from './Home/SplitterViewContent.vue'
+import SplitterFoldersSection from './SplitterFoldersSection.vue'
+import SplitterViewContent from './SplitterViewContent.vue'
 import {QSplitter} from 'quasar'
 import {ref} from 'vue'
 
@@ -25,7 +25,7 @@ const splitterModel = ref<number>(20)
 <style scoped lang="scss">
 div :deep(.q-splitter__before){
     height: auto;
-    background-color: $grey-5;
+    background-color: $grey-10;
     overflow-y: auto;
 }
 </style>
