@@ -14,19 +14,13 @@
 /**
  * 
  * @export
- * @interface InlineResponse400
+ * @interface UsersImageBody
  */
-export interface InlineResponse400 {
+export interface UsersImageBody {
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse400
+     * @memberof UsersImageBody
      */
-    errors?: any;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof InlineResponse400
-     */
-    success?: any;
+    image: any;
 }

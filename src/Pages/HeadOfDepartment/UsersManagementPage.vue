@@ -1,40 +1,28 @@
 <template>
   <div class="view-container">
-    <div class="header-container">
-      <PInput
-        v-model="searchValue"
-        class="q-mr-sm"
-        appendIconName="tune"
-        prependIconName="search"
-        placeHolder="Buscar"
-        width="758px"
-      />
-      <PButton class="p-mt-4">
-        Buscar
-      </PButton>
-      <PAvatar
-        size="pxsm"
-        :src="DefaultImg"
-        class="avatar cursor-pointer"
-      />
-    </div>
+    <HeaderInput v-model="searchValue" />
     <PText
       variant="subtitle-2"
       class="view-title"
     >
       Gestión de usuarios de mi departamento
     </PText>
-    <div class="items-list-container">
+    <div
+      v-if="users && users.length"
+      class="items-list-container"
+    >
       <UserItem
-        v-for="number in 15"
+        v-for="number in usersList"
         :key="number"
         itemHight="80px"
         letterIconSize="pmd"
+        :itemTitleText="number.fullName"
+        :itemSubtitleText="number.name"
         itemTitleVariant="subtitle-1"
         itemSubtitleVariant="text-2"
       >
         <template #default>
-          <PDropdown :options="options">
+          <PDropdown :options="optionsDropdown">
             <template #options="data">
               <PText variant="text-4">
                 {{ data.option.label }}
@@ -44,20 +32,33 @@
         </template>
       </UserItem>
     </div>
+    <PText v-else>
+      Sin usuarios
+    </PText>
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
-import DefaultImg from '@/assets/profileicon.svg'
+import {computed, ref} from 'vue'
 import UserItem from '@/components/Organism/ShareDocsModal/UserItem.vue'
-import type {Option} from '@/components/Molecules/PDropdown.vue'
+import type {DropdownOption} from '@/components/Molecules/PDropdown.vue'
+import {useGetUsersList} from '@/Composables/useUsersClientMethods'
+import HeaderInput from '@/Pages/HeadOfDepartment/HeaderInput.vue'
+import {User} from '@/Types/User'
+
 const searchValue = ref<string>('')
-const options = ref<Option[]>([{action: () => [], label: 'Prueba de texto'}])
+const optionsDropdown = ref<DropdownOption[]>([
+    {action: () => [], label: 'Todos los permisos'},
+    {action: () => [], label: 'Solo lectura'},
+    {action: () => [], label: 'Sin permisos'},
+])
+const {users} = useGetUsersList(undefined, undefined)
+
+const usersList = computed<User[]>(() => users.value
+    .filter((user) => user.name?.toLowerCase().match(searchValue.value)))
 </script>
 
 <style scoped lang="scss">
-.p-mt-4{margin-top: 4px}
 .dropdown{height: 40px}
 .view-title{align-self: flex-start; font-weight: bold}
 .view-container{
@@ -70,17 +71,5 @@ div :deep(.slot) {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.header-container{
-    width: 100%;
-    height: 68px;
-    display: flex;
-    justify-content: center;
-    margin: 12px 0;
-    .avatar{
-        position: absolute;
-        right: 0;
-        margin: 0 12px;
-    }
 }
 </style>

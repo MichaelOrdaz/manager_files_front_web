@@ -14,19 +14,19 @@
 /**
  * 
  * @export
- * @interface InlineResponse400
+ * @interface UserIdResetpasswordBody
  */
-export interface InlineResponse400 {
+export interface UserIdResetpasswordBody {
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse400
+     * @memberof UserIdResetpasswordBody
      */
-    errors?: any;
+    newPassword: any;
     /**
      * 
-     * @type {boolean}
-     * @memberof InlineResponse400
+     * @type {string}
+     * @memberof UserIdResetpasswordBody
      */
-    success?: any;
+    newPasswordConfirmation: any;
 }

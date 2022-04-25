@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * DIXA API
- * Proyecto DIXA API, gestión de documentación
+ * Project DIXA API, documentation management
  *
  * OpenAPI spec version: 0.0.1
  * 
@@ -14,79 +14,73 @@
 /**
  * 
  * @export
- * @interface AuthUser
+ * @interface User
  */
-export interface AuthUser {
+export interface User {
     /**
      * 
      * @type {number}
-     * @memberof AuthUser
+     * @memberof User
      */
     id?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUser
+     * @memberof User
      */
-    email: any;
+    email?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUser
+     * @memberof User
      */
     emailVerifiedAt?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUser
+     * @memberof User
      */
-    nombre: any;
+    name?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUser
+     * @memberof User
      */
-    paterno: any;
+    lastname?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUser
+     * @memberof User
      */
-    materno: any;
+    secondLastname?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUser
+     * @memberof User
      */
-    celular?: any;
+    phone?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUser
+     * @memberof User
      */
-    password: any;
+    password?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUser
+     * @memberof User
      */
-    imagenFile?: any | null;
+    image?: any;
     /**
      * 
-     * @type {string}
-     * @memberof AuthUser
+     * @type {Role}
+     * @memberof User
      */
-    imagen?: any | null;
+    role?: any;
     /**
      * 
-     * @type {number}
-     * @memberof AuthUser
+     * @type {Department}
+     * @memberof User
      */
-    departamentoId?: any | null;
-    /**
-     * 
-     * @type {AuthUserDepartamento}
-     * @memberof AuthUser
-     */
-    departamento?: any;
+    department?: any;
 }

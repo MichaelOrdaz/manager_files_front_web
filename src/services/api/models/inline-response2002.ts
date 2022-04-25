@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * DIXA API
- * Proyecto DIXA API, gestión de documentación
+ * Project DIXA API, documentation management
  *
  * OpenAPI spec version: 0.0.1
  * 
@@ -14,19 +14,25 @@
 /**
  * 
  * @export
- * @interface AuthUserDepartamento
+ * @interface InlineResponse2002
  */
-export interface AuthUserDepartamento {
+export interface InlineResponse2002 {
     /**
      * 
-     * @type {number}
-     * @memberof AuthUserDepartamento
+     * @type {Array&lt;User&gt;}
+     * @memberof InlineResponse2002
      */
-    id?: any;
+    data?: any;
     /**
      * 
      * @type {string}
-     * @memberof AuthUserDepartamento
+     * @memberof InlineResponse2002
      */
-    nombre?: any;
+    message?: any;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof InlineResponse2002
+     */
+    success?: any;
 }

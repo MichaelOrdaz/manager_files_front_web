@@ -14,19 +14,25 @@
 /**
  * 
  * @export
- * @interface InlineResponse400
+ * @interface UpdatePassword
  */
-export interface InlineResponse400 {
+export interface UpdatePassword {
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse400
+     * @memberof UpdatePassword
      */
-    errors?: any;
+    password: any;
     /**
      * 
-     * @type {boolean}
-     * @memberof InlineResponse400
+     * @type {string}
+     * @memberof UpdatePassword
      */
-    success?: any;
+    passwordConfirmation: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePassword
+     */
+    newPassword: any;
 }

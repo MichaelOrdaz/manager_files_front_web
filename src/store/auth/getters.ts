@@ -11,6 +11,12 @@ const getters: GetterTree<Auth, StateInterface> = {
     },
     canRenderView(state) {
         return (perm) => Object.prototype.hasOwnProperty.call(state.views, perm)
+    },
+    isRol(state) {
+        return (rol: string) => state.roles.includes(rol)
+    },
+    isValidToken(state) :boolean {
+        return state.isValidToken
     }
 }
 

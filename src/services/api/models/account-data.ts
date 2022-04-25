@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * DIXA API
- * Proyecto DIXA API, gestión de documentación
+ * Project DIXA API, documentation management
  *
  * OpenAPI spec version: 0.0.1
  * 
@@ -19,7 +19,7 @@
 export interface AccountData {
     /**
      * 
-     * @type {Authpropertiesuser}
+     * @type {User}
      * @memberof AccountData
      */
     user?: any;

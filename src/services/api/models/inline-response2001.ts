@@ -14,19 +14,13 @@
 /**
  * 
  * @export
- * @interface InlineResponse400
+ * @interface InlineResponse2001
  */
-export interface InlineResponse400 {
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse400
-     */
-    errors?: any;
+export interface InlineResponse2001 {
     /**
      * 
      * @type {boolean}
-     * @memberof InlineResponse400
+     * @memberof InlineResponse2001
      */
-    success?: any;
+    isAuth?: any;
 }

@@ -14,19 +14,25 @@
 /**
  * 
  * @export
- * @interface InlineResponse400
+ * @interface InlineResponse2007
  */
-export interface InlineResponse400 {
+export interface InlineResponse2007 {
+    /**
+     * 
+     * @type {Department}
+     * @memberof InlineResponse2007
+     */
+    data?: any;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse400
+     * @memberof InlineResponse2007
      */
-    errors?: any;
+    message?: any;
     /**
      * 
      * @type {boolean}
-     * @memberof InlineResponse400
+     * @memberof InlineResponse2007
      */
     success?: any;
 }
