@@ -60,7 +60,7 @@ const options = ref<Option[]>([
 ])
 const optionsDropdown = ref<DropdownOption[]>([{action: () => [], label: 'Prueba de texto'}])
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
-const users = useGetUsersList('', null)
+const users = useGetUsersList(undefined, undefined)
 </script>
 
 <style scoped lang="scss">
