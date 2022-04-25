@@ -81,6 +81,7 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
     position: absolute;
     right: 0;
     left: 0;
+    z-index: 99;
 }
 .dropdown-option{
     height: 35px;

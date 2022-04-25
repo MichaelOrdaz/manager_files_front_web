@@ -1,5 +1,11 @@
 <script setup lang="ts">
-
+// import {useStore} from 'vuex'
+// import {AuthApi} from '@/services/api/api'
+//
+// const token = useStore().getters.getToken
+// if (token) {
+//     const resp = await new AuthApi().verifyAuth(token)
+// }
 </script>
 
 <template>

@@ -2,12 +2,13 @@ import type {ActionTree} from 'vuex'
 import {Auth} from './auth'
 import {StateInterface} from '@/store'
 import {api} from '@/Axios'
+import {AuthApi} from '@/services/api/api'
 
 const actions: ActionTree<Auth, StateInterface> = {
     async auth_request({ commit, dispatch }, {email, password}) {
         commit('AUTH_REQUEST')
         try {
-            const resp = await api.post('/login', { email, password })
+            const resp = await new AuthApi().login({email, password})
             const token = resp.data.data.token
             localStorage.setItem('access_token', token)
             api.defaults.headers.common.Authorization = `Bearer ${token}`
@@ -28,7 +29,7 @@ const actions: ActionTree<Auth, StateInterface> = {
     },
     async user_logout({commit}){
         try {
-            await api.post('/logout')
+            await new AuthApi().logout()
             localStorage.removeItem('access_token')
             localStorage.removeItem('vuex')
             api.defaults.headers.common.Authorization = ''
