@@ -9,6 +9,7 @@ export interface UserData {
 }
 export interface Auth {
     access_token?: string,
+    isValidToken?: boolean,
     expires_at?: string,
     permissions?: object,
     status?: string,
@@ -38,6 +39,7 @@ export default function state(): Auth {
             Analyst: 'Dashboard',
             'Head of Department': 'Dashboard'
         },
-        roles: []
+        roles: [],
+        isValidToken: false,
     }
 }

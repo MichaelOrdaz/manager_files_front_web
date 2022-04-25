@@ -108,7 +108,7 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * verify that the user is still authenticated
-         * @summary verifyAuth
+         * @summary Verify Auth
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -123,6 +123,8 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -178,7 +180,7 @@ export const AuthApiFp = function(configuration?: Configuration) {
         },
         /**
          * verify that the user is still authenticated
-         * @summary verifyAuth
+         * @summary Verify Auth
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -219,7 +221,7 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * verify that the user is still authenticated
-         * @summary verifyAuth
+         * @summary Verify Auth
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -259,7 +261,7 @@ export class AuthApi extends BaseAPI {
     }
     /**
      * verify that the user is still authenticated
-     * @summary verifyAuth
+     * @summary Verify Auth
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AuthApi

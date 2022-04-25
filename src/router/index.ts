@@ -1,6 +1,7 @@
 import routes from './routes'
 import {createRouter, createWebHistory} from 'vue-router'
 import store from '../store'
+import {useLogOut} from '@/Composables/useUserSessionMethods'
 
 const Router = createRouter({
     history: createWebHistory(),
@@ -24,6 +25,13 @@ Router.beforeEach((to, from, next) => {
         }
     }
     return next()
+})
+Router.beforeEach(async (to) => {
+    await store.dispatch('user_validate_token')
+    if (!!to.meta.authRequired && !store.getters.isValidToken) {
+        await useLogOut()
+        return
+    }
 })
 
 function hasAccess(routeName: string | symbol | undefined | null) {

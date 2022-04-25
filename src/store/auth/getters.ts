@@ -14,6 +14,9 @@ const getters: GetterTree<Auth, StateInterface> = {
     },
     isRol(state) {
         return (rol: string) => state.roles.includes(rol)
+    },
+    isValidToken(state) :boolean {
+        return state.isValidToken
     }
 }
 

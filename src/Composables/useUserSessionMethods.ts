@@ -2,7 +2,7 @@ import store from '@/store/index'
 import router from '@/router/index'
 
 async function useLogOut(): Promise<void> {
-    await store.dispatch('user_logout')
+    store.dispatch('user_logout')
     router.push('/')
 }
 

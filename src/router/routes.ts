@@ -64,9 +64,6 @@ const HeadOfDepartment: RouteRecordRaw[] = [
         path: '/layout',
         name: 'Layout',
         component: () => import('../Layouts/DefaultLayout.vue'),
-        meta: {
-            authRequired: false
-        },
         children: [
             {
                 path: '/home',
@@ -81,7 +78,7 @@ const HeadOfDepartment: RouteRecordRaw[] = [
                 name: 'Users management',
                 component: () => import('../Pages/HeadOfDepartment/UsersManagementPage.vue'),
                 meta: {
-                    authRequired: false,
+                    authRequired: true,
                 }
             }
         ]

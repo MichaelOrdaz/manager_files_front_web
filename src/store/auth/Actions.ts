@@ -22,21 +22,29 @@ const actions: ActionTree<Auth, StateInterface> = {
         try {
             const resp = await api.get('/account')
             commit('USER_SUCCESS', resp.data.data)
+            commit('AUTH_SET_IS_VALID_TOKEN', true)
         } catch (e) {
             commit('USER_ERROR')
             await dispatch('user_logout')
         }
     },
-    async user_logout({commit}){
+    user_logout({commit}){
         try {
-            await new AuthApi().logout()
+            new AuthApi().logout()
+        } finally {
             localStorage.removeItem('access_token')
             localStorage.removeItem('vuex')
-            api.defaults.headers.common.Authorization = ''
-            commit('AUTH_LOGOUT')
-        } catch (e) {
             commit('AUTH_LOGOUT')
         }
+    },
+    async user_validate_token({commit}) {
+        try {
+            const resp = await new AuthApi().verifyAuth()
+            commit('AUTH_SET_IS_VALID_TOKEN', resp.data.isAuth)
+        } catch (e) {
+            commit('AUTH_SET_IS_VALID_TOKEN', false)
+        }
+
     }
 }
 export default actions
