@@ -7,7 +7,12 @@ const Router = createRouter({
     history: createWebHistory(),
     routes: routes,
 })
-Router.beforeEach((to, from, next) => {
+Router.beforeEach(async (to, from, next) => {
+    await store.dispatch('user_validate_token')
+    if (!!to.meta.authRequired && !store.getters.isValidToken) {
+        await useLogOut()
+        return
+    }
     const haveToken: boolean | string = !!localStorage.getItem('access_token') || ''
     const authRequired = !!to.meta.authRequired
     const PathMainView = store.getters['initialPage'] ?? ''
@@ -25,13 +30,6 @@ Router.beforeEach((to, from, next) => {
         }
     }
     return next()
-})
-Router.beforeEach(async (to) => {
-    await store.dispatch('user_validate_token')
-    if (!!to.meta.authRequired && !store.getters.isValidToken) {
-        await useLogOut()
-        return
-    }
 })
 
 function hasAccess(routeName: string | symbol | undefined | null) {
