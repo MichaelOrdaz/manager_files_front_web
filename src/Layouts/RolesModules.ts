@@ -2,9 +2,11 @@ export type Module = {
     name: string,
     icon: string,
 }
-const AdminModules: Module[] = []
+const AdminModules: Module[] = [
+    {name: 'Admin Dashboard', icon: 'home'}
+]
 const HeadOfDepartmentModules: Module[] = [
-    {name: 'Dashboard', icon: 'home'},
+    {name: 'Dashboard h', icon: 'home'},
     {name: 'Shared files', icon: 'folder_shared'},
     {name: 'Users management', icon: 'people'}
 ]
