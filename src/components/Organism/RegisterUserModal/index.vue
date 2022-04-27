@@ -3,7 +3,11 @@
     <div class="modal-wrapper">
       <div class="modal-container">
         <div class="close-bar">
-          <PIcon iconName="close" />
+          <PIcon
+            class="cursor-pointer"
+            iconName="close"
+            @click.prevent.stop="$emit('cancel')"
+          />
         </div>
         <PForm
           ref="formRef"
@@ -12,14 +16,22 @@
           <NewUserImgLoader @capture-new-image="getNewImage" />
           <div class="selects">
             <PSelect
+              v-model="newUser.rolId"
               label="Filtro de usuarios"
-              :options="options"
+              :options="props.roles"
               width="270px"
+              optionValue="id"
+              optionLabel="name"
+              :rules="[value => !!value || 'Selecciona un rol']"
             />
             <PSelect
+              v-model="newUser.department.id"
               label="Selecciona departamento"
-              :options="options"
+              :options="departmentsList"
               width="270px"
+              optionValue="id"
+              optionLabel="name"
+              :rules="[value => !!value || 'Selecciona un departamento']"
             />
           </div>
           <PInput
@@ -31,13 +43,13 @@
           />
           <div class="input-pair">
             <PInput
-              v-model="newUser.lastName"
+              v-model="newUser.lastname"
               label="Apellido paterno"
               width="363px"
               :rules="[(value:string) => !!value.trim() || 'Agregar apellido paterno']"
             />
             <PInput
-              v-model="newUser.secondLastName"
+              v-model="newUser.second_lastname"
               label="Apellido materno"
               width="363px"
               :rules="[(value:string) => !!value.trim() || 'Agregar apellido materno']"
@@ -48,13 +60,13 @@
               v-model="newUser.email"
               label="Correo"
               width="363px"
-              :rules="[(value:string) => !!value.trim() || 'Agregar correo']"
+              :rules="[(value:string) => value.trim().length >= 10 || 'Agregar correo']"
             />
             <PInput
               v-model="newUser.phone"
               label="Celular"
               width="363px"
-              :rules="[(value:string) => !!value.trim() || 'Agregar celular']"
+              :rules="[(value:string) => value.length >= 7 || 'Agregar celular']"
             />
           </div>
           <div class="input-pair">
@@ -62,25 +74,26 @@
               v-model="newUser.password"
               label="Contraseña"
               width="363px"
-              :rules="[(value:string) => !!value.trim() || 'Agregar celular']"
+              :rules="[(value:string) => value.trim().length >= 8 || 'Agregar contraseña']"
             />
             <PInput
               v-model="password"
               label="Contraseña"
               width="363px"
-              :rules="[(value:string) => !!value.trim() || 'Agregar celular']"
+              :rules="[(value:string) => value.trim().length >= 8 || 'Agregar contraseña']"
             />
           </div>
           <div class="buttons">
             <PButton
               variant="white"
               size="plg"
+              @click.prevent.stop="$emit('cancel')"
             >
               Cancelar
             </PButton>
             <PButton
               size="plg q-ml-sm"
-              @click.prevent="log"
+              @click.prevent="validateFields"
             >
               Aceptar
             </PButton>
@@ -94,18 +107,42 @@
 <script setup lang="ts">
 import NewUserImgLoader from './NewUserImgLoader.vue'
 import PForm from '@/components/Organism/PForm.vue'
-import {NewUser} from '@/Types/NewUserType'
 import PFormComp from '@/Types/PFormComp'
 import {ref} from 'vue'
+import {Role} from '@/services/api/models'
+import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
+import {useCreateUser} from '@/Composables/useUsersClientMethods'
+import {User} from '@/Types/User'
+import {Notify} from 'quasar'
+interface Props{roles: Role[]}
+defineEmits(['cancel'])
+const props = withDefaults(defineProps<Props>(), {roles: () => []})
+
 const formRef = ref<PFormComp>(null)
 const password = ref<string>('')
-const newUser = ref<NewUser>({
-    name: '', lastName: '', secondLastName: '', password: '', phone: '', department: '', email: '', rol: ''
+const newUser = ref<User>({
+    name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0
 })
-const options = ref([1,2,3,4])
-const getNewImage = (file: File) => { newUser.value.img = file }
-function log() {
-    formRef.value.validate()
+const {departmentsList} = getDepartmentsList()
+const getNewImage = (file: File) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = function () {
+        newUser.value.image = `${reader.result}`
+    }
+}
+async function validateFields() {
+    if (password.value !== newUser.value.password){
+        Notify.create({message: 'Las contraseñas son diferentes', color: 'red'})
+        return
+    }
+    const isValid = formRef.value.validate()
+    console.log(isValid)
+    if (isValid){
+        await useCreateUser(newUser.value)
+        Notify.create({message: 'Se ha creado el usuario', color: 'green'})
+        return
+    }
 }
 </script>
 

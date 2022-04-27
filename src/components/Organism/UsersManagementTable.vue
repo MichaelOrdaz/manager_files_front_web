@@ -1,9 +1,10 @@
 <template>
   <QTable
-    class="table"
+    class="table full-width"
     :columns="columns"
-    :rows="users"
-    hide-pagination
+    :rows="props.users"
+    :filter="props.filter"
+    row-key="name"
   >
     <template #body="item">
       <q-tr>
@@ -21,39 +22,42 @@
           <PText
             variant="subtitle-3"
           >
-            Rol
+            {{ item.row.role[0] || 'Sin rol' }}
           </PText>
         </q-td>
         <q-td class="text-left">
           <PText
             variant="subtitle-3"
           >
-            Departamento
+            {{ item.row?.department?.name || 'Sin departamento' }}
           </PText>
         </q-td>
         <q-td class="text-left">
           <PText
             variant="subtitle-3"
           >
-            Teléfono
+            {{ item.row?.phone || 'Sin télefono' }}
           </PText>
         </q-td>
         <q-td class="text-left">
           <PText
             variant="subtitle-3"
           >
-            Correo
+            {{ item.row?.email || 'Sin correo' }}
           </PText>
         </q-td>
         <q-td class="text-center">
           <PIcon
+            class="cursor-pointer"
             iconName="edit"
             size="pmd"
           />
           <PIcon
+            class="cursor-pointer"
             iconName="delete"
             size="pmd"
             color="red"
+            @click.prevent="$emit('delete-user', item.row)"
           />
         </q-td>
       </q-tr>
@@ -62,11 +66,17 @@
 </template>
 
 <script setup lang="ts">
+/* eslint-disable */
 import {QTable} from 'quasar'
-import {ref} from 'vue'
 import type {User} from '@/Types/User'
-const columns: any[] = [
-    { name: 'Foto del usuario', align: 'left', label: 'Foto del usuario', field: 'name'},
+interface Props {users: User[], filter: string}
+
+defineEmits<{
+    (e: 'delete-user', payload: User):void,
+}>()
+const props = withDefaults(defineProps<Props>(), {users: () => [], filter: ''})
+const columns: object[] = [
+    { name: 'Foto del usuario', align: 'left', label: 'Foto del usuario', field: (row) => row.name},
     {
         name: 'Nombre de usuario', align: 'left', label: 'Nombre de usuario', field: 'name'
     },
@@ -76,7 +86,6 @@ const columns: any[] = [
     { name: 'Correo', align: 'left', label: 'Correo', field: 'name' },
     { name: 'Acciones', align: 'center', label: 'Acciones', field: 'name' },
 ]
-const users = ref<User[]>([{id: 1, name: 'José'}])
 
 </script>
 

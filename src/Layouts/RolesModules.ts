@@ -3,7 +3,7 @@ export type Module = {
     icon: string,
 }
 const AdminModules: Module[] = [
-    {name: 'Admin Dashboard', icon: 'home'}
+    {name: 'Admin Dashboard', icon: 'perm_identity'}
 ]
 const HeadOfDepartmentModules: Module[] = [
     {name: 'Dashboard h', icon: 'home'},
