@@ -124,7 +124,7 @@ import {useCreateUser} from '@/Composables/useUsersClientMethods'
 import {User} from '@/Types/User'
 import {Notify} from 'quasar'
 interface Props{roles: Role[]}
-defineEmits(['cancel'])
+const emit = defineEmits(['cancel'])
 const props = withDefaults(defineProps<Props>(), {roles: () => []})
 
 const formRef = ref<PFormComp>(null)
@@ -149,6 +149,7 @@ async function validateFields() {
     if (isValid){
         await useCreateUser(newUser.value)
         Notify.create({message: 'Se ha creado el usuario', color: 'green'})
+        emit('cancel')
         return
     }
 }

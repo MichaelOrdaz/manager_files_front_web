@@ -57,6 +57,7 @@
             iconName="delete"
             size="pmd"
             color="red"
+            data-cy="delete-user-icon"
             @click.prevent="$emit('delete-user', item.row)"
           />
         </q-td>

@@ -8,6 +8,7 @@
         v-model="filterValue"
         width="468px"
         placeHolder="Buscar por nombre"
+        data-cy="text-filter"
       />
       <PSelect
         v-model="rolSelectedId"
@@ -16,6 +17,7 @@
         :options="props.roles"
         optionValue="id"
         optionLabel="name"
+        data-cy="rol-filter"
       />
       <PButton
         class="p-mb-13"
