@@ -43,7 +43,6 @@ describe('', () => {
         cy.get('[data-cy="rol-filter"] .item').contains(selectedRol).first().click({force: true})
         cy.get('[data-cy="text-filter"]').type(randomCharacters)
         cy.get('[data-cy="delete-user-icon"]').first().click()
-        cy.wait(5000)
         cy.get('[data-cy="accept-modal-btn"]').click({force: true})
         cy.wait('@deleteUser').then(response => {
             expect(response.response.statusCode).to.equal(200)
