@@ -1,1 +1,9 @@
-{}
+{
+  "video": true,
+  "videoUploadOnPasses": true,
+  "videoCompression": 12,
+  "projectId": "m25sy5",
+  "viewportWidth": 1280,
+  "viewportHeight": 720,
+  "trashAssetsBeforeRuns": true
+}

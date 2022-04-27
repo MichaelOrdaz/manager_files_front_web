@@ -58,6 +58,7 @@
         v-for="(value, index) in componentOptions"
         :key="index"
         class="item text-left"
+        data-cy="select-option"
         @click="updateModel(value)"
       >
         {{ value }}
@@ -72,6 +73,7 @@
         v-for="(value, index) in componentOptions"
         :key="index"
         class="item text-left"
+        data-cy="select-option"
         @click="updateModel(value)"
       >
         {{ value[`${componentOptionLabel}`] }}
@@ -254,7 +256,7 @@ defineExpose({validateRules})
     justify-content: flex-start;
     align-items: center;
 }
-.items .item:hover {
+.items .p-select-item:hover {
     background-color: rgba(128, 128, 128, 0.541);
 }
 .selectHide {

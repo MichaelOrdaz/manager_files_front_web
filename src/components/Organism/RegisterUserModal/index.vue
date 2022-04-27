@@ -23,6 +23,7 @@
               optionValue="id"
               optionLabel="name"
               :rules="[value => !!value || 'Selecciona un rol']"
+              data-cy="rolIdSelector"
             />
             <PSelect
               v-model="newUser.department.id"
@@ -32,6 +33,7 @@
               optionValue="id"
               optionLabel="name"
               :rules="[value => !!value || 'Selecciona un departamento']"
+              data-cy="departmentIdSelector"
             />
           </div>
           <PInput
@@ -40,6 +42,7 @@
             label="Nombre"
             width="554px"
             :rules="[(value:string) => !!value.trim() || 'Agregar nombre']"
+            data-cy="userNameInput"
           />
           <div class="input-pair">
             <PInput
@@ -47,12 +50,14 @@
               label="Apellido paterno"
               width="363px"
               :rules="[(value:string) => !!value.trim() || 'Agregar apellido paterno']"
+              data-cy="userLatNameInput"
             />
             <PInput
               v-model="newUser.second_lastname"
               label="Apellido materno"
               width="363px"
               :rules="[(value:string) => !!value.trim() || 'Agregar apellido materno']"
+              data-cy="userSecondLastNameInput"
             />
           </div>
           <div class="input-pair">
@@ -61,12 +66,14 @@
               label="Correo"
               width="363px"
               :rules="[(value:string) => value.trim().length >= 10 || 'Agregar correo']"
+              data-cy="userEmailInput"
             />
             <PInput
               v-model="newUser.phone"
               label="Celular"
               width="363px"
               :rules="[(value:string) => value.length >= 7 || 'Agregar celular']"
+              data-cy="userPhoneInput"
             />
           </div>
           <div class="input-pair">
@@ -75,12 +82,14 @@
               label="Contraseña"
               width="363px"
               :rules="[(value:string) => value.trim().length >= 8 || 'Agregar contraseña']"
+              data-cy="userPasswordInput"
             />
             <PInput
               v-model="password"
               label="Contraseña"
               width="363px"
               :rules="[(value:string) => value.trim().length >= 8 || 'Agregar contraseña']"
+              data-cy="userPasswordInputRe"
             />
           </div>
           <div class="buttons">
@@ -137,7 +146,6 @@ async function validateFields() {
         return
     }
     const isValid = formRef.value.validate()
-    console.log(isValid)
     if (isValid){
         await useCreateUser(newUser.value)
         Notify.create({message: 'Se ha creado el usuario', color: 'green'})
