@@ -37,4 +37,7 @@ describe('', () => {
             expect(response.response.statusCode).to.equal(201)
         })
     })
+    it('Delete User', function () {
+
+    })
 })

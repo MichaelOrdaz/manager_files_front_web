@@ -8,7 +8,7 @@
     <UsersManagementTable
       :filter="filterValue"
       :users="users"
-      @delete-user="deleteUser"
+      @delete-user="showDeleteModal"
     />
     <RegisterUserModal
       v-show="showUserModal && rolesList.length"
@@ -19,19 +19,21 @@
       v-if="showDeleteUserModal"
       :modalTitle="deleteUserModalText"
       @cancel="showDeleteUserModal = false"
+      @accept="deleteUser"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import {computed, ref, watch} from 'vue'
-import {useGetUsersList} from '@/Composables/useUsersClientMethods'
+import {useDeleteUser, useGetUsersList} from '@/Composables/useUsersClientMethods'
 import UsersManagementTable from '@/components/Organism/UsersManagementTable.vue'
 import RegisterUserModal from '@/components/Organism/RegisterUserModal/index.vue'
 import PModal from '@/components/Molecules/PModal.vue'
 import UsersInputFilters from '@/Pages/AdminPages/Home/UsersInputFilters.vue'
 import {User} from '@/Types/User'
 import {useGetRolesList} from '@/Composables/useGetRolesList'
+import {Notify} from 'quasar'
 
 const filterValue = ref<string>('')
 const rolSelected = ref<number>(0)
@@ -45,9 +47,20 @@ function captureFilters(params: {text: string, rolId: number}): void {
     filterValue.value = params.text
     rolSelected.value = params.rolId
 }
-function deleteUser(user:User) {
+function showDeleteModal(user:User) {
     selectedUser.value = user
     showDeleteUserModal.value = true
+}
+async function deleteUser() {
+    try {
+        await useDeleteUser(selectedUser.value)
+        showDeleteUserModal.value = false
+        selectedUser.value = undefined
+        await getUsers(filterValue.value, rolSelected.value)
+        Notify.create({message: 'Se ha eliminado al usuario', color: 'green'})
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error', color: 'red'})
+    }
 }
 const deleteUserModalText = computed<string>(() => selectedUser.value ? `¿Está seguro que quiere eliminar al usuario ${selectedUser.value.fullName}?` : '')
 watch(rolSelected, () => {getUsers(filterValue.value, rolSelected.value)})

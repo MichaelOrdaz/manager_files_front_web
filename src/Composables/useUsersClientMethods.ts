@@ -1,7 +1,7 @@
 import {User} from '@/Types/User'
 import {UsersApi} from '@/services/api/api'
 import {ref} from 'vue'
-import {Notify} from 'quasar'
+import {AxiosResponse} from 'axios'
 
 export function useGetUsersList(name: string | undefined, role: number | undefined ){
     const usersList = ref<User[]>([])
@@ -26,11 +26,19 @@ export function useCreateUser(user:User) {
                 user.phone, user.password,
                 user.image === 'string' ? user.image : '', user.rolId,
                 user.department.id)
-            // eslint-disable-next-line no-console
-            console.log(response)
+            return response
         } catch (e) {
-            Notify.create({message: 'Ha ocurrido un error', color: 'red'})
+            return e
         }
     }
     createUser()
+}
+
+export async function useDeleteUser(user:User): Promise<AxiosResponse> {
+    try {
+        const response = await new UsersApi().deleteUser(user.id)
+        return response
+    } catch (e) {
+        return e
+    }
 }
