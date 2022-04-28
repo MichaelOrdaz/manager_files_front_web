@@ -6,7 +6,7 @@ const AdminModules: Module[] = [
     {name: 'Admin Dashboard', icon: 'perm_identity'}
 ]
 const HeadOfDepartmentModules: Module[] = [
-    {name: 'Dashboard h', icon: 'home'},
+    {name: 'Dashboard', icon: 'home'},
     {name: 'Shared files', icon: 'folder_shared'},
     {name: 'Users management', icon: 'people'}
 ]

@@ -211,7 +211,6 @@ watch(departmentsList, () => {
         takeUserSelectedValues()
         departmentSelectedIndex.value = departmentsList.value.findIndex(dep => dep.id === props.userSelected.department.id)
         newUser.value.department = departmentsList.value.find(dep => dep.id === props.userSelected.department.id)
-        console.log(departmentsList.value.find(dep => dep.id === props.userSelected.department.id))
     }
 })
 watch(rolesList, () => {
