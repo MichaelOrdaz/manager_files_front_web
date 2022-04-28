@@ -31,10 +31,9 @@ test:
   stage: test
   image: cypress/base:14.16.0
   script:
-    - npm run dev
     - npm ci --prefer-offline
-    - npm run start:ci &      # start the server in the background
-    - cypress run
+    - npm start &
+    - npx cypress run
   only:
     - qa
 
