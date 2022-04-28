@@ -182,17 +182,16 @@ async function createUser() {
 }
 
 async function editUser() {
-    newUser.value.department.id = departmentSelectedId.value
-    newUser.value.rolId = rolSelectedId.value
     await useEditUser(newUser.value)
     Notify.create({message: 'Se ha editado el usuario', color: 'green'})
-    emit('cancel')
     resetValues()
+    emit('cancel')
 }
 
 function takeUserSelectedValues() {
     // eslint-disable-next-line vue/no-setup-props-destructure
     const tempUser = props.userSelected
+    newUser.value.id = tempUser.id
     newUser.value.name = tempUser.name
     newUser.value.lastname = tempUser.lastname
     newUser.value.second_lastname = tempUser.second_lastname
@@ -211,6 +210,8 @@ watch(departmentsList, () => {
         isEditUser.value = true
         takeUserSelectedValues()
         departmentSelectedIndex.value = departmentsList.value.findIndex(dep => dep.id === props.userSelected.department.id)
+        newUser.value.department = departmentsList.value.find(dep => dep.id === props.userSelected.department.id)
+        console.log(departmentsList.value.find(dep => dep.id === props.userSelected.department.id))
     }
 })
 watch(rolesList, () => {
@@ -218,6 +219,7 @@ watch(rolesList, () => {
         isEditUser.value = true
         takeUserSelectedValues()
         rolSelectedIndex.value = rolesList.value.findIndex(rol => rol.name === props.userSelected.role[0])
+        newUser.value.rolId = rolesList.value.find(rol => rol.name === props.userSelected.role[0]).id
     }
 })
 </script>

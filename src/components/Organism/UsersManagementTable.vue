@@ -52,6 +52,7 @@
             class="cursor-pointer"
             iconName="edit"
             size="pmd"
+            data-cy="edit-user-icon"
             @click.prevent="$emit('edit-user', item.row)"
           />
           <PIcon
@@ -96,6 +97,7 @@ const columns: object[] = [
 <style scoped>
 .table{
     width: 90%;
-    height: 550px;
+    height: 100%;
+    max-height: 80vh;
 }
 </style>

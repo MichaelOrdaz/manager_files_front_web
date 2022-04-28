@@ -60,6 +60,7 @@ function edit(user: User) {
 function cancel() {
     selectedUser.value = undefined
     showUserModal.value = false
+    getUsers(filterValue.value,rolSelected.value)
 }
 async function deleteUser() {
     try {

@@ -40,7 +40,7 @@ export function useEditUser(user: User) {
             const response = await new UsersApi().updateUser(
                 user.id, user.email, user.name, user.lastname,
                 user.second_lastname, user.phone, undefined,
-                undefined, undefined, user.rolId, user.department.id
+                undefined, user.rolId, user.department.id
             )
             return response
         } catch (e) {

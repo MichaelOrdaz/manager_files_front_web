@@ -37,27 +37,26 @@ describe('', () => {
             expect(response.response.statusCode).to.equal(201)
         })
     })
-    it('Delete User', function (){
-        cy.intercept('**/users').as('createUser')
-        cy.intercept('**/api/v1/users/**').as('deleteUser')
+    it('Edit User', function (){
+        cy.intercept('**/api/v1/users/**').as('editUser')
         cy.get('[data-cy="rol-filter"]').click()
         cy.get('[data-cy="rol-filter"] .item').contains(selectedRol).first().click({force: true})
         cy.get('[data-cy="text-filter"]').type(randomCharacters)
-        cy.get('[data-cy="userNameInput"]').clear().type(`edit ${randomCharacters}`)
-        cy.get('[data-cy="userLatNameInput"]').clear().type(randomCharacters)
-        cy.get('[data-cy="userSecondLastNameInput"]').clear().type(randomCharacters)
-        cy.get('[data-cy="userEmailInput"]').type(`edit${randomCharacters}@puller.mx`)
-        cy.get('[data-cy="userPhoneInput"]').type('12345678')
+        cy.get("[data-cy='edit-user-icon']").click()
+        cy.get('[data-cy="userNameInput"]').type(`edit`)
+        cy.get('[data-cy="userLatNameInput"]').type(`edit`)
+        cy.get('[data-cy="userSecondLastNameInput"]').type(`edit`)
+        cy.get('[data-cy="userEmailInput"]').type(`edit`)
+        cy.get('[data-cy="userPhoneInput"]').type('edit')
         cy.contains('Aceptar').click()
-        cy.wait('@createUser').then(response => {
-            expect(response.response.statusCode).to.equal(201)
+        cy.wait('@editUser').then(response => {
+            expect(response.response.statusCode).to.equal(200)
         })
     })
     it('Delete User', function () {
         cy.intercept('**/api/v1/users/**').as('deleteUser')
         cy.get('[data-cy="rol-filter"]').click()
         cy.get('[data-cy="rol-filter"] .item').contains(selectedRol).first().click({force: true})
-        cy.get('[data-cy="text-filter"]').type(randomCharacters)
         cy.get('[data-cy="delete-user-icon"]').first().click()
         cy.get('[data-cy="accept-modal-btn"]').click({force: true})
         cy.wait('@deleteUser').then(response => {
