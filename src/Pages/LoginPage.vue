@@ -19,6 +19,7 @@
       width="345px"
       label="Correo electrónico"
       :rules="[(value:string) => !!value || 'Agraga un correo']"
+      data-cy="login-email-input"
     />
     <PInput
       v-model="userPassword"
@@ -28,11 +29,13 @@
       :type="hidePassword ? 'password' : 'text'"
       enableCursorPointerOnIcon
       :rules="[(value:string) => !!value || 'Ingresa tu contraseña']"
+      data-cy="login-password-input"
       @append-icon-action="hidePassword = !hidePassword"
     />
     <PButton
       size="plg"
       class="login-btn"
+      data-cy="login-btn"
       @click.prevent="validateForm"
     >
       Ingresar

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosInstance} from 'axios'
 import {Loading} from 'quasar'
 
 const api = axios.create({baseURL: `${import.meta.env.VITE_API_URL}api/v1`})
@@ -18,5 +18,5 @@ api.interceptors.response.use(function (response) {
 }, function (error) {
     return Promise.reject(error)
 })
-export {api}
+export {api, AxiosInstance}
 

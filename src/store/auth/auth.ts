@@ -9,6 +9,7 @@ export interface UserData {
 }
 export interface Auth {
     access_token?: string,
+    isValidToken?: boolean,
     expires_at?: string,
     permissions?: object,
     status?: string,
@@ -17,8 +18,7 @@ export interface Auth {
     roles?: string[],
     views: object,
     initialPage: {
-        Admin: 'Dashboard',
-        Administrador: 'Dashboard',
+        Admin: 'Admin Dashboard',
         Analyst: 'Dashboard',
         'Head of Department': 'Dashboard'
     }
@@ -33,11 +33,11 @@ export default function state(): Auth {
         access_token: localStorage.getItem('access_token') ?? '',
         views: [],
         initialPage: {
-            Admin: 'Dashboard',
-            Administrador: 'Dashboard',
+            Admin: 'Admin Dashboard',
             Analyst: 'Dashboard',
             'Head of Department': 'Dashboard'
         },
-        roles: []
+        roles: [],
+        isValidToken: false,
     }
 }

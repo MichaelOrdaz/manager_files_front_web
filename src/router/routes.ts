@@ -1,25 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-const routes: RouteRecordRaw[] = [
-    {
-        path: '/layout',
-        name: 'Layout',
-        component: () => import('../Layouts/DefaultLayout.vue'),
-        meta: {
-            authRequired: false
-        },
-        children: [
-            {
-                path: '/main',
-                name: 'Layout',
-                component: () => import('../components/HelloWorld.vue'),
-                meta: {
-                    authRequired: false
-                },
-            },
-        ]
-    },
-]
 const PublicViews: RouteRecordRaw[] = [
     {
         path: '/',
@@ -59,19 +39,16 @@ const PublicViews: RouteRecordRaw[] = [
     }
 ]
 
-const HeadOfDepartament: RouteRecordRaw[] = [
+const HeadOfDepartment: RouteRecordRaw[] = [
     {
-        path: '/layout',
-        name: 'Layout',
+        path: '/',
+        name: '',
         component: () => import('../Layouts/DefaultLayout.vue'),
-        meta: {
-            authRequired: false
-        },
         children: [
             {
                 path: '/home',
                 name: 'Dashboard',
-                component: () => import('../Pages/HeadOfDepartment/HomePage.vue'),
+                component: () => import('../Pages/HeadOfDepartment/Home/index.vue'),
                 meta: {
                     authRequired: true
                 },
@@ -79,7 +56,7 @@ const HeadOfDepartament: RouteRecordRaw[] = [
             {
                 path: '/users-management',
                 name: 'Users management',
-                component: () => import('../Pages/UsersManagementPage.vue'),
+                component: () => import('../Pages/HeadOfDepartment/UsersManagementPage.vue'),
                 meta: {
                     authRequired: true,
                 }
@@ -87,4 +64,21 @@ const HeadOfDepartament: RouteRecordRaw[] = [
         ]
     },
 ]
-export default routes.concat(HeadOfDepartament, PublicViews)
+const AdminViews: RouteRecordRaw[] = [
+    {
+        path: '/',
+        name: '',
+        component: () => import('../Layouts/DefaultLayout.vue'),
+        children: [
+            {
+                path: '/admin',
+                name: 'Admin Dashboard',
+                component: () => import('../Pages/AdminPages/Home/index.vue'),
+                meta: {
+                    authRequired: false
+                },
+            },
+        ]
+    },
+]
+export default [].concat(PublicViews, AdminViews ,HeadOfDepartment)

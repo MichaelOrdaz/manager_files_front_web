@@ -17,9 +17,9 @@
     >
       <div
         class="option"
-        :title="isObject ? modelValue[`${componentOptionLabel}`] : modelValue"
+        :title="isObject ? val[`${componentOptionLabel}`] : val"
       >
-        {{ isObject ? modelValue[`${componentOptionLabel}`] : modelValue }}
+        {{ isObject ? val[props.optionLabel] : val }}
       </div>
       <PIcon
         class="icon"
@@ -58,6 +58,7 @@
         v-for="(value, index) in componentOptions"
         :key="index"
         class="item text-left"
+        data-cy="select-option"
         @click="updateModel(value)"
       >
         {{ value }}
@@ -72,6 +73,7 @@
         v-for="(value, index) in componentOptions"
         :key="index"
         class="item text-left"
+        data-cy="select-option"
         @click="updateModel(value)"
       >
         {{ value[`${componentOptionLabel}`] }}
@@ -89,6 +91,7 @@ import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 import type {ComponentInternalInstance} from 'vue'
 
 interface Props {
+    modelValue?: string | number | object,
     options?: any[],
     label?: string,
     disabled?: boolean,
@@ -101,6 +104,7 @@ interface Props {
 }
 const  emit = defineEmits(['update:modelValue'])
 const  props = withDefaults(defineProps<Props>(), {
+    modelValue: undefined,
     options: undefined,
     label: 'Label aquí',
     disabled: false,
@@ -122,7 +126,7 @@ const initialOption = props.options.length > 0
         : props.options[props.forceSelectedIndex]
     )
     : 'Cargando...'
-const modelValue = ref<any>(initialOption)
+const val = ref<any>(initialOption)
 const componentOptions = ref(props.options.length ? props.options : [])
 const componentWidth = toRef(props, 'width')
 const isValidValue = ref<boolean>(true)
@@ -133,18 +137,20 @@ const currentComponent = getCurrentInstance()
 const bindInput = inject('bind-input', (val: any) => {})
 
 const setErrorClass = computed<string>(() => isValidValue.value ? '' : 'invalid-value-error')
-const iconArrowDirection = computed(() => (open.value ? 'arrow_drop_up' : 'arrow_drop_down'))
+const iconArrowDirection = computed(() => (open.value ? 'keyboard_arrow_up' : 'keyboard_arrow_down'))
 
-function updateModel(value: string | number): void {
-    modelValue.value = value
+function updateModel(value: string | number | object): void {
+    val.value = value
     open.value = false
     if (props.rules?.length) {
         validateRules()
     }
     if (isObject.value) {
-        emit('update:modelValue', modelValue.value[`${componentOptionValue.value}`])
+        emit('update:modelValue', val.value[componentOptionValue.value])
+        return
     } else {
-        emit('update:modelValue', modelValue.value)
+        emit('update:modelValue', val.value)
+        return
     }
 }
 
@@ -166,7 +172,7 @@ function validateRules(): boolean | undefined {
     errors.value = []
     isValidValue.value = false
     props.rules?.forEach((rule) => {
-        const result: boolean | string | null = rule(modelValue.value)
+        const result: boolean | string | null = rule(val.value)
         errors.value.push(result)
         errorMgs.value.push(result)
         errorMgs.value = errorMgs.value.map( msg => (typeof msg !== 'boolean' ? msg : ''))
@@ -178,6 +184,20 @@ function validateRules(): boolean | undefined {
     return isValidValue.value
 }
 
+function updateVal() {
+    if (props.forceSelectedIndex) {
+        val.value = componentOptions.value[props.forceSelectedIndex]
+        return
+    }else if (props.modelValue) {
+        if (isObject.value) {
+            val.value = componentOptions.value.find(opt => opt[props.optionValue] === props.modelValue[props.optionValue])
+            return
+        }
+        val.value = props.modelValue
+        return
+    }
+    val.value = componentOptions.value[0]
+}
 onMounted(() => {
     if (bindInput){
         bindInput(currentComponent)
@@ -186,11 +206,7 @@ onMounted(() => {
 
 watch([() => props.options, () => props.forceSelectedIndex], () => {
     componentOptions.value = props.options
-    if (props.forceSelectedIndex) {
-        modelValue.value = componentOptions.value[props.forceSelectedIndex]
-        return
-    }
-    modelValue.value = componentOptions.value[0]
+    updateVal()
 }, { deep: true })
 useDetectOutsideClick(componentRef, () => { open.value = false })
 defineExpose({validateRules})
@@ -215,7 +231,8 @@ defineExpose({validateRules})
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: solid 2px #DBD9D9;
+    border: solid 1px #DBD9D9;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     margin-bottom: 8px;
@@ -234,10 +251,7 @@ defineExpose({validateRules})
     color: #fff;
     border-radius: 0px 0px 6px 6px;
     overflow: hidden;
-    border-right: 2px solid gray;
-    border-left: 2px solid gray;
-    border-bottom: 2px solid gray;
-    border-top: solid 2px gray;
+    border: solid 1px #DBD9D9;
     position: absolute;
     background-color: white;
     left: 0;
@@ -253,10 +267,10 @@ defineExpose({validateRules})
     color: black;
     height: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
-.items .item:hover {
+.items .p-select-item:hover {
     background-color: rgba(128, 128, 128, 0.541);
 }
 .selectHide {

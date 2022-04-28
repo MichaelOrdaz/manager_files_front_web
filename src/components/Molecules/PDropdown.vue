@@ -45,11 +45,11 @@
 import {computed, ref} from 'vue'
 import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 
-export type Option = {
+export type DropdownOption = {
     label: string,
     action: {():void},
 }
-interface Props { options?: Option[], text?: string }
+interface Props { options?: DropdownOption[], text?: string }
 const props = withDefaults(defineProps<Props>(), {options: undefined, text: 'Texto de demostración'})
 
 const componentRef = ref(null)
@@ -81,6 +81,7 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
     position: absolute;
     right: 0;
     left: 0;
+    z-index: 99;
 }
 .dropdown-option{
     height: 35px;

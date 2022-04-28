@@ -40,4 +40,5 @@ const computedStyles = computed<string>(() => `${props.color} ${props.size}`)
 .gold{color: $gold}
 .brown-6{color: $brown-6}
 .gray7{color: $gray-7}
+.gray10{color: $grey-10}
 </style>

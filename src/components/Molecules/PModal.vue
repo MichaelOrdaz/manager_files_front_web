@@ -50,6 +50,7 @@
               </PButton>
               <PButton
                 size="plg"
+                data-cy="accept-modal-btn"
                 @click="$emit('accept')"
               >
                 {{ props.acceptButtonText }}

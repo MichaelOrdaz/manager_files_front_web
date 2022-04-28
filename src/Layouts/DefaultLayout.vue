@@ -25,9 +25,10 @@
 import {Module, RolesModules} from '@/Layouts/RolesModules'
 import {computed} from 'vue'
 import PSidebarIconButton from '@/components/Atoms/PSidebarIconButton.vue'
+import {useStore} from 'vuex'
 
-const rol = 'Head of Department'
-const onLoadModules = computed<Module[]>(() => RolesModules[rol])
+const userRol = computed<string>(() => useStore().getters.getRol)
+const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
 </script>
 
 <style scoped lang="scss">
