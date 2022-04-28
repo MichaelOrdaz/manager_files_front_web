@@ -37,6 +37,22 @@ describe('', () => {
             expect(response.response.statusCode).to.equal(201)
         })
     })
+    it('Delete User', function (){
+        cy.intercept('**/users').as('createUser')
+        cy.intercept('**/api/v1/users/**').as('deleteUser')
+        cy.get('[data-cy="rol-filter"]').click()
+        cy.get('[data-cy="rol-filter"] .item').contains(selectedRol).first().click({force: true})
+        cy.get('[data-cy="text-filter"]').type(randomCharacters)
+        cy.get('[data-cy="userNameInput"]').clear().type(`edit ${randomCharacters}`)
+        cy.get('[data-cy="userLatNameInput"]').clear().type(randomCharacters)
+        cy.get('[data-cy="userSecondLastNameInput"]').clear().type(randomCharacters)
+        cy.get('[data-cy="userEmailInput"]').type(`edit${randomCharacters}@puller.mx`)
+        cy.get('[data-cy="userPhoneInput"]').type('12345678')
+        cy.contains('Aceptar').click()
+        cy.wait('@createUser').then(response => {
+            expect(response.response.statusCode).to.equal(201)
+        })
+    })
     it('Delete User', function () {
         cy.intercept('**/api/v1/users/**').as('deleteUser')
         cy.get('[data-cy="rol-filter"]').click()

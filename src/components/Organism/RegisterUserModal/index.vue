@@ -16,9 +16,9 @@
           <NewUserImgLoader @capture-new-image="getNewImage" />
           <div class="selects">
             <PSelect
-              v-model="newUser.rolId"
+              v-model="rolSelectedId"
               label="Filtro de usuarios"
-              :options="props.roles"
+              :options="rolesList"
               width="270px"
               optionValue="id"
               optionLabel="name"
@@ -26,7 +26,7 @@
               data-cy="rolIdSelector"
             />
             <PSelect
-              v-model="newUser.department.id"
+              v-model="departmentSelectedId"
               label="Selecciona departamento"
               :options="departmentsList"
               width="270px"
@@ -76,19 +76,22 @@
               data-cy="userPhoneInput"
             />
           </div>
-          <div class="input-pair">
+          <div
+            v-if="!isEditUser"
+            class="input-pair"
+          >
             <PInput
+              v-if="!isEditUser"
               v-model="newUser.password"
               label="Contraseña"
               width="363px"
-              :rules="[(value:string) => value.trim().length >= 8 || 'Agregar contraseña']"
               data-cy="userPasswordInput"
             />
             <PInput
+              v-if="!isEditUser"
               v-model="password"
               label="Contraseña"
               width="363px"
-              :rules="[(value:string) => value.trim().length >= 8 || 'Agregar contraseña']"
               data-cy="userPasswordInputRe"
             />
           </div>
@@ -118,21 +121,27 @@ import NewUserImgLoader from './NewUserImgLoader.vue'
 import PForm from '@/components/Organism/PForm.vue'
 import PFormComp from '@/Types/PFormComp'
 import {ref} from 'vue'
-import {Role} from '@/services/api/models'
 import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
-import {useCreateUser} from '@/Composables/useUsersClientMethods'
+import {useCreateUser, useEditUser} from '@/Composables/useUsersClientMethods'
 import {User} from '@/Types/User'
 import {Notify} from 'quasar'
-interface Props{roles: Role[]}
+import {useGetRolesList} from '@/Composables/useGetRolesList'
+interface Props{userSelected?: User}
+
 const emit = defineEmits(['cancel'])
-const props = withDefaults(defineProps<Props>(), {roles: () => []})
+const props = withDefaults(defineProps<Props>(), {userSelected: undefined})
+
+const isEditUser = ref<boolean>(!!props.userSelected)
 
 const formRef = ref<PFormComp>(null)
 const password = ref<string>('')
+const rolSelectedId = ref<number>(0)
+const departmentSelectedId = ref<number>(0)
 const newUser = ref<User>({
     name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0
 })
 const {departmentsList} = getDepartmentsList()
+const {rolesList} = useGetRolesList()
 const getNewImage = (file: File) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -141,17 +150,55 @@ const getNewImage = (file: File) => {
     }
 }
 async function validateFields() {
-    if (password.value !== newUser.value.password){
+    if (!isEditUser.value && password.value !== newUser.value.password){
         Notify.create({message: 'Las contraseñas son diferentes', color: 'red'})
         return
     }
     const isValid = formRef.value.validate()
     if (isValid){
-        await useCreateUser(newUser.value)
-        Notify.create({message: 'Se ha creado el usuario', color: 'green'})
-        emit('cancel')
-        return
+        if (!isEditUser.value) {
+            await createUser()
+            return
+        }else {
+            await editUser()
+            return
+        }
     }
+}
+
+async function createUser() {
+    newUser.value.department.id = departmentSelectedId.value
+    newUser.value.rolId = rolSelectedId.value
+    await useCreateUser(newUser.value)
+    Notify.create({message: 'Se ha creado el usuario', color: 'green'})
+    emit('cancel')
+    resetValues()
+}
+
+async function editUser() {
+    newUser.value.department.id = departmentSelectedId.value
+    newUser.value.rolId = rolSelectedId.value
+    await useEditUser(newUser.value)
+    Notify.create({message: 'Se ha editado el usuario', color: 'green'})
+    emit('cancel')
+    resetValues()
+}
+function resetValues() {
+    newUser.value = {
+        name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0
+    }
+    rolSelectedId.value = undefined
+    departmentSelectedId.value = undefined
+}
+if (props.userSelected) {
+    isEditUser.value = true
+    // eslint-disable-next-line vue/no-setup-props-destructure
+    const tempUser = props.userSelected
+    newUser.value.name = tempUser.name
+    newUser.value.lastname = tempUser.lastname
+    newUser.value.second_lastname = tempUser.second_lastname
+    newUser.value.email = tempUser.email
+    newUser.value.phone = tempUser.phone
 }
 </script>
 

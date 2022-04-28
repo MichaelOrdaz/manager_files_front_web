@@ -5,6 +5,7 @@
     :rows="props.users"
     :filter="props.filter"
     row-key="name"
+    :rows-per-page-options="[25]"
   >
     <template #body="item">
       <q-tr>
@@ -51,6 +52,7 @@
             class="cursor-pointer"
             iconName="edit"
             size="pmd"
+            @click.prevent="$emit('edit-user', item.row)"
           />
           <PIcon
             class="cursor-pointer"
@@ -74,6 +76,7 @@ interface Props {users: User[], filter: string}
 
 defineEmits<{
     (e: 'delete-user', payload: User):void,
+    (e: 'edit-user', payload: User):void,
 }>()
 const props = withDefaults(defineProps<Props>(), {users: () => [], filter: ''})
 const columns: object[] = [

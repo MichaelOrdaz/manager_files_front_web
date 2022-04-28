@@ -34,6 +34,22 @@ export function useCreateUser(user:User) {
     createUser()
 }
 
+export function useEditUser(user: User) {
+    async function editUser() {
+        try {
+            const response = await new UsersApi().updateUser(
+                user.id, user.email, user.name, user.lastname,
+                user.second_lastname, user.phone, undefined,
+                undefined, undefined, user.rolId, user.department.id
+            )
+            return response
+        } catch (e) {
+            return e
+        }
+    }
+    editUser()
+}
+
 export async function useDeleteUser(user:User): Promise<AxiosResponse> {
     try {
         const response = await new UsersApi().deleteUser(user.id)

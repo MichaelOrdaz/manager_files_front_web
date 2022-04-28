@@ -9,11 +9,13 @@
       :filter="filterValue"
       :users="users"
       @delete-user="showDeleteModal"
+      @edit-user="edit"
     />
     <RegisterUserModal
-      v-show="showUserModal && rolesList.length"
+      v-if="showUserModal"
+      :userSelected="selectedUser"
       :roles="rolesList"
-      @cancel="showUserModal = false"
+      @cancel="cancel"
     />
     <PModal
       v-if="showDeleteUserModal"
@@ -50,6 +52,14 @@ function captureFilters(params: {text: string, rolId: number}): void {
 function showDeleteModal(user:User) {
     selectedUser.value = user
     showDeleteUserModal.value = true
+}
+function edit(user: User) {
+    selectedUser.value = user
+    showUserModal.value = true
+}
+function cancel() {
+    selectedUser.value = undefined
+    showUserModal.value = false
 }
 async function deleteUser() {
     try {
