@@ -24,6 +24,7 @@
               optionLabel="name"
               :rules="[value => !!value || 'Selecciona un rol']"
               data-cy="rolIdSelector"
+              :forceSelectedIndex="rolSelectedIndex"
             />
             <PSelect
               v-model="departmentSelectedId"
@@ -34,6 +35,7 @@
               optionLabel="name"
               :rules="[value => !!value || 'Selecciona un departamento']"
               data-cy="departmentIdSelector"
+              :forceSelectedIndex="departmentSelectedIndex"
             />
           </div>
           <PInput
@@ -86,6 +88,7 @@
               label="Contraseña"
               width="363px"
               data-cy="userPasswordInput"
+              :rules="[(value:string) => value.length >= 8 || 'Contraseña']"
             />
             <PInput
               v-if="!isEditUser"
@@ -93,6 +96,7 @@
               label="Contraseña"
               width="363px"
               data-cy="userPasswordInputRe"
+              :rules="[(value:string) => value.length >= 8 || 'Contraseña']"
             />
           </div>
           <div class="buttons">
@@ -120,7 +124,7 @@
 import NewUserImgLoader from './NewUserImgLoader.vue'
 import PForm from '@/components/Organism/PForm.vue'
 import PFormComp from '@/Types/PFormComp'
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
 import {useCreateUser, useEditUser} from '@/Composables/useUsersClientMethods'
 import {User} from '@/Types/User'
@@ -137,6 +141,8 @@ const formRef = ref<PFormComp>(null)
 const password = ref<string>('')
 const rolSelectedId = ref<number>(0)
 const departmentSelectedId = ref<number>(0)
+const departmentSelectedIndex = ref<number>(0)
+const rolSelectedIndex = ref<number>(0)
 const newUser = ref<User>({
     name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0
 })
@@ -183,15 +189,8 @@ async function editUser() {
     emit('cancel')
     resetValues()
 }
-function resetValues() {
-    newUser.value = {
-        name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0
-    }
-    rolSelectedId.value = undefined
-    departmentSelectedId.value = undefined
-}
-if (props.userSelected) {
-    isEditUser.value = true
+
+function takeUserSelectedValues() {
     // eslint-disable-next-line vue/no-setup-props-destructure
     const tempUser = props.userSelected
     newUser.value.name = tempUser.name
@@ -200,6 +199,27 @@ if (props.userSelected) {
     newUser.value.email = tempUser.email
     newUser.value.phone = tempUser.phone
 }
+function resetValues() {
+    newUser.value = {
+        name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0
+    }
+    rolSelectedId.value = undefined
+    departmentSelectedId.value = undefined
+}
+watch(departmentsList, () => {
+    if (props.userSelected) {
+        isEditUser.value = true
+        takeUserSelectedValues()
+        departmentSelectedIndex.value = departmentsList.value.findIndex(dep => dep.id === props.userSelected.department.id)
+    }
+})
+watch(rolesList, () => {
+    if (props.userSelected) {
+        isEditUser.value = true
+        takeUserSelectedValues()
+        rolSelectedIndex.value = rolesList.value.findIndex(rol => rol.name === props.userSelected.role[0])
+    }
+})
 </script>
 
 <style scoped lang="scss">
