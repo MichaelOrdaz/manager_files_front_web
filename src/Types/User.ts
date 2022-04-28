@@ -1,5 +1,5 @@
 export type User = {
-    id: number,
+    id?: number,
     email?: string,
     name: string,
     lastname?: string,
@@ -8,7 +8,9 @@ export type User = {
     phone?: string,
     image?: string | File,
     password?: string,
-    department?: {id: number, name: string} | undefined | null,
+    department?: {id?: number, name?: string} | undefined | null,
+    rolId?: number | undefined,
+    role?: string[],
     updated_at?: string,
     created_at?: string,
     deleted_at?: string,

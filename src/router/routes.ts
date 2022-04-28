@@ -1,25 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-const routes: RouteRecordRaw[] = [
-    {
-        path: '/layout',
-        name: 'Layout',
-        component: () => import('../Layouts/DefaultLayout.vue'),
-        meta: {
-            authRequired: false
-        },
-        children: [
-            {
-                path: '/main',
-                name: 'Layout',
-                component: () => import('../components/HelloWorld.vue'),
-                meta: {
-                    authRequired: false
-                },
-            },
-        ]
-    },
-]
 const PublicViews: RouteRecordRaw[] = [
     {
         path: '/',
@@ -61,8 +41,8 @@ const PublicViews: RouteRecordRaw[] = [
 
 const HeadOfDepartment: RouteRecordRaw[] = [
     {
-        path: '/layout',
-        name: 'Layout',
+        path: '/',
+        name: '',
         component: () => import('../Layouts/DefaultLayout.vue'),
         children: [
             {
@@ -84,4 +64,21 @@ const HeadOfDepartment: RouteRecordRaw[] = [
         ]
     },
 ]
-export default routes.concat(HeadOfDepartment, PublicViews)
+const AdminViews: RouteRecordRaw[] = [
+    {
+        path: '/',
+        name: '',
+        component: () => import('../Layouts/DefaultLayout.vue'),
+        children: [
+            {
+                path: '/admin',
+                name: 'Admin Dashboard',
+                component: () => import('../Pages/AdminPages/Home/index.vue'),
+                meta: {
+                    authRequired: false
+                },
+            },
+        ]
+    },
+]
+export default [].concat(PublicViews, AdminViews ,HeadOfDepartment)

@@ -18,8 +18,7 @@ export interface Auth {
     roles?: string[],
     views: object,
     initialPage: {
-        Admin: 'Dashboard',
-        Administrador: 'Dashboard',
+        Admin: 'Admin Dashboard',
         Analyst: 'Dashboard',
         'Head of Department': 'Dashboard'
     }
@@ -34,8 +33,7 @@ export default function state(): Auth {
         access_token: localStorage.getItem('access_token') ?? '',
         views: [],
         initialPage: {
-            Admin: 'Dashboard',
-            Administrador: 'Dashboard',
+            Admin: 'Admin Dashboard',
             Analyst: 'Dashboard',
             'Head of Department': 'Dashboard'
         },

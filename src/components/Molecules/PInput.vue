@@ -141,7 +141,8 @@ onMounted(() => {
         bindInput(currentComponent)
     }
 })
-watch(value, () => {
+watch([value,() => props.modelValue], () => {
+    value.value = props.modelValue
     if (props.rules?.length) {
         validateRules()
     }
