@@ -32,7 +32,7 @@ test:
   image: cypress/base:14.16.0
   script:
     - npm ci
-    - npx cypress run
+    - npm run chido
   only:
     - qa
 

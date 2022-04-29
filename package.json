@@ -10,22 +10,23 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue",
     "open-browser": "start http://localhost:3000",
     "cypress": "npx cypress open",
-    "cy:run": "npx cypress run"
+    "cy:run": "npx cypress run",
+    "cy:vite": "vite",
+    "chido": "concurrently npm:cy:*"
   },
   "dependencies": {
     "@quasar/extras": "^1.12.5",
     "axios": "^0.21.1",
+    "concurrently": "^7.1.0",
+    "cypress": "^9.5.0",
+    "cypress-file-upload": "^5.0.8",
     "eslint-plugin-import": "^2.25.2",
     "husky": "^4.3.0",
     "quasar": "^2.5.5",
     "vue": "^3.2.25",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2",
-    "vuex-persistedstate": "^4.1.0",
-    "cypress-file-upload": "^5.0.8",
-    "cypress": "^9.5.0",
-    "@cypress/vite-dev-server": "^2.0.2",
-    "@cypress/vue": "^3.0.0-beta.3"
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@quasar/vite-plugin": "^1.0.5",
