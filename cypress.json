@@ -5,5 +5,7 @@
   "projectId": "m25sy5",
   "viewportWidth": 1280,
   "viewportHeight": 720,
-  "trashAssetsBeforeRuns": true
+  "trashAssetsBeforeRuns": true,
+  "pageLoadTimeout": 100000,
+  "baseUrl": "http://localhost:3000/"
 }
