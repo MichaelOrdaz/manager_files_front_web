@@ -33,7 +33,7 @@ test:
   script:
     - npm ci --prefer-offline
     - npm run dev &
-    - npm run cypress run
+    - npm run cy:run
   only:
     - qa
 
