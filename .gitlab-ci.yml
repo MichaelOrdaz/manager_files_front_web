@@ -33,7 +33,7 @@ test:
   script:
     - apt install httping
     - npm run dev &
-    - while ! httping -qc1 http://localhost:8080/login ; do sleep 1 ; done
+    - while ! httping -qc1 http://localhost:3000/login ; do sleep 1 ; done
     - npm ci
     - npx cypress run
   only:
