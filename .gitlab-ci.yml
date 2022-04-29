@@ -30,6 +30,10 @@ prepare:install-node:
 test:
   stage: test
   image: cypress/base:14.16.0
+  cache:
+    key: modules
+    paths:
+      - node_modules/
   before_script:
     - npm run dev
   script:
