@@ -4,7 +4,7 @@ module.exports = {
         "eslint:recommended",
         "plugin:vue/vue3-recommended",
     ],
-    plugins: ['eslint-plugin-vue', 'vue', 'import', '@typescript-eslint'],
+    plugins: ['eslint-plugin-vue', 'vue', 'import'],
     globals: {
         chrome: 'readonly',
         defineProps: 'readonly',
