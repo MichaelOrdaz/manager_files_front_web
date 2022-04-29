@@ -31,7 +31,7 @@ test:
   stage: test
   image: cypress/base:14.16.0
   script:
-    - apt install httping
+    - npm install httping
     - npm run dev &
     - while ! httping -qc1 http://localhost:3000/login ; do sleep 1 ; done
     - npm ci
