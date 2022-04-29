@@ -29,10 +29,10 @@ prepare:install-node:
 
 test:
   stage: test
-  image: cypress/base:14.16.0
+  image: node:latest
   script:
     - npm ci
-    - npm run dev
+    - npm run dev:ci &
     - npm run cy:run
   only:
     - qa
