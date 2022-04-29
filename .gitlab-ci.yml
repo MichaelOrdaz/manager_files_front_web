@@ -32,7 +32,7 @@ test:
   image: node:latest
   script:
     - npm ci
-    - npm run dev:ci &
+    - npm run dev
     - npm run cy:run
   only:
     - qa
