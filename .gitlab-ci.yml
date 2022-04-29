@@ -33,7 +33,7 @@ test:
   script:
     - npm ci
     - npm run dev
-    - npm run cy:run
+    - npx cypress run
   only:
     - qa
 
