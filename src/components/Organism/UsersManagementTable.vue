@@ -80,7 +80,7 @@ defineEmits<{
     (e: 'edit-user', payload: User):void,
 }>()
 const props = withDefaults(defineProps<Props>(), {users: () => [], filter: ''})
-const columns: object[] = [
+const columns: any[] = [
     { name: 'Foto del usuario', align: 'left', label: 'Foto del usuario', field: (row) => row.name},
     {
         name: 'Nombre de usuario', align: 'left', label: 'Nombre de usuario', field: 'name'

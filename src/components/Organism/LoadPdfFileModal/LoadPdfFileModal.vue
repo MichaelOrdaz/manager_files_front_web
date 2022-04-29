@@ -8,7 +8,7 @@
       />
       <div class="svg-column">
         <img
-          src="src/assets/pdfimg.png"
+          src="@/assets/pdfimg.png"
           alt=""
         >
       </div>

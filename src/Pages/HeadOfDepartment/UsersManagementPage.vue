@@ -12,12 +12,12 @@
       class="items-list-container"
     >
       <UserItem
-        v-for="number in usersList"
-        :key="number"
+        v-for="user in usersList"
+        :key="user.id"
         itemHight="80px"
         letterIconSize="pmd"
-        :itemTitleText="number.fullName"
-        :itemSubtitleText="number.name"
+        :itemTitleText="user.fullName"
+        :itemSubtitleText="user.name"
         itemTitleVariant="subtitle-1"
         itemSubtitleVariant="text-2"
       >
