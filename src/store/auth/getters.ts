@@ -20,6 +20,9 @@ const getters: GetterTree<Auth, StateInterface> = {
     },
     getRol(state: Auth): string {
         return state.roles[0] ?? ''
+    },
+    getUserData(state: Auth): Auth {
+        return state
     }
 }
 

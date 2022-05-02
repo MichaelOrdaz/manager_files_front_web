@@ -77,6 +77,7 @@ const computedClasses = computed<string>(() => `${props.variant} ${props.color}`
 .gold{color: $gold }
 .white{color: white}
 .black{color: black}
+.grey-5{color: $grey-5}
 .gray-7{color: $gray-7}
 
 </style>

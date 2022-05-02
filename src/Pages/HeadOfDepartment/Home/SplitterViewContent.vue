@@ -20,11 +20,6 @@
         @cancel="showAdvancedSearch = false"
       />
     </div>
-    <POptionList
-      class="avatar"
-      :options="options"
-      type="avatar"
-    />
   </div>
   <div>
     <ViewBreadcumb />
@@ -44,14 +39,10 @@ import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFoldersDescAndActions.vue'
 import AdvancedSearch from './AdvancedSearch.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
-import type {Option} from '@/components/Molecules/POptionList.vue'
-import {useLogOut} from '@/Composables/useUserSessionMethods'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
-const options = ref<Option[]>([
-    {optionLabel: 'Cerrar sesión', action: useLogOut, icon: ''},
-])
+
 
 </script>
 
