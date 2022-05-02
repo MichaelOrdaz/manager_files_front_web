@@ -14,12 +14,6 @@
       <PText variant="text-5">
         {{ userData.roles[0] || ' Sin rol' }}
       </PText>
-      <PText
-        variant="text-5"
-        color="grey-5"
-      >
-        {{ userData.user_data.email || 'Sin correo' }}
-      </PText>
     </div>
   </div>
 </template>
@@ -35,7 +29,7 @@ const userData = computed<Auth>(() => useStore().getters.getUserData)
 <style scoped lang="scss">
 .user-description-container{
     width: 100%;
-    height: 66px;
+    height: 46px;
     display: flex;
     flex-direction: row;
     .user-data{
@@ -43,6 +37,7 @@ const userData = computed<Auth>(() => useStore().getters.getUserData)
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        justify-content: center;
         margin-left: 10px;
     }
 }

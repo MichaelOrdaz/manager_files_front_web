@@ -65,7 +65,6 @@ const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
 
 }
 .body{
-    padding-top: 24px;
     height: 100%;
     overflow-y: scroll;
 }

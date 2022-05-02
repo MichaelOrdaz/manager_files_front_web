@@ -6,10 +6,12 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "pretest": "node eslint-runner.js",
+    "pretest": "node eslint-runner.js & npm run cy:run",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue",
     "open-browser": "start http://localhost:3000",
-    "cypress": "npx cypress open"
+    "cypress": "npx cypress open",
+    "cy:run": "cypress run --browser chrome --headless",
+    "start": "npm run open-browser & npm run dev"
   },
   "dependencies": {
     "@quasar/extras": "^1.12.5",
