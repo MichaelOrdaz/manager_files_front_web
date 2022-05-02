@@ -11,22 +11,12 @@
     <PButton class="p-mt-4">
       Buscar
     </PButton>
-    <POptionList
-      class="avatar"
-      :options="options"
-      type="avatar"
-    />
   </div>
 </template>
 <script setup lang="ts">
 import {ref, watch} from 'vue'
-import {Option} from '@/components/Molecules/POptionList.vue'
-import {useLogOut} from '@/Composables/useUserSessionMethods'
 const emit = defineEmits(['update:modelValue'])
 const searchValue = ref<string>('')
-const options = ref<Option[]>([
-    {optionLabel: 'Cerrar sesión', action: useLogOut, icon: ''},
-])
 
 watch(searchValue, () => { emit('update:modelValue', searchValue.value) })
 </script>

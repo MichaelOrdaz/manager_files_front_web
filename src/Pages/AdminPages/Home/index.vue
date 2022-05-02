@@ -83,5 +83,6 @@ watch(rolSelected, () => {getUsers(filterValue.value, rolSelected.value)})
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    height: 100%;
 }
 </style>

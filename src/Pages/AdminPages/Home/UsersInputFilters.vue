@@ -55,7 +55,7 @@ watch([filterValue, rolSelectedId], () => {
     flex-direction: column;
     align-items: flex-start;
     .input-filters{
-        width: 70%;
+        width: 861px;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;

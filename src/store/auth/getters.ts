@@ -1,5 +1,5 @@
 import type {GetterTree} from 'vuex'
-import {Auth} from './auth'
+import {Auth, UserData} from './auth'
 import {StateInterface} from '../index'
 
 const getters: GetterTree<Auth, StateInterface> = {
@@ -20,6 +20,9 @@ const getters: GetterTree<Auth, StateInterface> = {
     },
     getRol(state: Auth): string {
         return state.roles[0] ?? ''
+    },
+    getUserData(state: Auth): Auth {
+        return state
     }
 }
 

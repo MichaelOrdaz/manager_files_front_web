@@ -5,7 +5,8 @@ export interface UserData {
     second_lastname?: string,
     phone?: string,
     image?: string,
-    department_id?: number
+    department_id?: number,
+    email?: string
 }
 export interface Auth {
     access_token?: string,
