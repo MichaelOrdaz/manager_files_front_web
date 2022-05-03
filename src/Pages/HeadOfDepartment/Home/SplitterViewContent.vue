@@ -25,11 +25,27 @@
     <ViewBreadcumb />
     <ViewFoldersDescAndActions />
   </div>
-  <div class="no-data p-mt-122">
+  <div
+    v-if="!documentsList.length"
+    class="no-data p-mt-122"
+  >
     <img
       :src="NoDataSvg"
       alt="No data"
     >
+  </div>
+  <div
+    v-else
+    class="full-width"
+  >
+    <DirFileRowComponent
+      v-for="document in documentsList"
+      :key="document"
+      :firstText="document.name"
+      :secondText="document.createdAt"
+      :thirdText="document.date"
+      :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
+    />
   </div>
 </template>
 
@@ -39,11 +55,14 @@ import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFoldersDescAndActions.vue'
 import AdvancedSearch from './AdvancedSearch.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
+import DirFileRowComponent from '@/components/Organism/DirFileRowComponent.vue'
+import {useGetDocumentsList} from '@/Composables/useDocumentsClientMethods'
+import DirectorySvg from '@/assets/directory-img.svg'
+import FileImg from '@/assets/pdfimg.png'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
-
-
+const {documentsList} = useGetDocumentsList(undefined)
 </script>
 
 <style scoped lang="scss">

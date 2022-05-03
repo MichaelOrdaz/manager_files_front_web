@@ -14,31 +14,25 @@
 /**
  * 
  * @export
- * @interface Auth
+ * @interface InlineResponse2008
  */
-export interface Auth {
+export interface InlineResponse2008 {
+    /**
+     * 
+     * @type {Array&lt;DocumentSimple&gt;}
+     * @memberof InlineResponse2008
+     */
+    data?: any;
     /**
      * 
      * @type {string}
-     * @memberof Auth
-     */
-    accessToken?: any;
-    /**
-     * 
-     * @type {User}
-     * @memberof Auth
-     */
-    user?: any;
-    /**
-     * 
-     * @type {string}
-     * @memberof Auth
+     * @memberof InlineResponse2008
      */
     message?: any;
     /**
      * 
      * @type {boolean}
-     * @memberof Auth
+     * @memberof InlineResponse2008
      */
     success?: any;
 }
