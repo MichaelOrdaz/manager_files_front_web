@@ -16,7 +16,7 @@
       @click="setToggleAction"
     >
       <div
-        class="option"
+        class="option text-left q-pl-md"
         :title="isObject ? val[`${componentOptionLabel}`] : val"
       >
         {{ isObject ? val[props.optionLabel] : val }}

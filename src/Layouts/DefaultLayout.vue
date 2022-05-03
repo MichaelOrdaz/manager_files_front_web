@@ -1,5 +1,14 @@
 <template>
   <div class="main-container">
+    <POptionList
+      class="avatar"
+      :options="options"
+      type="avatar"
+    >
+      <template #header>
+        <PUserDescription />
+      </template>
+    </POptionList>
     <div class="sidebar">
       <img
         src="../assets/logo.svg"
@@ -23,9 +32,15 @@
 
 <script setup lang="ts">
 import {Module, RolesModules} from '@/Layouts/RolesModules'
-import {computed} from 'vue'
+import {computed, ref} from 'vue'
 import PSidebarIconButton from '@/components/Atoms/PSidebarIconButton.vue'
 import {useStore} from 'vuex'
+import PUserDescription from '@/components/Molecules/PUserDescription.vue'
+import {Option} from '@/components/Molecules/POptionList.vue'
+import {useLogOut} from '@/Composables/useUserSessionMethods'
+const options = ref<Option[]>([
+    {optionLabel: 'Cerrar sesión', action: useLogOut, icon: 'logout'},
+])
 
 const userRol = computed<string>(() => useStore().getters.getRol)
 const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
@@ -33,6 +48,7 @@ const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
 
 <style scoped lang="scss">
 .main-container{
+    position: relative;
     width: 100%;
     height: 100%;
     display: grid;
@@ -57,5 +73,11 @@ const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
     width: 73px;
     margin-bottom: 19px;
     margin-top: 6px;
+}
+.avatar{
+    position: absolute;
+    top: 12px;
+    right: 24px;
+    z-index: 10;
 }
 </style>

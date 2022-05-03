@@ -6,7 +6,7 @@
   <router-view :key="$route.name" />
 </template>
 
-<style>
+<style lang="scss">
 *{
     box-sizing: border-box;
 }
@@ -23,4 +23,17 @@ body, html{
     height: 100%;
     width: 100%;
 }
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: $grey-8;
+    border-radius: 4px;
+}
+
 </style>

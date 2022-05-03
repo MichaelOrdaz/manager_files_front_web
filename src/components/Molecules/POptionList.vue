@@ -22,6 +22,12 @@
       @click="show = false"
     >
       <div
+        v-if="$slots.header"
+        class="option"
+      >
+        <slot name="header" />
+      </div>
+      <div
         v-for="(option, index) in props.options"
         :key="index"
         class="option"
