@@ -87,5 +87,5 @@ const endDate = ref<string>('')
 </script>
 
 <style scoped lang="scss">
-@import "AdvancedSearchStyles";
+@import "Styles/AdvancedSearchStyles";
 </style>

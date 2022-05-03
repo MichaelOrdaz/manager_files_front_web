@@ -19,5 +19,6 @@ import UsersActivityList from './UsersActivityList.vue'
 .component-container{
     background-color: white;
     width: 300px;
+    border: solid 2px $grey-6;
 }
 </style>

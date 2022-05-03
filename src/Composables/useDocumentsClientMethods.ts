@@ -7,7 +7,6 @@ export function useGetDocumentsList(parentId: number | undefined) {
     async function getDocumentsList(ParentId: number | undefined) {
         const resp = await new DocumentsApi().getDocuments(ParentId)
         documentsList.value = resp.data.data
-        console.log(documentsList.value)
     }
     getDocumentsList(parentId)
     return {documentsList}
