@@ -1,4 +1,4 @@
-describe('Login errore handler', () => {
+describe('Login errors handler', () => {
     before(() => { cy.visit('') })
     it('Wrong email handler',() => {
         cy.intercept('**/login').as('login')
