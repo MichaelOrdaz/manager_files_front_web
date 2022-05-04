@@ -51,8 +51,7 @@ const props = withDefaults(defineProps<Props>(),{
 
 <style scoped>
 .dir-file-component-container{
-    width: 1056px;
-    max-width: 1056px;
+    width: 100%;
     height: 38px;
     display: flex;
     justify-content: space-between;

@@ -13,6 +13,7 @@
  */export * from './apis/admin-api';
 export * from './apis/auth-api';
 export * from './apis/departments-api';
+export * from './apis/documents-api';
 export * from './apis/roles-api';
 export * from './apis/users-api';
 

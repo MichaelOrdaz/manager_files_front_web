@@ -9,14 +9,15 @@ api.interceptors.request.use(function (config) {
     Loading.show()
     return config
 }, function (error) {
-
+    Loading.hide()
     return Promise.reject(error)
 })
 api.interceptors.response.use(function (response) {
     Loading.hide()
     return response
 }, function (error) {
-    return Promise.reject(error)
+    Loading.hide()
+    return Promise.reject(error.response)
 })
 export {api, AxiosInstance}
 
