@@ -25,6 +25,7 @@ const mutations: MutationTree<Auth> = {
         state.expires_at = ''
         state.status = ''
         state.permissions = []
+        state.roles = []
     },
     AUTH_SET_IS_VALID_TOKEN(state, payload:boolean): void{
         state.isValidToken = payload
