@@ -4,7 +4,7 @@ describe('', () => {
     const userData= {email: 'administrador@puller.mx', password: '12345678'}
     const selectedRol = roles[Math.floor((Math.random() * roles.length))]
     it('Log In', function () {
-        cy.visit('http://qa-dixa.puller.mx')
+        cy.visit('')
         cy.intercept('**/login').as('login')
         cy.intercept('**/account').as('accountData')
         cy.get('[data-cy="login-email-input"]').type(userData.email)

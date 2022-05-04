@@ -21,9 +21,10 @@ async function useLogIn(email: string, password: string): Promise<void> {
     } catch (e) {
         const errorsHandlersMap = {
             401: 'Credenciales invalidas',
-            404: 'Registro no encontrado'
+            404: 'Registro no encontrado',
+            422: 'Credenciales invalidas',
         }
-        Notify.create({message: `${errorsHandlersMap[e.status]}`, color: 'red'})
+        Notify.create({message: `${errorsHandlersMap[e.status] || 'Error'}`, color: 'red'})
     }
 }
 
