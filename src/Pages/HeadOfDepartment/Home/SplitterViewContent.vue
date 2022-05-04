@@ -25,59 +25,68 @@
     <ViewBreadcumb />
     <ViewFoldersDescAndActions />
   </div>
-  <div class="no-data p-mt-122">
+  <div
+    v-if="!documentsList.length"
+    class="no-data p-mt-122"
+  >
     <img
       :src="NoDataSvg"
       alt="No data"
     >
   </div>
+  <div
+    v-else
+    class="section"
+  >
+    <div class="items-col">
+      <DirFileRowComponent
+        v-for="document in filterList"
+        :key="document"
+        class="cursor-pointer"
+        :firstText="document.name"
+        :secondText="document.createdAt"
+        :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
+        :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
+        @click="showFolderInfo(document)"
+      />
+    </div>
+    <FolderInfo
+      v-if="showFolderInfoSection && selectedFolder"
+      class="folder-info"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFoldersDescAndActions.vue'
 import AdvancedSearch from './AdvancedSearch.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
+import DirFileRowComponent from '@/components/Organism/DirFileRowComponent.vue'
+import {useGetDocumentsList} from '@/Composables/useDocumentsClientMethods'
+import DirectorySvg from '@/assets/directory-img.svg'
+import FileImg from '@/assets/pdfimg.png'
+import type {Document} from '@/Types/Document'
+import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
+import Dayjs from 'dayjs'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
+const showFolderInfoSection = ref<boolean>(false)
+const selectedFolder = ref<Document | undefined>(undefined)
+const {documentsList} = useGetDocumentsList(undefined)
 
+const filterList = computed<Document[]>(() => documentsList.value.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase())))
 
+function showFolderInfo(doc: Document) {
+    if (doc.type.name === 'Carpeta') {
+        selectedFolder.value = doc
+        showFolderInfoSection.value = true
+    }
+}
 </script>
 
 <style scoped lang="scss">
-.p-mt-4{margin-top: 4px}
-.p-mt-122{margin-top: 122px}
-.header-container{
-    width: 100%;
-    height: 68px;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 42px;
-    padding-right: 16px;
-    margin: 12px 0;
-    border-bottom: solid 1px $grey-4;
-    .filter-input{display: flex}
-    .avatar{height: 30px}
-    .filter-input{
-        display: flex;
-        width: 100%;
-        position: relative;
-        .search{
-            position: absolute;
-            right: 0;
-            left: 0;
-        }
-    }
-}
-@media (max-width: 1216px){
-    .header-container{
-        height: 120px;
-        flex-direction: column-reverse;
-        align-items: flex-end;
-        .avatar{margin-right: 12px}
-        .filter-input{display: flex; width: 100%}
-    }
-}
+@import "Styles/SplitterViewContentStyles";
 </style>
