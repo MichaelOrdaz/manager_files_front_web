@@ -7,12 +7,14 @@ const Router = createRouter({
     history: createWebHistory(),
     routes: routes,
 })
-Router.beforeEach(async (to, from, next) => {
-    await store.dispatch('user_validate_token')
-    if (!!to.meta.authRequired && !store.getters.isValidToken) {
-        await useLogOut()
-        return
-    }
+Router.beforeEach((to, from, next) => {
+    store.dispatch('user_validate_token').then(() => {
+        if (!!to.meta.authRequired && !store.getters.isValidToken) {
+            useLogOut()
+            return
+        }
+    })
+
     const haveToken: boolean | string = !!localStorage.getItem('access_token') || ''
     const authRequired = !!to.meta.authRequired
     const PathMainView = store.getters['initialPage'] ?? ''

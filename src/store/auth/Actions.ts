@@ -5,37 +5,48 @@ import {api} from '@/Axios'
 import {AuthApi} from '@/services/api/api'
 
 const actions: ActionTree<Auth, StateInterface> = {
-    async auth_request({ commit, dispatch }, {email, password}) {
-        commit('AUTH_REQUEST')
-        try {
-            const resp = await new AuthApi().login({email, password})
-            const token = resp.data.data.token
-            localStorage.setItem('access_token', token)
-            api.defaults.headers.common.Authorization = `Bearer ${token}`
-            commit('AUTH_SUCCESS', {token})
-            await dispatch('user_request')
-        } catch (e) {
-            commit('USER_ERROR')
-        }
+    auth_request({ commit, dispatch }, {email, password}) {
+        return new Promise<Auth>((resolve, reject) => {
+            new AuthApi().login({email, password})
+                .then(resp => {
+                    const token = resp.data.data.token
+                    localStorage.setItem('access_token', token)
+                    api.defaults.headers.common.Authorization = `Bearer ${token}`
+                    commit('AUTH_SUCCESS', {token})
+                    dispatch('user_request').then(() => {resolve(resp.data.data)})
+                }).catch(err => {
+                    commit('USER_ERROR')
+                    localStorage.removeItem('access_token')
+                    reject(err)
+                })
+        })
     },
-    async user_request({commit, dispatch}) {
-        try {
-            const resp = await api.get('/account')
-            commit('USER_SUCCESS', resp.data.data)
-            commit('AUTH_SET_IS_VALID_TOKEN', true)
-        } catch (e) {
-            commit('USER_ERROR')
-            await dispatch('user_logout')
-        }
+    user_request({commit, dispatch}) {
+        return new Promise((resolve, reject) => {
+            api.get('/account')
+                .then(resp => {
+                    commit('USER_SUCCESS', resp.data.data)
+                    commit('AUTH_SET_IS_VALID_TOKEN')
+                    resolve(resp)
+                })
+                .catch((err) => {
+                    commit('USER_ERROR')
+                    dispatch('user_logout')
+                    reject(err)
+                })
+        })
     },
     user_logout({commit}){
-        try {
+        return new Promise((resolve, reject) => {
             new AuthApi().logout()
-        } finally {
-            localStorage.removeItem('access_token')
-            localStorage.removeItem('vuex')
-            commit('AUTH_LOGOUT')
-        }
+                .then((resp) => resolve(resp))
+                .catch((err) => reject(err))
+                .finally(() => {
+                    localStorage.removeItem('access_token')
+                    localStorage.removeItem('vuex')
+                    commit('AUTH_LOGOUT')
+                })
+        })
     },
     async user_validate_token({commit}) {
         try {
