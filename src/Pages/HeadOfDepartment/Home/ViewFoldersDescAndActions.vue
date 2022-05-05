@@ -49,6 +49,7 @@
           v-model="newFolderName"
           width="100%"
           :rules="[(value: string) => !!value.trim() || 'Agrega un nombre valido']"
+          data-cy="new-folder-name"
         />
       </template>
     </PModal>
