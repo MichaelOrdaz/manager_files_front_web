@@ -42,9 +42,15 @@
       v-if="showCreateFolderModal"
       modalTitle="Crear nueva carpeta"
       @cancel="showCreateFolderModal = false"
+      @accept="createNewFolder"
     >
       <template #body>
-        <PInput width="100%" />
+        <PInput
+          v-model="newFolderName"
+          width="100%"
+          :rules="[(value: string) => !!value.trim() || 'Agrega un nombre valido']"
+          data-cy="new-folder-name"
+        />
       </template>
     </PModal>
   </div>
@@ -54,9 +60,26 @@ import PTextIcon from '@/components/Atoms/PTextIcon.vue'
 import LoadPdfFileModal from '@/components/Organism/LoadPdfFileModal/LoadPdfFileModal.vue'
 import PModal from '@/components/Molecules/PModal.vue'
 import {ref} from 'vue'
+import {useCreateFolder} from '@/Composables/useDocumentsClientMethods'
+import {Notify} from 'quasar'
 
 const showLoadFileModal = ref<boolean>(false)
 const showCreateFolderModal = ref<boolean>(false)
+const newFolderName = ref<string>('')
+async function createNewFolder() {
+    if (!newFolderName.value) {
+        Notify.create({message: 'Agrega un nombre de carpeta valido', color: 'red'})
+        return
+    }
+    try {
+        await useCreateFolder(newFolderName.value)
+        Notify.create({message: 'Se ha creaco la carpeta', color: 'green'})
+        showCreateFolderModal.value = false
+        return
+    }catch (e) {
+        Notify.create({message: 'Se ha generado un error', color: 'red'})
+    }
+}
 </script>
 <style scoped lang="scss">
 div :deep(.modal-container){text-align: start}

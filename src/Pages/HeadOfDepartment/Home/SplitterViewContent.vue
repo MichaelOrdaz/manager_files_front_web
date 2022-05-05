@@ -40,8 +40,8 @@
   >
     <div class="items-col">
       <DirFileRowComponent
-        v-for="document in filterList"
-        :key="document"
+        v-for="(document, index) in filterList"
+        :key="index"
         class="cursor-pointer"
         :firstText="document.name"
         :secondText="document.createdAt"
