@@ -22,7 +22,10 @@
     </div>
   </div>
   <div>
-    <ViewBreadcumb />
+    <ViewBreadcumb
+      :actualFolder="selectedFolder"
+      @change-folder="changeFolder"
+    />
     <ViewFoldersDescAndActions />
   </div>
   <div
@@ -52,6 +55,7 @@
     </div>
     <FolderInfo
       v-if="showFolderInfoSection && selectedFolder"
+      :id="actualFolderId"
       class="folder-info"
     />
   </div>
@@ -75,15 +79,32 @@ const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
 const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
-const {documentsList} = useGetDocumentsList(undefined)
+const actualFolderId = ref<number | undefined>()
+const timer = ref(null)
+const clicksCount = ref<number>(0)
+const {documentsList, getDocumentsList} = useGetDocumentsList(actualFolderId.value)
 
 const filterList = computed<Document[]>(() => documentsList.value.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase())))
 
 function showFolderInfo(doc: Document) {
+    clicksCount.value++
     if (doc.type.name === 'Carpeta') {
         selectedFolder.value = doc
-        showFolderInfoSection.value = true
     }
+    if (clicksCount.value === 1) {
+        timer.value = setTimeout(() => {
+            clicksCount.value = 0
+            showFolderInfoSection.value = true
+        }, 250)
+    }else {
+        clearTimeout(timer.value)
+        getDocumentsList(selectedFolder.value.id)
+        clicksCount.value = 0
+    }
+}
+
+function changeFolder(doc: Document) {
+    getDocumentsList(doc.id ? doc.id : undefined)
 }
 </script>
 

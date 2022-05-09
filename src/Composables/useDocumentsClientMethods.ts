@@ -10,7 +10,7 @@ export function useGetDocumentsList(parentId: number | undefined) {
         documentsList.value = resp.data.data
     }
     getDocumentsList(parentId)
-    return {documentsList}
+    return {documentsList, getDocumentsList}
 }
 
 export async function useCreateFolder(newFolderName: string, parentId?: number): Promise<AxiosResponse> {
@@ -19,4 +19,15 @@ export async function useCreateFolder(newFolderName: string, parentId?: number):
             .then(resp => resolve(resp))
             .catch(error => reject(error))
     })
+}
+
+export function useGetDocumentData(documentId: undefined | number) {
+    const documentData = ref<Document | []>()
+    if (!documentId) return {}
+    async function getDocData(DocumentId: number | undefined) {
+        const resp = await new DocumentsApi().getDocument(DocumentId)
+        documentData.value = resp.data.data
+    }
+    getDocData(documentId)
+    return { documentData, getDocData }
 }

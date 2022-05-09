@@ -12,6 +12,20 @@ import ComponentHeader from '@/components/Organism/FolderInfoComponent/Component
 import UsersList from './UsersList.vue'
 import DirData from './DirData.vue'
 import UsersActivityList from './UsersActivityList.vue'
+import { useGetDocumentData } from '@/Composables/useDocumentsClientMethods'
+import {watch} from 'vue'
+
+interface Props{
+    id?: number
+}
+
+const props =  withDefaults(defineProps<Props>(),{id: undefined})
+const { documentData, getDocData } = useGetDocumentData(props.id)
+
+watch(() =>  props.id, () => {
+    getDocData(props.id)
+    console.log(documentData.value)
+})
 </script>
 
 
