@@ -23,28 +23,35 @@
 </template>
 <script setup lang="ts">
 import {Document} from '@/Types/Document'
-import {ref, watch} from 'vue'
+import {ref} from 'vue'
 
 interface Props{
-    actualFolder?: Document
+    actualFolder?: Document,
+    triggerFolderChange?: boolean
 }
 const emit = defineEmits(['change-folder'])
-const props = withDefaults(defineProps<Props>(), {actualFolder: undefined})
-const breadCrumbElements = ref<Document[]>([{id:0,name: 'Home', createdAt: '', type: {name: 'Archivo', id: 0}, date: '', location: '',}])
+const props = withDefaults(defineProps<Props>(), {actualFolder: undefined, clickCounter: false})
+const breadCrumbElements = ref<Document[]>([{id:0,name: 'Inicio', createdAt: '', type: {name: 'Archivo', id: 1}, date: '', location: '',}])
 
 function changeFolder(doc: Document) {
     emit('change-folder', doc)
     const folderIndex = breadCrumbElements.value.findIndex(el => el.id === doc.id)
-    console.log(folderIndex)
+    if (folderIndex === 0 ){
+        breadCrumbElements.value = [{id:0,name: 'Inicio', createdAt: '', type: {name: 'Archivo', id: 1}, date: '', location: '',}]
+        return
+    }
     if (folderIndex > 0) {
-        breadCrumbElements.value.splice(folderIndex, breadCrumbElements.value.length)
+        breadCrumbElements.value.splice(folderIndex + 1, breadCrumbElements.value.length)
         return
     }
 }
 
-watch(() => props.actualFolder, () => {
-    breadCrumbElements.value.push(props.actualFolder)
-}, {deep: true})
+function addElementToBreadcrumb() {
+    if (props.actualFolder) {
+        breadCrumbElements.value.push(props.actualFolder)
+    }
+}
+defineExpose({addElementToBreadcrumb})
 </script>
 <style scoped lang="scss">
 .p-pl-42 {

@@ -23,6 +23,7 @@
   </div>
   <div>
     <ViewBreadcumb
+      ref="breadcrumbRef"
       :actualFolder="selectedFolder"
       @change-folder="changeFolder"
     />
@@ -82,6 +83,7 @@ const selectedFolder = ref<Document | undefined>(undefined)
 const actualFolderId = ref<number | undefined>()
 const timer = ref(null)
 const clicksCount = ref<number>(0)
+const breadcrumbRef = ref<{component: typeof ViewBreadcumb, addElementToBreadcrumb: () => void}>()
 const {documentsList, getDocumentsList} = useGetDocumentsList(actualFolderId.value)
 
 const filterList = computed<Document[]>(() => documentsList.value.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase())))
@@ -100,6 +102,7 @@ function showFolderInfo(doc: Document) {
         clearTimeout(timer.value)
         getDocumentsList(selectedFolder.value.id)
         clicksCount.value = 0
+        breadcrumbRef.value.addElementToBreadcrumb()
     }
 }
 
