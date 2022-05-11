@@ -6,7 +6,7 @@ import {DocumentsApi} from '@/services/api/api'
 const actions: ActionTree<FoldersStore, StateInterface> = {
     get_folder_content({state, commit}) {
         return new Promise((resolve, reject) => {
-            new DocumentsApi().getDocuments(state.currentFolder && state.currentFolder.id !== 0 ? state.currentFolder?.id : undefined )
+            new DocumentsApi().getDocuments(state.selectedItem && state.selectedItem.id !== 0 ? state.selectedItem?.id : undefined )
                 .then(resp => {
                     commit('SET_FOLDER_CONTENT', resp.data.data)
                     resolve(resp)

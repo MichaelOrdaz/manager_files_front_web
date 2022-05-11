@@ -1,29 +1,31 @@
 <template>
   <div class="component-container">
-    <ComponentHeader />
-    <UsersList />
-    <DirData />
-    <UsersActivityList />
+    <ComponentHeader :docData="documentData" />
+    <UsersList :docData="documentData" />
+    <FolderDetails
+      v-if="store.getters.isFolder"
+      :docData="documentData"
+    />
+    <FileDetails
+      v-else
+      :docData="documentData"
+    />
+    <UsersActivityList :docData="documentData" />
   </div>
 </template>
 
 <script setup lang="ts">
 import ComponentHeader from '@/components/Organism/FolderInfoComponent/ComponentHeader.vue'
 import UsersList from './UsersList.vue'
-import DirData from './DirData.vue'
+import FolderDetails from './FolderDetails.vue'
+import FileDetails from './FileDetails.vue'
 import UsersActivityList from './UsersActivityList.vue'
-import { useGetDocumentData } from '@/Composables/useDocumentsClientMethods'
+import store from '@/store'
 import {watch} from 'vue'
-
-interface Props{
-    id?: number
-}
-
-const props =  withDefaults(defineProps<Props>(),{id: undefined})
-const { documentData, getDocData } = useGetDocumentData(props.id)
-
-watch(() =>  props.id, () => {
-    getDocData(props.id)
+import {useGetDocumentData} from '@/Composables/useDocumentsClientMethods'
+const {getDocData,documentData} = useGetDocumentData(store.getters.getCurrentFolder.id)
+watch(() => store.getters.getCurrentFolder, () => {
+    getDocData(store.getters.getCurrentFolder.id)
 })
 </script>
 

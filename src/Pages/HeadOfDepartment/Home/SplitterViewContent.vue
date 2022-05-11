@@ -102,10 +102,8 @@ function showFolderInfo(doc: Document) {
     }
 }
 function setCurrentFolder(doc: Document) {
-    if (doc.type.name === 'Carpeta') {
-        selectedFolder.value = doc
-        store.commit('SET_CURRENT_FOLDER', doc)
-    }
+    selectedFolder.value = doc
+    store.commit('SET_CURRENT_FOLDER', doc)
 }
 function changeFolder() {
     store.dispatch('get_folder_content')

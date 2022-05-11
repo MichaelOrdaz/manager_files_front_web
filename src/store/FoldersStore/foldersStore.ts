@@ -1,7 +1,7 @@
 import type {Document} from '@/Types/Document'
 
 export interface FoldersStore {
-    currentFolder?: Document,
+    selectedItem?: Document,
     breadcrumbStructure?: Document[]
     treeStructure?: Document[],
     folderContent?: Document[],
@@ -9,7 +9,7 @@ export interface FoldersStore {
 
 export default function state(): FoldersStore {
     return {
-        currentFolder: undefined,
+        selectedItem: undefined,
         breadcrumbStructure: [{
             id: 0,
             type: {id: 1, name: 'Carpeta'},
@@ -26,6 +26,6 @@ export default function state(): FoldersStore {
             location: '',
             createdAt: ''
         }],
-        folderContent: []
+        folderContent: [],
     }
 }
