@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+import store from '@/store/index'
+store.commit('RESET_CURRENT_FOLDER')
+store.commit('RESET_BREADCRUMB_STRUCTURE')
 </script>
 
 <template>

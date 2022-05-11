@@ -65,7 +65,7 @@ import {ref} from 'vue'
 import {useCreateFolder} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
 
-defineEmits(['update-list'])
+const emit = defineEmits(['update-list'])
 interface Props { selectedFolderId?: number }
 const props = withDefaults(defineProps<Props>(), {selectedFolderId: undefined})
 const showLoadFileModal = ref<boolean>(false)
@@ -78,13 +78,14 @@ async function createNewFolder() {
         return
     }
     try {
-        await useCreateFolder(newFolderName.value)
+        await useCreateFolder(newFolderName.value, props.selectedFolderId)
         Notify.create({message: 'Se ha creaco la carpeta', color: 'green'})
         showCreateFolderModal.value = false
         return
     }catch (e) {
         Notify.create({message: 'Se ha generado un error', color: 'red'})
     }
+    emit('update-list')
 }
 
 function loadUserImg() {

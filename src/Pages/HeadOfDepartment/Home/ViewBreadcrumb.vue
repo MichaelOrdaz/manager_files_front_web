@@ -12,7 +12,7 @@
         />
       </template>
       <q-breadcrumbs-el
-        v-for="document in breadCrumbElements"
+        v-for="document in breadcrumbData"
         :key="document.id"
         class="cursor-pointer"
         :label="document.name"
@@ -23,35 +23,21 @@
 </template>
 <script setup lang="ts">
 import {Document} from '@/Types/Document'
-import {ref} from 'vue'
+import {computed} from 'vue'
+import store from '@/store/index'
 
 interface Props{
     actualFolder?: Document,
     triggerFolderChange?: boolean
 }
 const emit = defineEmits(['change-folder'])
-const props = withDefaults(defineProps<Props>(), {actualFolder: undefined, clickCounter: false})
-const breadCrumbElements = ref<Document[]>([{id:0,name: 'Inicio', createdAt: '', type: {name: 'Archivo', id: 1}, date: '', location: '',}])
-
+withDefaults(defineProps<Props>(), {actualFolder: undefined, clickCounter: false})
+const breadcrumbData = computed<Document[]>(() => store.getters.getBreadcrumbStructure)
 function changeFolder(doc: Document) {
     emit('change-folder', doc)
-    const folderIndex = breadCrumbElements.value.findIndex(el => el.id === doc.id)
-    if (folderIndex === 0 ){
-        breadCrumbElements.value = [{id:0,name: 'Inicio', createdAt: '', type: {name: 'Archivo', id: 1}, date: '', location: '',}]
-        return
-    }
-    if (folderIndex > 0) {
-        breadCrumbElements.value.splice(folderIndex + 1, breadCrumbElements.value.length)
-        return
-    }
+    store.commit('REBUILD_BREADCRUMB', doc)
 }
 
-function addElementToBreadcrumb() {
-    if (props.actualFolder) {
-        breadCrumbElements.value.push(props.actualFolder)
-    }
-}
-defineExpose({addElementToBreadcrumb})
 </script>
 <style scoped lang="scss">
 .p-pl-42 {

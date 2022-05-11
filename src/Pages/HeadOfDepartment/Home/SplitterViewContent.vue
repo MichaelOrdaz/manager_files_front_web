@@ -23,13 +23,12 @@
   </div>
   <div>
     <ViewBreadcumb
-      ref="breadcrumbRef"
       :actualFolder="selectedFolder"
       @change-folder="changeFolder"
     />
     <ViewFoldersDescAndActions
       :selectedFolderId="selectedFolder ? selectedFolder.id : undefined"
-      @update-list="changeFolder"
+      @update-list="changeFolder(selectedFolder)"
     />
   </div>
   <div
@@ -78,6 +77,7 @@ import FileImg from '@/assets/pdfimg.png'
 import type {Document} from '@/Types/Document'
 import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import Dayjs from 'dayjs'
+import store from '@/store/index'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -86,7 +86,6 @@ const selectedFolder = ref<Document | undefined>(undefined)
 const actualFolderId = ref<number | undefined>()
 const timer = ref(null)
 const clicksCount = ref<number>(0)
-const breadcrumbRef = ref<{component: typeof ViewBreadcumb, addElementToBreadcrumb: () => void}>()
 const {documentsList, getDocumentsList} = useGetDocumentsList(actualFolderId.value)
 
 const filterList = computed<Document[]>(() => documentsList.value.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase())))
@@ -95,6 +94,7 @@ function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (doc.type.name === 'Carpeta') {
         selectedFolder.value = doc
+        store.commit('SET_CURRENT_FOLDER', doc)
     }
     if (clicksCount.value === 1) {
         timer.value = setTimeout(() => {
@@ -105,7 +105,7 @@ function showFolderInfo(doc: Document) {
         clearTimeout(timer.value)
         getDocumentsList(selectedFolder.value.id)
         clicksCount.value = 0
-        breadcrumbRef.value.addElementToBreadcrumb()
+        store.commit('BUILD_BREADCRUMB', doc)
     }
 }
 
