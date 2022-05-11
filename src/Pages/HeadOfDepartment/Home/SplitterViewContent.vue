@@ -27,7 +27,10 @@
       :actualFolder="selectedFolder"
       @change-folder="changeFolder"
     />
-    <ViewFoldersDescAndActions />
+    <ViewFoldersDescAndActions
+      :selectedFolderId="selectedFolder ? selectedFolder.id : undefined"
+      @update-list="changeFolder"
+    />
   </div>
   <div
     v-if="!documentsList.length"

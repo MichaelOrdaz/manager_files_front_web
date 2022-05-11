@@ -31,11 +31,13 @@
         iconName="file_upload"
         iconColor="gold"
         text="Subir archivo"
-        @click="showLoadFileModal = true"
+        @click="loadUserImg"
       />
     </div>
     <LoadPdfFileModal
       v-if="showLoadFileModal"
+      :newFile="newFile"
+      :actualFolderId="props.selectedFolderId"
       @cancel="showLoadFileModal = false"
     />
     <PModal
@@ -63,9 +65,13 @@ import {ref} from 'vue'
 import {useCreateFolder} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
 
+defineEmits(['update-list'])
+interface Props { selectedFolderId?: number }
+const props = withDefaults(defineProps<Props>(), {selectedFolderId: undefined})
 const showLoadFileModal = ref<boolean>(false)
 const showCreateFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
+const newFile = ref<string | File>('')
 async function createNewFolder() {
     if (!newFolderName.value) {
         Notify.create({message: 'Agrega un nombre de carpeta valido', color: 'red'})
@@ -78,6 +84,20 @@ async function createNewFolder() {
         return
     }catch (e) {
         Notify.create({message: 'Se ha generado un error', color: 'red'})
+    }
+}
+
+function loadUserImg() {
+    const fileInput: HTMLInputElement = document.createElement('input')
+    fileInput.type = 'file'
+    fileInput.style.display = 'none'
+    fileInput.accept = 'application/pdf'
+    fileInput.dataset.cy = 'file-loader'
+    fileInput.click()
+    fileInput.onchange = () => {
+        newFile.value = fileInput.files?.item(0)
+        showLoadFileModal.value = true
+        fileInput.remove()
     }
 }
 </script>

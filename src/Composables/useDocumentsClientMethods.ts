@@ -1,6 +1,7 @@
 import {DocumentsApi} from '@/services/api/api'
 import {ref} from 'vue'
 import type {Document} from '@/Types/Document'
+import type {File} from '@/Types/File'
 import {AxiosResponse} from 'axios'
 
 export function useGetDocumentsList(parentId: number | undefined) {
@@ -30,4 +31,13 @@ export function useGetDocumentData(documentId: undefined | number) {
     }
     getDocData(documentId)
     return { documentData, getDocData }
+}
+
+export async function useCreateFile(file: File, parentId: number|undefined): Promise<AxiosResponse> {
+    return new Promise((resolve, reject) => {
+        new DocumentsApi().createFile(file.name, file.description, file.min_identifier,
+            file.max_identifier, file.date, file.file, parentId)
+            .then(resp => resolve(resp))
+            .catch(error => reject(error))
+    })
 }

@@ -72,6 +72,81 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
+         * create a document in the system
+         * @summary Create - File
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createFile: async (name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/documents`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new FormData();
+
+            // authentication bearerAuth required
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+
+            if (description !== undefined) { 
+                localVarFormParams.append('description', description as any);
+            }
+
+            if (minIdentifier !== undefined) { 
+                localVarFormParams.append('min_identifier', minIdentifier as any);
+            }
+
+            if (maxIdentifier !== undefined) { 
+                localVarFormParams.append('max_identifier', maxIdentifier as any);
+            }
+
+            if (date !== undefined) { 
+                localVarFormParams.append('date', date as any);
+            }
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+
+            if (parentId !== undefined) { 
+                localVarFormParams.append('parent_id', parentId as any);
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -178,6 +253,26 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * create a document in the system
+         * @summary Create - File
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createFile(name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).createFile(name, description, minIdentifier, maxIdentifier, date, file, parentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -225,6 +320,22 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
             return DocumentsApiFp(configuration).createDocumentFolder(body, options).then((request) => request(axios, basePath));
         },
         /**
+         * create a document in the system
+         * @summary Create - File
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createFile(name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any): AxiosPromise<InlineResponse2009> {
+            return DocumentsApiFp(configuration).createFile(name, description, minIdentifier, maxIdentifier, date, file, parentId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -264,6 +375,23 @@ export class DocumentsApi extends BaseAPI {
      */
     public createDocumentFolder(body?: Folder, options?: any) {
         return DocumentsApiFp(this.configuration).createDocumentFolder(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * create a document in the system
+     * @summary Create - File
+     * @param {string} [name] 
+     * @param {string} [description] 
+     * @param {string} [minIdentifier] 
+     * @param {string} [maxIdentifier] 
+     * @param {string} [date] 
+     * @param {string} [file] 
+     * @param {number} [parentId] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DocumentsApi
+     */
+    public createFile(name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any) {
+        return DocumentsApiFp(this.configuration).createFile(name, description, minIdentifier, maxIdentifier, date, file, parentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Get the document in a single request
