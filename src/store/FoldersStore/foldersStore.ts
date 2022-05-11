@@ -3,7 +3,8 @@ import type {Document} from '@/Types/Document'
 export interface FoldersStore {
     currentFolder?: Document,
     breadcrumbStructure?: Document[]
-    treeStructure?: Document[]
+    treeStructure?: Document[],
+    folderContent?: Document[],
 }
 
 export default function state(): FoldersStore {
@@ -24,6 +25,7 @@ export default function state(): FoldersStore {
             date: '',
             location: '',
             createdAt: ''
-        }]
+        }],
+        folderContent: []
     }
 }

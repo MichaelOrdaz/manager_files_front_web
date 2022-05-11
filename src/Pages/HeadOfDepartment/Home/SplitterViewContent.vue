@@ -28,11 +28,11 @@
     />
     <ViewFoldersDescAndActions
       :selectedFolderId="selectedFolder ? selectedFolder.id : undefined"
-      @update-list="changeFolder(selectedFolder)"
+      @update-list="changeFolder"
     />
   </div>
   <div
-    v-if="!documentsList.length"
+    v-if="!list.length"
     class="no-data p-mt-122"
   >
     <img
@@ -46,7 +46,7 @@
   >
     <div class="items-col">
       <DirFileRowComponent
-        v-for="(document, index) in filterList"
+        v-for="(document, index) in list"
         :key="index"
         class="cursor-pointer"
         :firstText="document.name"
@@ -58,7 +58,6 @@
     </div>
     <FolderInfo
       v-if="showFolderInfoSection && selectedFolder"
-      :id="actualFolderId"
       class="folder-info"
     />
   </div>
@@ -71,7 +70,6 @@ import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFolders
 import AdvancedSearch from './AdvancedSearch.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
 import DirFileRowComponent from '@/components/Organism/DirFileRowComponent.vue'
-import {useGetDocumentsList} from '@/Composables/useDocumentsClientMethods'
 import DirectorySvg from '@/assets/directory-img.svg'
 import FileImg from '@/assets/pdfimg.png'
 import type {Document} from '@/Types/Document'
@@ -83,35 +81,36 @@ const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
 const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
-const actualFolderId = ref<number | undefined>()
 const timer = ref(null)
 const clicksCount = ref<number>(0)
-const {documentsList, getDocumentsList} = useGetDocumentsList(actualFolderId.value)
 
-const filterList = computed<Document[]>(() => documentsList.value.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase())))
-
+const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value)))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
-    if (doc.type.name === 'Carpeta') {
-        selectedFolder.value = doc
-        store.commit('SET_CURRENT_FOLDER', doc)
-    }
     if (clicksCount.value === 1) {
         timer.value = setTimeout(() => {
+            setCurrentFolder(doc)
             clicksCount.value = 0
             showFolderInfoSection.value = true
         }, 250)
     }else {
         clearTimeout(timer.value)
-        getDocumentsList(selectedFolder.value.id)
-        clicksCount.value = 0
+        setCurrentFolder(doc)
         store.commit('BUILD_BREADCRUMB', doc)
+        store.dispatch('get_folder_content')
+        clicksCount.value = 0
     }
 }
-
-function changeFolder(doc: Document) {
-    getDocumentsList(doc.id ? doc.id : undefined)
+function setCurrentFolder(doc: Document) {
+    if (doc.type.name === 'Carpeta') {
+        selectedFolder.value = doc
+        store.commit('SET_CURRENT_FOLDER', doc)
+    }
 }
+function changeFolder() {
+    store.dispatch('get_folder_content')
+}
+store.dispatch('get_folder_content')
 </script>
 
 <style scoped lang="scss">

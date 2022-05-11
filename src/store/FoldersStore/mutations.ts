@@ -30,6 +30,9 @@ const mutations: MutationTree<FoldersStore> = {
         if (folderIndex === 0) {
             state.breadcrumbStructure.splice(1, state.breadcrumbStructure.length)
         }
+    },
+    SET_FOLDER_CONTENT(state, payload: Document[]): void {
+        state.folderContent = payload
     }
 }
 

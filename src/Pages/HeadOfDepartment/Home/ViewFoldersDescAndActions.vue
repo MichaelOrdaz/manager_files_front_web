@@ -64,8 +64,12 @@ import PModal from '@/components/Molecules/PModal.vue'
 import {ref} from 'vue'
 import {useCreateFolder} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
+import store from '@/store'
 
-const emit = defineEmits(['update-list'])
+const emit = defineEmits<{
+    // eslint-disable-next-line no-unused-vars
+    (e: 'update-list'): void,
+}>()
 interface Props { selectedFolderId?: number }
 const props = withDefaults(defineProps<Props>(), {selectedFolderId: undefined})
 const showLoadFileModal = ref<boolean>(false)
@@ -78,14 +82,13 @@ async function createNewFolder() {
         return
     }
     try {
-        await useCreateFolder(newFolderName.value, props.selectedFolderId)
+        await useCreateFolder(newFolderName.value, store.getters?.getCurrentFolder ? store.getters?.getCurrentFolder?.id : undefined)
         Notify.create({message: 'Se ha creaco la carpeta', color: 'green'})
         showCreateFolderModal.value = false
-        return
+        emit('update-list')
     }catch (e) {
         Notify.create({message: 'Se ha generado un error', color: 'red'})
     }
-    emit('update-list')
 }
 
 function loadUserImg() {

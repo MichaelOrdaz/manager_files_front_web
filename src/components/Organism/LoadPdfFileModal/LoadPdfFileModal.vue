@@ -78,6 +78,7 @@ import {reactive, ref, withDefaults} from 'vue'
 import type {File} from '@/Types/File'
 import {useCreateFile} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
+import store from '@/store'
 interface Props {
     newFile?: string, actualFolderId?: number
 }
@@ -90,12 +91,12 @@ const formData = reactive<File>({
     name: '', description: '', date: '', min_identifier: '', file: props.newFile
 })
 async function createFile() {
-    console.log(props.actualFolderId)
     const isValidForm: boolean = formRef.value.validate()
     if (!isValidForm) return
     try {
-        await useCreateFile(formData, props.actualFolderId)
+        await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
         Notify.create({message: 'Se ha subido el archivo', color: 'green'})
+        await store.dispatch('get_folder_content')
         emit('cancel')
     } catch (e) {
         Notify.create({message: 'Valida los campos', color: 'red'})

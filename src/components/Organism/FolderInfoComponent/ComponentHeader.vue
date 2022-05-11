@@ -9,7 +9,7 @@
         class="q-mx-md"
         variant="text-4"
       >
-        Nombre de carpeta
+        {{ store.getters?.getCurrentFolder?.name }}
       </PText>
       <PIcon
         class="cursor-pointer"
@@ -58,6 +58,7 @@
 <script setup lang="ts">
 import PModal from '@/components/Molecules/PModal.vue'
 import {ref} from 'vue'
+import store from '@/store'
 
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)

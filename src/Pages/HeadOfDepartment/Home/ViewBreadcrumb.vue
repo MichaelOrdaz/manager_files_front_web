@@ -36,6 +36,8 @@ const breadcrumbData = computed<Document[]>(() => store.getters.getBreadcrumbStr
 function changeFolder(doc: Document) {
     emit('change-folder', doc)
     store.commit('REBUILD_BREADCRUMB', doc)
+    store.commit('SET_CURRENT_FOLDER', doc)
+    store.dispatch('get_folder_content')
 }
 
 </script>

@@ -24,7 +24,6 @@ const { documentData, getDocData } = useGetDocumentData(props.id)
 
 watch(() =>  props.id, () => {
     getDocData(props.id)
-    console.log(documentData.value)
 })
 </script>
 

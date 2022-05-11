@@ -16,7 +16,7 @@ export function useGetDocumentsList(parentId: number | undefined) {
 
 export async function useCreateFolder(newFolderName: string, parentId?: number): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
-        new DocumentsApi().createDocumentFolder({name: newFolderName, parentId: parentId})
+        new DocumentsApi().createDocumentFolder({name: newFolderName, parent_id: parentId})
             .then(resp => resolve(resp))
             .catch(error => reject(error))
     })
@@ -36,7 +36,7 @@ export function useGetDocumentData(documentId: undefined | number) {
 export async function useCreateFile(file: File, parentId: number|undefined): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
         new DocumentsApi().createFile(file.name, file.description, file.min_identifier,
-            file.max_identifier, file.date, file.file, parentId)
+            file.max_identifier, file.date, file.file, parentId === 0 ? undefined : parentId )
             .then(resp => resolve(resp))
             .catch(error => reject(error))
     })
