@@ -114,6 +114,6 @@ deploy_staging:
     name: $BRANCH_STAGING
     url: http://staging-$PROJECT_NAME.$MAIN_DOMAIN
   only:
-    - qa
+    - master
 
 
