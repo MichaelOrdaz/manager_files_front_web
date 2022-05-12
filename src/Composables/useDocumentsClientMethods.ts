@@ -1,6 +1,7 @@
 import {DocumentsApi} from '@/services/api/api'
 import {ref} from 'vue'
 import type {Document} from '@/Types/Document'
+import {AxiosResponse} from 'axios'
 
 export function useGetDocumentsList(parentId: number | undefined) {
     const documentsList = ref<Document[]>([])
@@ -10,4 +11,12 @@ export function useGetDocumentsList(parentId: number | undefined) {
     }
     getDocumentsList(parentId)
     return {documentsList}
+}
+
+export async function useCreateFolder(newFolderName: string, parentId?: number): Promise<AxiosResponse> {
+    return new Promise((resolve, reject) => {
+        new DocumentsApi().createDocumentFolder({name: newFolderName, parentId: parentId})
+            .then(resp => resolve(resp))
+            .catch(error => reject(error))
+    })
 }
