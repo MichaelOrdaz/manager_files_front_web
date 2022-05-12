@@ -25,6 +25,7 @@
           placeHolder="ejemplo.pdf"
           label="Nombre archivo"
           :rules="[(value:string) => !!value.trim() || 'Agrega un nombre válido']"
+          data-cy="file-name"
         />
         <div class="textarea-container text-left p-mt-18">
           <PText variant="subtitle-3">
@@ -34,7 +35,7 @@
             v-model="formData.description"
             class="puller-textarea"
             placeholder="Contenido del evento..."
-            data-cy="aviso-descripcion"
+            data-cy="file-desc"
           />
         </div>
         <div class="date-serial-container flex no-wrap justify-between p-mt-18">
@@ -49,6 +50,7 @@
             label="Rango de folio"
             width="253px"
             :rules="[(value:string) => !!value.trim() || 'Agrega folio/s']"
+            data-cy="identifier-input"
           />
         </div>
         <div class="buttons flex justify-end p-mt-46">
@@ -60,6 +62,7 @@
           </PButton>
           <PButton
             class=""
+            data-cy="load-file-btn"
             @click.prevent="createFile"
           >
             Subir archivo
