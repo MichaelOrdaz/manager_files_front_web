@@ -61,7 +61,7 @@ import {ref} from 'vue'
 import store from '@/store'
 import type {Document} from '@/Types/Document'
 
-interface Props { docData: Document }
+interface Props { docData: Document}
 const props = defineProps<Props>()
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)

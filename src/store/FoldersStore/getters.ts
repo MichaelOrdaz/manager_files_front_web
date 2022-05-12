@@ -8,6 +8,16 @@ const getters: GetterTree<FoldersStore, StateInterface> = {
     getCurrentFolder: (state): Document => state.selectedItem,
     getBreadcrumbStructure: (state): Document[] => state.breadcrumbStructure,
     getFolderContent: (state): Document[] => state.folderContent,
+    getTree: (state) => state.folderContent.map(el => {
+        return {
+            folderId: el.id,
+            label: el.name,
+            icon: 'folder',
+            type: el.type,
+            lazy: true,
+            children: []
+        }
+    }).filter(ele => ele.type.name === 'Carpeta' ),
     isFolder: (state): boolean => state.selectedItem.type.name === 'Carpeta' ?? false
 }
 

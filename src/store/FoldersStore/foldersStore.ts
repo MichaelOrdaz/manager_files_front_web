@@ -1,9 +1,15 @@
 import type {Document} from '@/Types/Document'
-
+export type TreeNode = {
+    folderId?: number,
+    label?: string,
+    icon?: string,
+    children?: TreeNode[]
+    lazy: boolean, // Quasar tree required
+}
 export interface FoldersStore {
     selectedItem?: Document,
     breadcrumbStructure?: Document[]
-    treeStructure?: Document[],
+    treeStructure: TreeNode[],
     folderContent?: Document[],
 }
 
@@ -16,16 +22,16 @@ export default function state(): FoldersStore {
             name: 'Inicio',
             date: '',
             location: '',
-            createdAt: ''
-        }],
-        treeStructure: [{
-            id: 0,
-            type: {id: 1, name: 'Carpeta'},
-            name: '',
-            date: '',
-            location: '',
-            createdAt: ''
+            createdAt: '',
+            identifier: ''
         }],
         folderContent: [],
+        treeStructure: [{
+            folderId: undefined,
+            icon: 'folder',
+            label: 'Inicio',
+            children: [],
+            lazy: true,
+        }]
     }
 }

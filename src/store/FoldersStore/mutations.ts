@@ -16,7 +16,17 @@ const mutations: MutationTree<FoldersStore> = {
             name: 'Inicio',
             date: '',
             location: '',
-            createdAt: ''
+            createdAt: '',
+            identifier: ''
+        }]
+    },
+    RESET_TREE_STRUCTURE(state): void {
+        state.treeStructure = [{
+            folderId: undefined,
+            icon: 'folder',
+            label: 'Inicio',
+            children: [],
+            lazy: true,
         }]
     },
     BUILD_BREADCRUMB(state, payload: Document): void {
@@ -36,6 +46,9 @@ const mutations: MutationTree<FoldersStore> = {
     },
     SET_SELECTED_FILE(state, payload: Document): void {
         state.selectedItem = payload
+    },
+    ADD_NODE_TO_TREE(state, payload): void {
+        state.treeStructure[0].children.push(payload)
     }
 }
 

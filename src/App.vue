@@ -2,6 +2,7 @@
 import store from '@/store/index'
 store.commit('RESET_CURRENT_FOLDER')
 store.commit('RESET_BREADCRUMB_STRUCTURE')
+store.commit('RESET_TREE_STRUCTURE')
 </script>
 
 <template>
