@@ -49,7 +49,7 @@
       variant="text-5"
       class="p-mb-16"
     >
-      Fecha de creación: {{ props.docData?.createdAt ?? 'Sin fecha' }}
+      Fecha de creación: {{ formatDate(props?.docData?.createdAt) ?? 'Sin fecha' }}
     </PText>
     <div class="cursor-pointer p-mt-47 p-mb-16">
       <PIcon
@@ -72,6 +72,7 @@
 import {ref, watch} from 'vue'
 import Modal from './Modal.vue'
 import type {Document} from '@/Types/Document'
+import formatDate from '@/utils/FormatDate'
 
 interface Props { docData: Document }
 const props = defineProps<Props>()

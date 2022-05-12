@@ -10,7 +10,7 @@
       v-else
       :docData="documentData"
     />
-    <UsersActivityList :docData="documentData" />
+    <UsersActivityList :history="documentData?.historical" />
   </div>
 </template>
 

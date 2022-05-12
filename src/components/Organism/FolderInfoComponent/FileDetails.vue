@@ -22,13 +22,13 @@
       variant="text-5"
       class="p-mb-16"
     >
-      Fecha de creación: {{ props.docData?.createdAt ?? 'Sin fecha' }}
+      Fecha de creación: {{ formatDate(props?.docData?.createdAt) ?? 'Sin fecha' }}
     </PText>
     <PText
       variant="text-5"
       class="p-mb-16"
     >
-      Fecha de subida: {{ props.docData?.createdAt ?? 'Sin fecha' }}
+      Fecha de subida: {{ formatDate(props?.docData?.createdAt) ?? 'Sin fecha' }}
     </PText>
     <PText
       variant="text-5"
@@ -49,6 +49,7 @@
 
 <script setup lang="ts">
 import type {Document} from '@/Types/Document'
+import formatDate from '@/utils/FormatDate'
 
 interface Props { docData: Document }
 const props = defineProps<Props>()
