@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
 const setChipTypeClass = computed<string>(() => `${props.chipType}`)
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .pchip-container{
     width: 150px;
     height: 23px;
@@ -57,8 +57,8 @@ const setChipTypeClass = computed<string>(() => `${props.chipType}`)
     justify-content: space-between;
 }
 .secondary{
-    background-color: orange;
-    border: 2px solid orange;
+    background-color: $ocean;
+    border: 2px solid $ocean;
     display: flex;
     justify-content: flex-end;
     align-items: center;

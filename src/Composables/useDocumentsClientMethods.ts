@@ -16,7 +16,7 @@ export function useGetDocumentsList(parentId: number | undefined) {
 
 export async function useCreateFolder(newFolderName: string, parentId?: number): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
-        new DocumentsApi().createDocumentFolder({name: newFolderName, parent_id: parentId})
+        new DocumentsApi().createDocumentFolder(newFolderName, parentId)
             .then(resp => resolve(resp))
             .catch(error => reject(error))
     })

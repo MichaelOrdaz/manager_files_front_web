@@ -6,6 +6,16 @@ type DocumentType = {
     name: 'Archivo' | 'Carpeta'
 }
 
+export type DocumentRecord = {
+    id?: number,
+    date?: string,
+    name?: User,
+    action?: {
+        id?: number,
+        name?: string
+    }
+}
+
 export type Document = {
     creator?: User,
     tags?: string[],
@@ -18,4 +28,5 @@ export type Document = {
     parent?: number,
     type: DocumentType,
     department?: Department,
+    historical?: DocumentRecord[]
 }

@@ -16,7 +16,6 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { Folder } from '../models';
 import { InlineResponse2008 } from '../models';
 import { InlineResponse2009 } from '../models';
 import { InlineResponse400 } from '../models';
@@ -33,11 +32,12 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
         /**
          * create a folder in the system
          * @summary Create - Folder
-         * @param {Folder} [body] Request in format json format
+         * @param {string} [name] 
+         * @param {number} [parentId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createDocumentFolder: async (body?: Folder, options: any = {}): Promise<RequestArgs> => {
+        createDocumentFolder: async (name?: string, parentId?: number, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/folders`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -48,11 +48,20 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            const localVarFormParams = new FormData();
 
             // authentication bearerAuth required
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
 
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+
+            if (parentId !== undefined) { 
+                localVarFormParams.append('parent_id', parentId as any);
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -63,8 +72,7 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+            localVarRequestOptions.data = localVarFormParams;
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -241,12 +249,13 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
         /**
          * create a folder in the system
          * @summary Create - Folder
-         * @param {Folder} [body] Request in format json format
+         * @param {string} [name] 
+         * @param {number} [parentId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createDocumentFolder(body?: Folder, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
-            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).createDocumentFolder(body, options);
+        async createDocumentFolder(name?: string, parentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).createDocumentFolder(name, parentId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -312,12 +321,13 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
         /**
          * create a folder in the system
          * @summary Create - Folder
-         * @param {Folder} [body] Request in format json format
+         * @param {string} [name] 
+         * @param {number} [parentId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createDocumentFolder(body?: Folder, options?: any): AxiosPromise<InlineResponse2009> {
-            return DocumentsApiFp(configuration).createDocumentFolder(body, options).then((request) => request(axios, basePath));
+        createDocumentFolder(name?: string, parentId?: number, options?: any): AxiosPromise<InlineResponse2009> {
+            return DocumentsApiFp(configuration).createDocumentFolder(name, parentId, options).then((request) => request(axios, basePath));
         },
         /**
          * create a document in the system
@@ -368,13 +378,14 @@ export class DocumentsApi extends BaseAPI {
     /**
      * create a folder in the system
      * @summary Create - Folder
-     * @param {Folder} [body] Request in format json format
+     * @param {string} [name] 
+     * @param {number} [parentId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DocumentsApi
      */
-    public createDocumentFolder(body?: Folder, options?: any) {
-        return DocumentsApiFp(this.configuration).createDocumentFolder(body, options).then((request) => request(this.axios, this.basePath));
+    public createDocumentFolder(name?: string, parentId?: number, options?: any) {
+        return DocumentsApiFp(this.configuration).createDocumentFolder(name, parentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * create a document in the system
