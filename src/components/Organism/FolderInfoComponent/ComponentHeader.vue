@@ -2,14 +2,14 @@
   <div class="header">
     <div class="folder-options">
       <PIcon
-        color="black"
-        iconName="folder"
+        :color="store.getters.isFolder ? 'black': 'red'"
+        :iconName="store.getters.isFolder ?'folder': 'picture_as_pdf'"
       />
       <PText
         class="q-mx-md"
         variant="text-4"
       >
-        Nombre de carpeta
+        {{ props.docData?.name ?? 'Sin nombre' }}
       </PText>
       <PIcon
         class="cursor-pointer"
@@ -58,7 +58,11 @@
 <script setup lang="ts">
 import PModal from '@/components/Molecules/PModal.vue'
 import {ref} from 'vue'
+import store from '@/store'
+import type {Document} from '@/Types/Document'
 
+interface Props { docData: Document}
+const props = defineProps<Props>()
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
