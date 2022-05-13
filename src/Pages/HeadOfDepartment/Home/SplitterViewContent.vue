@@ -9,6 +9,7 @@
         placeHolder="Buscar"
         width="758px"
         enableCursorPointerOnIcon
+        data-cy="filter-docs-input"
         @append-icon-action="showAdvancedSearch = true"
       />
       <PButton class="p-mt-4">
@@ -53,6 +54,7 @@
         :secondText="document.createdAt"
         :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
         :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
+        data-cy="document-item-row"
         @click="showFolderInfo(document)"
       />
     </div>
