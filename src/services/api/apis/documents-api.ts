@@ -16,6 +16,7 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { InlineResponse20010 } from '../models';
 import { InlineResponse2008 } from '../models';
 import { InlineResponse2009 } from '../models';
 import { InlineResponse400 } from '../models';
@@ -155,6 +156,48 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
+         * Delete the document in a single request
+         * @summary Delete - Document
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteDocument: async (documentId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'documentId' is not null or undefined
+            if (documentId === null || documentId === undefined) {
+                throw new RequiredError('documentId','Required parameter documentId was null or undefined when calling deleteDocument.');
+            }
+            const localVarPath = `/documents/{document_id}`
+                .replace(`{${"document_id"}}`, encodeURIComponent(String(documentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -282,6 +325,20 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * Delete the document in a single request
+         * @summary Delete - Document
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteDocument(documentId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).deleteDocument(documentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -346,6 +403,16 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
             return DocumentsApiFp(configuration).createFile(name, description, minIdentifier, maxIdentifier, date, file, parentId, options).then((request) => request(axios, basePath));
         },
         /**
+         * Delete the document in a single request
+         * @summary Delete - Document
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteDocument(documentId: number, options?: any): AxiosPromise<InlineResponse20010> {
+            return DocumentsApiFp(configuration).deleteDocument(documentId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -403,6 +470,17 @@ export class DocumentsApi extends BaseAPI {
      */
     public createFile(name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any) {
         return DocumentsApiFp(this.configuration).createFile(name, description, minIdentifier, maxIdentifier, date, file, parentId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Delete the document in a single request
+     * @summary Delete - Document
+     * @param {number} documentId document id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DocumentsApi
+     */
+    public deleteDocument(documentId: number, options?: any) {
+        return DocumentsApiFp(this.configuration).deleteDocument(documentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Get the document in a single request

@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {computed, provide, ref} from 'vue'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFoldersDescAndActions.vue'
 import AdvancedSearch from './AdvancedSearch.vue'
@@ -89,25 +89,33 @@ function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (clicksCount.value === 1) {
         timer.value = setTimeout(() => {
-            setCurrentFolder(doc)
+            selectedFolder.value = doc
+            store.commit('SET_SELECTED_ITEM', doc)
             clicksCount.value = 0
             showFolderInfoSection.value = true
         }, 250)
     }else {
         clearTimeout(timer.value)
-        setCurrentFolder(doc)
-        store.commit('BUILD_BREADCRUMB', doc)
-        store.dispatch('get_folder_content')
-        clicksCount.value = 0
+        if (doc.type.name === 'Carpeta'){
+            store.commit('SET_CURRENT_FOLDER',doc)
+            store.commit('BUILD_BREADCRUMB', doc)
+            store.dispatch('get_folder_content')
+            clicksCount.value = 0
+        }
     }
 }
-function setCurrentFolder(doc: Document) {
-    selectedFolder.value = doc
-    store.commit('SET_CURRENT_FOLDER', doc)
-}
+
 function changeFolder() {
     store.dispatch('get_folder_content')
 }
+async function hideFolderInfo() {
+    showFolderInfoSection.value = false
+    // store.commit('RESET_CURRENT_FOLDER')
+    // store.commit('RESET_TREE_STRUCTURE')
+    // store.commit('RESET_BREADCRUMB_STRUCTURE')
+    await store.dispatch('get_folder_content')
+}
+provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')
 </script>
 

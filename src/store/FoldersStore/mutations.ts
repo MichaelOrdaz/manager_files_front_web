@@ -4,10 +4,10 @@ import type {Document} from '@/Types/Document'
 
 const mutations: MutationTree<FoldersStore> = {
     SET_CURRENT_FOLDER(state, payload: Document): void{
-        state.selectedItem = payload
+        state.currentFolder = payload
     },
     RESET_CURRENT_FOLDER(state): void {
-        state.selectedItem = undefined
+        state.currentFolder = undefined
     },
     RESET_BREADCRUMB_STRUCTURE(state): void {
         state.breadcrumbStructure = [{
@@ -44,8 +44,11 @@ const mutations: MutationTree<FoldersStore> = {
     SET_FOLDER_CONTENT(state, payload: Document[]): void {
         state.folderContent = payload
     },
-    SET_SELECTED_FILE(state, payload: Document): void {
+    SET_SELECTED_ITEM(state, payload: Document): void {
         state.selectedItem = payload
+    },
+    SET_SOURCE_FOLDER(state, payload: Document[]): void{
+        state.sourceFolder = payload
     },
     ADD_NODE_TO_TREE(state, payload): void {
         state.treeStructure[0].children.push(payload)

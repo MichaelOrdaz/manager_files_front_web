@@ -23,9 +23,11 @@ import UsersActivityList from './UsersActivityList.vue'
 import store from '@/store'
 import {watch} from 'vue'
 import {useGetDocumentData} from '@/Composables/useDocumentsClientMethods'
-const {getDocData,documentData} = useGetDocumentData(store.getters.getCurrentFolder.id)
-watch(() => store.getters.getCurrentFolder, () => {
-    getDocData(store.getters.getCurrentFolder.id)
+const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedItem.id)
+watch(() => store.getters.getSelectedItem, () => {
+    if (store.getters.getSelectedItem) {
+        getDocData(store.getters.getSelectedItem.id)
+    }
 })
 </script>
 
