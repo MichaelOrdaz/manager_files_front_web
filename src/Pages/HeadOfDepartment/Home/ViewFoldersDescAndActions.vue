@@ -93,15 +93,16 @@ async function createNewFolder() {
 
 function loadUserImg() {
     const fileInput: HTMLInputElement = document.createElement('input')
+    const parent = document.querySelector('.p-pt-5')
     fileInput.type = 'file'
     fileInput.style.display = 'none'
     fileInput.accept = 'application/pdf'
     fileInput.dataset.cy = 'file-loader'
     fileInput.click()
+    parent.appendChild(fileInput)
     fileInput.onchange = () => {
         newFile.value = fileInput.files?.item(0)
         showLoadFileModal.value = true
-        fileInput.remove()
     }
 }
 </script>
