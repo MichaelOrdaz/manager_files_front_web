@@ -112,9 +112,6 @@ function changeFolder() {
 }
 async function hideFolderInfo() {
     showFolderInfoSection.value = false
-    // store.commit('RESET_CURRENT_FOLDER')
-    // store.commit('RESET_TREE_STRUCTURE')
-    // store.commit('RESET_BREADCRUMB_STRUCTURE')
     await store.dispatch('get_folder_content')
 }
 provide('hide-folder-info-section', hideFolderInfo)
