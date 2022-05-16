@@ -28,6 +28,19 @@ describe('Folder actions', () => {
         })
     })
 
+    it('Delete folder', function () {
+        cy.intercept('DELETE','**/api/v1/documents/**').as('deleteFolder')
+        cy.get('[data-cy="filter-docs-input"]').type(randomCharacters)
+        cy.get('[data-cy="document-item-row"]').click()
+        cy.contains('Eliminar carpeta').click()
+        cy.contains('Aceptar').click()
+        cy.wait('@deleteFolder').then( response => {
+            expect(response.response.statusCode).to.equal(200)
+            cy.get('#q-notify').should('exist')
+            cy.get('[data-cy="filter-docs-input"] input').clear()
+        })
+    })
+
     it('Create File', function () {
         cy.intercept('POST','**/api/v1/documents').as('createFile')
         cy.contains('Subir archivo').click({force: true})
@@ -40,6 +53,19 @@ describe('Folder actions', () => {
         cy.wait('@createFile').then((response) => {
             expect(response.response.statusCode).to.equal(201)
             cy.get('#q-notify').should('exist')
+        })
+    })
+
+    it('Delete File', function () {
+        cy.intercept('DELETE','**/api/v1/documents/**').as('deleteFile')
+        cy.get('[data-cy="filter-docs-input"]').type(randomFileCharacters)
+        cy.get('[data-cy="document-item-row"]').click()
+        cy.contains('Eliminar carpeta').click()
+        cy.contains('Aceptar').click()
+        cy.wait('@deleteFile').then( response => {
+            expect(response.response.statusCode).to.equal(200)
+            cy.get('#q-notify').should('exist')
+            cy.get('[data-cy="filter-docs-input"] input').clear()
         })
     })
 })

@@ -14,31 +14,31 @@
 /**
  * 
  * @export
- * @interface History
+ * @interface InlineResponse20010
  */
-export interface History {
+export interface InlineResponse20010 {
+    /**
+     * 
+     * @type {DocumentSimple}
+     * @memberof InlineResponse20010
+     */
+    data?: any;
     /**
      * 
      * @type {number}
-     * @memberof History
+     * @memberof InlineResponse20010
      */
-    id?: any;
+    total?: any;
     /**
      * 
-     * @type {Date}
-     * @memberof History
+     * @type {string}
+     * @memberof InlineResponse20010
      */
-    date?: any;
+    message?: any;
     /**
      * 
-     * @type {User}
-     * @memberof History
+     * @type {boolean}
+     * @memberof InlineResponse20010
      */
-    user?: any;
-    /**
-     * 
-     * @type {Action}
-     * @memberof History
-     */
-    action?: any;
+    success?: any;
 }

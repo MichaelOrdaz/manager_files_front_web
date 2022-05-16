@@ -42,14 +42,16 @@ const actions: ActionTree<Auth, StateInterface> = {
                 .then((resp) => resolve(resp))
                 .catch((err) => reject(err))
                 .finally(() => {
+                    api.defaults.headers.common.Authorization = ''
                     localStorage.removeItem('access_token')
                     localStorage.removeItem('vuex')
                     commit('AUTH_LOGOUT')
                 })
         })
     },
-    async user_validate_token({commit}) {
+    async user_validate_token({commit, state}) {
         try {
+            if (!state.access_token) return
             const resp = await new AuthApi().verifyAuth()
             commit('AUTH_SET_IS_VALID_TOKEN', resp.data.isAuth)
         } catch (e) {

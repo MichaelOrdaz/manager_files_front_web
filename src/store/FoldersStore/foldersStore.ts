@@ -8,6 +8,8 @@ export type TreeNode = {
 }
 export interface FoldersStore {
     selectedItem?: Document,
+    currentFolder?: Document,
+    sourceFolder?: Document[],
     breadcrumbStructure?: Document[]
     treeStructure: TreeNode[],
     folderContent?: Document[],
@@ -16,6 +18,7 @@ export interface FoldersStore {
 export default function state(): FoldersStore {
     return {
         selectedItem: undefined,
+        currentFolder: undefined,
         breadcrumbStructure: [{
             id: 0,
             type: {id: 1, name: 'Carpeta'},

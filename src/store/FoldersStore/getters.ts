@@ -5,10 +5,11 @@ import type {Document} from '@/Types/Document'
 
 const getters: GetterTree<FoldersStore, StateInterface> = {
     getBreadcrumb: (state): Document[] => state.breadcrumbStructure,
-    getCurrentFolder: (state): Document => state.selectedItem,
+    getCurrentFolder: (state): Document => state.currentFolder,
+    getSelectedItem: (state): Document => state.selectedItem,
     getBreadcrumbStructure: (state): Document[] => state.breadcrumbStructure,
     getFolderContent: (state): Document[] => state.folderContent,
-    getTree: (state) => state.folderContent.map(el => {
+    getTree: (state) => state.sourceFolder?.map(el => {
         return {
             folderId: el.id,
             label: el.name,
@@ -17,7 +18,7 @@ const getters: GetterTree<FoldersStore, StateInterface> = {
             lazy: true,
             children: []
         }
-    }).filter(ele => ele.type.name === 'Carpeta' ),
+    }).filter(ele => ele.type?.name === 'Carpeta' ) ?? [],
     isFolder: (state): boolean => state.selectedItem.type.name === 'Carpeta' ?? false
 }
 

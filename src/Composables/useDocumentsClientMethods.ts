@@ -41,3 +41,11 @@ export async function useCreateFile(file: File, parentId: number|undefined): Pro
             .catch(error => reject(error))
     })
 }
+
+export async function useDeleteFolder(folderId: number) {
+    return new Promise((resolve, reject) => {
+        new DocumentsApi().deleteDocument(folderId)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+    })
+}
