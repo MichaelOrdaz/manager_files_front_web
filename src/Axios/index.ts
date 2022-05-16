@@ -6,7 +6,7 @@ const token = localStorage.getItem('access_token') ?? ''
 api.defaults.headers.common.Authorization = `Bearer ${token}`
 
 api.interceptors.request.use(function (config) {
-    Loading.show()
+    Loading.show({spinnerColor: 'blue', backgroundColor: 'white'})
     return config
 }, function (error) {
     Loading.hide()

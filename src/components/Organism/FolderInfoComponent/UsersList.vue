@@ -1,17 +1,10 @@
 <template>
   <div class="users-list">
     <PText variant="text-4">
-      Usuarios con acceso a carpeta
+      Gestionar permisos
     </PText>
-    <div class="chip-list">
-      <PChip
-        v-for="number in 2"
-        :key="number"
-        chipText="Hola"
-      />
-    </div>
+    <div class="chip-list" />
     <div class="flex justify-between">
-      <PLinkText>Ves más...</PLinkText>
       <PLinkText>Gestionar permisos</PLinkText>
     </div>
   </div>

@@ -14,19 +14,31 @@
 /**
  * 
  * @export
- * @interface DocumentType
+ * @interface History
  */
-export interface DocumentType {
+export interface History {
     /**
      * 
      * @type {number}
-     * @memberof DocumentType
+     * @memberof History
      */
     id?: any;
     /**
      * 
-     * @type {string}
-     * @memberof DocumentType
+     * @type {Date}
+     * @memberof History
      */
-    name?: any;
+    date?: any;
+    /**
+     * 
+     * @type {User}
+     * @memberof History
+     */
+    user?: any;
+    /**
+     * 
+     * @type {Action}
+     * @memberof History
+     */
+    action?: any;
 }

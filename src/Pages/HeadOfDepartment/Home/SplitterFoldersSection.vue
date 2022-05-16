@@ -7,46 +7,42 @@
       Gestor de archivos
     </PText>
     <QTree
-      :nodes="simple"
+      :nodes="treeNodes"
       node-key="label"
       no-connectors
+      accordion
+      no-selection-unset
+      default-expand-all
+      @lazy-load="getNewNodes"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import {QTree} from 'quasar'
-const simple = [
-    {
-        label: 'Satisfied customers (with avatar)',
-        children: [
-            {
-                label: 'Good food (with icon)',
-                children: [
-                    { label: 'Quality ingredients' },
-                    { label: 'Good recipe' }
-                ]
-            },
-            {
-                label: 'Good service (disabled node with icon)',
-                children: [
-                    { label: 'Prompt attention' },
-                    { label: 'Professional waiter' }
-                ]
-            },
-            {
-                label: 'Pleasant surroundings (with icon)',
-                children: [
-                    {
-                        label: 'Happy atmosphere (with image)',
-                    },
-                    { label: 'Good table presentation' },
-                    { label: 'Pleasing decor' }
-                ]
-            }
-        ]
-    }
-]
+import store from '@/store'
+import {computed} from 'vue'
+import {DocumentsApi} from '@/services/api/api'
+import type {QTreeNode} from 'quasar'
+
+const treeNodes = computed<QTreeNode[]>(() => store.getters.getTree)
+
+// eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
+async function getNewNodes({node, key, done, fail}) {
+    const resp = await new DocumentsApi().getDocuments(node.folderId)
+    const newNodes = resp.data.data.map(el => {
+        return {
+            label: el.name,
+            children: [],
+            lazy: true,
+            folderId: el.id,
+            icon: 'folder',
+            type: el.type
+        }
+    }).filter(doc => doc.type.name === 'Carpeta')
+    done(newNodes)
+    fail([])
+}
 </script>
 
 <style scoped lang="scss">

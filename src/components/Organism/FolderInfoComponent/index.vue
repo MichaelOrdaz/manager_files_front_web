@@ -1,17 +1,34 @@
 <template>
   <div class="component-container">
-    <ComponentHeader />
-    <UsersList />
-    <DirData />
-    <UsersActivityList />
+    <ComponentHeader :docData="documentData" />
+    <UsersList :docData="documentData" />
+    <FolderDetails
+      v-if="store.getters.isFolder"
+      :docData="documentData"
+    />
+    <FileDetails
+      v-else
+      :docData="documentData"
+    />
+    <UsersActivityList :history="documentData?.historical" />
   </div>
 </template>
 
 <script setup lang="ts">
 import ComponentHeader from '@/components/Organism/FolderInfoComponent/ComponentHeader.vue'
 import UsersList from './UsersList.vue'
-import DirData from './DirData.vue'
+import FolderDetails from './FolderDetails.vue'
+import FileDetails from './FileDetails.vue'
 import UsersActivityList from './UsersActivityList.vue'
+import store from '@/store'
+import {watch} from 'vue'
+import {useGetDocumentData} from '@/Composables/useDocumentsClientMethods'
+const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedItem.id)
+watch(() => store.getters.getSelectedItem, () => {
+    if (store.getters.getSelectedItem) {
+        getDocData(store.getters.getSelectedItem.id)
+    }
+})
 </script>
 
 

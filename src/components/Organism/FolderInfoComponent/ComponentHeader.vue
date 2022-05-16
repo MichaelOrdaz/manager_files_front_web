@@ -2,14 +2,14 @@
   <div class="header">
     <div class="folder-options">
       <PIcon
-        color="black"
-        iconName="folder"
+        :color="store.getters.isFolder ? 'black': 'red'"
+        :iconName="store.getters.isFolder ?'folder': 'picture_as_pdf'"
       />
       <PText
         class="q-mx-md"
         variant="text-4"
       >
-        Nombre de carpeta
+        {{ props.docData?.name ?? 'Sin nombre' }}
       </PText>
       <PIcon
         class="cursor-pointer"
@@ -53,15 +53,35 @@
     v-if="showDeleteFolderModal"
     modalTitle="¿Está seguro que quiere eliminar la carpeta?"
     @cancel="showDeleteFolderModal = false"
+    @accept="deleteFolder"
   />
 </template>
 <script setup lang="ts">
 import PModal from '@/components/Molecules/PModal.vue'
-import {ref} from 'vue'
+import {inject, ref} from 'vue'
+import store from '@/store'
+import type {Document} from '@/Types/Document'
+import {useDeleteFolder} from '@/Composables/useDocumentsClientMethods'
+import {Notify} from 'quasar'
 
+interface Props { docData: Document}
+const props = defineProps<Props>()
+
+const hideFolderInfoSection = inject<() => void>('hide-folder-info-section')
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
+
+async function deleteFolder() {
+    try {
+        await useDeleteFolder(props.docData.id)
+        hideFolderInfoSection()
+        showDeleteFolderModal.value = false
+        Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue'})
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red'})
+    }
+}
 </script>
 
 <style scoped lang="scss">
