@@ -27,10 +27,17 @@
     >
       {{ props.thirdText ?? '' }}
     </PText>
-    <POptionList
-      v-if="props.optionsList"
-      :options="props.optionsList"
-    />
+    <PText
+      class="text truncate"
+      variant="text-5"
+      :title="props.fourthText"
+    >
+      {{ props.fourthText ?? '' }}
+      <POptionList
+        v-if="props.optionsList"
+        :options="props.optionsList"
+      />
+    </PText>
   </div>
 </template>
 
@@ -42,10 +49,12 @@ interface Props{
     firstText?: string,
     secondText?: string,
     thirdText?: string,
+    fourthText?: string,
     image?: string
 }
 const props = withDefaults(defineProps<Props>(),{
     firstText: 'Text 1', secondText: 'Text 2', thirdText: 'Text 3', optionsList: undefined, image: DirectorySvg
+    ,fourthText: 'Text 4'
 })
 </script>
 
