@@ -2,10 +2,14 @@ import {ref} from 'vue'
 import {RolesApi} from '@/services/api/api'
 import {Role} from '@/services/api/models'
 
-export function useGetRolesList() {
+export function useGetRolesList(array?: Array<any>) {
     const rolesList = ref<Role[]>([])
     async function getRolesList() {
         const resp = await new RolesApi().getRoles()
+        if (array) {
+            rolesList.value = [...array,...resp.data.data]
+            return
+        }
         rolesList.value = resp.data.data
     }
     getRolesList()

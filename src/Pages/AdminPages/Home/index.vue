@@ -43,7 +43,7 @@ const showUserModal = ref<boolean>(false)
 const showDeleteUserModal = ref<boolean>(false)
 const selectedUser = ref<User | undefined>(undefined)
 const {users, getUsers} = useGetUsersList(filterValue.value,rolSelected.value)
-const {rolesList} = useGetRolesList()
+const {rolesList} = useGetRolesList([{id: 0, name: 'Todos'}])
 
 function captureFilters(params: {text: string, rolId: number}): void {
     filterValue.value = params.text

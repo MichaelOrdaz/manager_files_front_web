@@ -6,7 +6,8 @@ export interface UserData {
     phone?: string,
     image?: string,
     department_id?: number,
-    email?: string
+    email?: string,
+    department?: {id: number, name: string}
 }
 export interface Auth {
     access_token?: string,
