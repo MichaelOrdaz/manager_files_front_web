@@ -38,7 +38,7 @@ import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import {ref} from 'vue'
 import ColumnsDescription from '@/Pages/HeadOfDepartment/SharedFilesPage/ColumnsDescription.vue'
 
-const options = ref<DropdownOption[]>([{label: 'Hola', action: () => {console.log('Chido')}}])
+const options = ref<DropdownOption[]>([{label: 'Hola', action: () => []}])
 </script>
 
 <style scoped lang="scss">
