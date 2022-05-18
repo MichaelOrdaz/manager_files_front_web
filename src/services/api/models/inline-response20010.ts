@@ -14,19 +14,31 @@
 /**
  * 
  * @export
- * @interface DocumentType
+ * @interface InlineResponse20010
  */
-export interface DocumentType {
+export interface InlineResponse20010 {
+    /**
+     * 
+     * @type {DocumentSimple}
+     * @memberof InlineResponse20010
+     */
+    data?: any;
     /**
      * 
      * @type {number}
-     * @memberof DocumentType
+     * @memberof InlineResponse20010
      */
-    id?: any;
+    total?: any;
     /**
      * 
      * @type {string}
-     * @memberof DocumentType
+     * @memberof InlineResponse20010
      */
-    name?: any;
+    message?: any;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof InlineResponse20010
+     */
+    success?: any;
 }

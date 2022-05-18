@@ -31,11 +31,13 @@
         iconName="file_upload"
         iconColor="gold"
         text="Subir archivo"
-        @click="showLoadFileModal = true"
+        @click="loadUserImg"
       />
     </div>
     <LoadPdfFileModal
       v-if="showLoadFileModal"
+      :newFile="newFile"
+      :actualFolderId="props.selectedFolderId"
       @cancel="showLoadFileModal = false"
     />
     <PModal
@@ -62,22 +64,45 @@ import PModal from '@/components/Molecules/PModal.vue'
 import {ref} from 'vue'
 import {useCreateFolder} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
+import store from '@/store'
 
+const emit = defineEmits<{
+    // eslint-disable-next-line no-unused-vars
+    (e: 'update-list'): void,
+}>()
+interface Props { selectedFolderId?: number }
+const props = withDefaults(defineProps<Props>(), {selectedFolderId: undefined})
 const showLoadFileModal = ref<boolean>(false)
 const showCreateFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
+const newFile = ref<string | File>('')
 async function createNewFolder() {
     if (!newFolderName.value) {
         Notify.create({message: 'Agrega un nombre de carpeta valido', color: 'red'})
         return
     }
     try {
-        await useCreateFolder(newFolderName.value)
+        await useCreateFolder(newFolderName.value, store.getters?.getCurrentFolder ? store.getters?.getCurrentFolder?.id : undefined)
         Notify.create({message: 'Se ha creaco la carpeta', color: 'green'})
         showCreateFolderModal.value = false
-        return
+        emit('update-list')
     }catch (e) {
         Notify.create({message: 'Se ha generado un error', color: 'red'})
+    }
+}
+
+function loadUserImg() {
+    const fileInput: HTMLInputElement = document.createElement('input')
+    const parent = document.querySelector('.p-pt-5')
+    fileInput.type = 'file'
+    fileInput.style.display = 'none'
+    fileInput.accept = 'application/pdf'
+    fileInput.dataset.cy = 'file-loader'
+    fileInput.click()
+    parent.appendChild(fileInput)
+    fileInput.onchange = () => {
+        newFile.value = fileInput.files?.item(0)
+        showLoadFileModal.value = true
     }
 }
 </script>

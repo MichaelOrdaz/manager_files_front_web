@@ -20,21 +20,22 @@
           Subir archivo
         </PText>
         <PInput
-          v-model="formData.fileName"
+          v-model="formData.name"
           width="100%"
           placeHolder="ejemplo.pdf"
           label="Nombre archivo"
           :rules="[(value:string) => !!value.trim() || 'Agrega un nombre válido']"
+          data-cy="file-name"
         />
         <div class="textarea-container text-left p-mt-18">
           <PText variant="subtitle-3">
             Describe tu evento
           </PText>
           <textarea
-            v-model="formData.fileDescription"
+            v-model="formData.description"
             class="puller-textarea"
             placeholder="Contenido del evento..."
-            data-cy="aviso-descripcion"
+            data-cy="file-desc"
           />
         </div>
         <div class="date-serial-container flex no-wrap justify-between p-mt-18">
@@ -45,10 +46,11 @@
             :rules="[(value:string) => !!value.trim() || 'Agrega una fecha válida']"
           />
           <PInput
-            v-model="formData.serialNumber"
+            v-model="formData.min_identifier"
             label="Rango de folio"
             width="253px"
             :rules="[(value:string) => !!value.trim() || 'Agrega folio/s']"
+            data-cy="identifier-input"
           />
         </div>
         <div class="buttons flex justify-end p-mt-46">
@@ -60,6 +62,7 @@
           </PButton>
           <PButton
             class=""
+            data-cy="load-file-btn"
             @click.prevent="createFile"
           >
             Subir archivo
@@ -74,17 +77,33 @@ import ModalMask from '@/components/Atoms/ModalMask.vue'
 import PForm from '@/components/Organism/PForm.vue'
 import PFormComp from '@/Types/PFormComp'
 import PInputDate from '@/components/Molecules/PInputDate.vue'
-import {reactive, ref} from 'vue'
+import {reactive, ref, withDefaults} from 'vue'
+import type {File} from '@/Types/File'
+import {useCreateFile} from '@/Composables/useDocumentsClientMethods'
+import {Notify} from 'quasar'
+import store from '@/store'
+interface Props {
+    newFile?: string, actualFolderId?: number
+}
+const emit = defineEmits(['cancel'])
+const props = withDefaults(defineProps<Props>(), {newFile: undefined, actualFolderId: 0})
 
-defineEmits(['cancel'])
 
 const formRef = ref<PFormComp>(null)
-const formData = reactive({
-    fileName: '', fileDescription: '', date: '', serialNumber: '',
+const formData = reactive<File>({
+    name: '', description: '', date: '', min_identifier: '', file: props.newFile
 })
-
 async function createFile() {
-    formRef.value.validate()
+    const isValidForm: boolean = formRef.value.validate()
+    if (!isValidForm) return
+    try {
+        await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
+        Notify.create({message: 'Se ha subido el archivo', color: 'green'})
+        await store.dispatch('get_folder_content')
+        emit('cancel')
+    } catch (e) {
+        Notify.create({message: 'Valida los campos', color: 'red'})
+    }
 }
 </script>
 

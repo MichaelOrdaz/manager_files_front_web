@@ -5,6 +5,7 @@
     :label="props.inputLabel"
     :width="props.width"
     :rules="props.rules"
+    data-cy="input-date"
   >
     <template #append>
       <PIcon
