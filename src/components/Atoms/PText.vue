@@ -10,23 +10,26 @@
 </template>
 
 <script setup lang="ts">
-import {computed, withDefaults} from 'vue'
+import {computed, ref, withDefaults} from 'vue'
 
 interface Props{
     variant?: string,
     color?: string,
+    fontWeight?: string,
 }
 const props = withDefaults(defineProps<Props>(), {
     color: 'black',
-    variant: 'title-1'
+    variant: 'title-1',
+    fontWeight: '400'
 })
+const componentFontWeight = ref(props.fontWeight ? props.fontWeight : '400')
 const computedClasses = computed<string>(() => `${props.variant} ${props.color}`)
 </script>
 
 <style scoped lang="scss">
 .general-style{
     display: inline-block;
-    font-weight: 400;
+    font-weight: v-bind(componentFontWeight);
     font-style: normal;
 }
 .title-1{
@@ -77,7 +80,8 @@ const computedClasses = computed<string>(() => `${props.variant} ${props.color}`
 .gold{color: $gold }
 .white{color: white}
 .black{color: black}
-.grey-5{color: $grey-5}
+.gray-5{color: $gray-5}
+.gray-6{color: $gray-6}
 .gray-7{color: $gray-7}
 
 </style>

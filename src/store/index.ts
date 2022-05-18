@@ -8,7 +8,7 @@ export interface StateInterface {
   modules: {auth: Auth, foldersStore: FoldersStore}
 }
 const store = createStore<StateInterface>({
-    plugins: [createLogger(), createPersistedState()],
+    plugins: [ import.meta.env.DEV && createLogger(), createPersistedState()],
     modules: {
         auth,
         foldersTree,

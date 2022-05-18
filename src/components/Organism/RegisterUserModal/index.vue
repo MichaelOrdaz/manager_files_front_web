@@ -6,6 +6,8 @@
           <PIcon
             class="cursor-pointer"
             iconName="close"
+            size="11px"
+            color="grey"
             @click.prevent.stop="$emit('cancel')"
           />
         </div>
@@ -17,7 +19,7 @@
           <div class="selects">
             <PSelect
               v-model="rolSelectedId"
-              label="Filtro de usuarios"
+              label="Rol de usuarios"
               :options="rolesList"
               width="270px"
               optionValue="id"
@@ -88,7 +90,7 @@
               label="Contraseña"
               width="363px"
               data-cy="userPasswordInput"
-              :rules="[(value:string) => value.length >= 8 || 'Contraseña']"
+              :rules="[(value:string) => value.length >= 8 || 'Agrega una contraseña válida']"
             />
             <PInput
               v-if="!isEditUser"
@@ -96,7 +98,7 @@
               label="Contraseña"
               width="363px"
               data-cy="userPasswordInputRe"
-              :rules="[(value:string) => value.length >= 8 || 'Contraseña']"
+              :rules="[(value:string) => value.length >= 8 || 'Agrega una contraseña válida']"
             />
           </div>
           <div class="buttons">
