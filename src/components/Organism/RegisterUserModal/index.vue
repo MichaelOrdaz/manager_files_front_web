@@ -44,6 +44,7 @@
             v-model="newUser.name"
             class="q-mt-lg"
             label="Nombre"
+            maxLength="255"
             width="554px"
             :rules="[(value:string) => !!value.trim() || 'Agregar nombre']"
             data-cy="userNameInput"
@@ -52,6 +53,7 @@
             <PInput
               v-model="newUser.lastname"
               label="Apellido paterno"
+              maxLength="255"
               width="363px"
               :rules="[(value:string) => !!value.trim() || 'Agregar apellido paterno']"
               data-cy="userLatNameInput"
@@ -59,6 +61,7 @@
             <PInput
               v-model="newUser.second_lastname"
               label="Apellido materno"
+              maxLength="255"
               width="363px"
               :rules="[(value:string) => !!value.trim() || 'Agregar apellido materno']"
               data-cy="userSecondLastNameInput"
@@ -68,6 +71,7 @@
             <PInput
               v-model="newUser.email"
               label="Correo"
+              maxLength="255"
               width="363px"
               :rules="[(value:string) => value.trim().length >= 10 || 'Agregar correo']"
               data-cy="userEmailInput"
@@ -75,6 +79,7 @@
             <PInput
               v-model="newUser.phone"
               label="Celular"
+              maxLength="255"
               width="363px"
               :rules="[(value:string) => value.length >= 7 || 'Agregar celular']"
               data-cy="userPhoneInput"
@@ -88,17 +93,19 @@
               v-if="!isEditUser"
               v-model="newUser.password"
               label="Contraseña"
+              maxLength="255"
               width="363px"
               data-cy="userPasswordInput"
-              :rules="[(value:string) => value.length >= 8 || 'Agrega una contraseña válida']"
+              :rules="[(value:string) => value.length >= 8 || 'La contraseña debe tener más de 8 caracteres']"
             />
             <PInput
               v-if="!isEditUser"
               v-model="password"
               label="Contraseña"
+              maxLength="255"
               width="363px"
               data-cy="userPasswordInputRe"
-              :rules="[(value:string) => value.length >= 8 || 'Agrega una contraseña válida']"
+              :rules="[(value:string) => value.length >= 8 || 'La contraseña debe tener más de 8 caracteres']"
             />
           </div>
           <div class="buttons">
@@ -159,7 +166,11 @@ const getNewImage = (file: File) => {
 }
 async function validateFields() {
     if (!isEditUser.value && password.value !== newUser.value.password){
-        Notify.create({message: 'Las contraseñas son diferentes', color: 'red'})
+        Notify.create({message: 'Las contraseñas son diferentes', color: 'red', badgeStyle: {zIndex: '99999', position: 'fixed'}})
+        return
+    }
+    if (newUser.value.password.trim() === newUser.value.name.trim() || newUser.value.password.trim() === newUser.value.email.trim() || newUser.value.email.trim() === newUser.value.name.trim()) {
+        Notify.create({message: 'La contraseña, el nombre y el email no pueden ser iguales', color: 'red'})
         return
     }
     const isValid = formRef.value.validate()
@@ -175,19 +186,25 @@ async function validateFields() {
 }
 
 async function createUser() {
-    newUser.value.department.id = departmentSelectedId.value
-    newUser.value.rolId = rolSelectedId.value
-    await useCreateUser(newUser.value)
-    Notify.create({message: 'Se ha creado el usuario', color: 'green'})
-    emit('cancel')
-    resetValues()
+    try {
+        await useCreateUser(newUser.value)
+        Notify.create({message: 'Se ha creado el usuario', color: 'blue'})
+        emit('cancel')
+        resetValues()
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error', color: 'red'})
+    }
 }
 
 async function editUser() {
-    await useEditUser(newUser.value)
-    Notify.create({message: 'Se ha editado el usuario', color: 'green'})
-    resetValues()
-    emit('cancel')
+    try {
+        await useEditUser(newUser.value)
+        Notify.create({message: 'Se ha editado el usuario', color: 'blue'})
+        resetValues()
+        emit('cancel')
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error', color: 'blue'})
+    }
 }
 
 function takeUserSelectedValues() {
@@ -213,7 +230,9 @@ watch(departmentsList, () => {
         takeUserSelectedValues()
         departmentSelectedIndex.value = departmentsList.value.findIndex(dep => dep.id === props.userSelected.department.id)
         newUser.value.department = departmentsList.value.find(dep => dep.id === props.userSelected.department.id)
+        return
     }
+    newUser.value.department = departmentsList.value.find(dep => dep.id === 1)
 })
 watch(rolesList, () => {
     if (props.userSelected) {
@@ -221,7 +240,9 @@ watch(rolesList, () => {
         takeUserSelectedValues()
         rolSelectedIndex.value = rolesList.value.findIndex(rol => rol.name === props.userSelected.role[0])
         newUser.value.rolId = rolesList.value.find(rol => rol.name === props.userSelected.role[0]).id
+        return
     }
+    newUser.value.rolId = 1
 })
 </script>
 

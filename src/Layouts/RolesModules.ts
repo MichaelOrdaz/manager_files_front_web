@@ -14,7 +14,7 @@ const HeadOfDepartmentModules: Module[] = [
 const AnalystModules: Module[] = []
 export const RolesModules = {
     Admin: AdminModules,
-    'Head of Department': HeadOfDepartmentModules,
-    Analyst: AnalystModules,
+    'Jefe de Departamento': HeadOfDepartmentModules,
+    Analista: AnalystModules,
 }
 

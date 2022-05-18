@@ -7,7 +7,7 @@
     />
     <UsersManagementTable
       :filter="filterValue"
-      :users="users"
+      :users="filterUsers"
       @delete-user="showDeleteModal"
       @edit-user="edit"
     />
@@ -73,6 +73,9 @@ async function deleteUser() {
         Notify.create({message: 'Ha ocurrido un error', color: 'red'})
     }
 }
+const filterUsers = computed<User[]>(() => users.value.filter(user => user.name.toLowerCase()
+    .normalize('NFC').replace(/[\u0300-\u036f]/g, '')
+    .match(filterValue.value.toLowerCase().normalize('NFC').replace(/[\u0300-\u036f]/g, ''))))
 const deleteUserModalText = computed<string>(() => selectedUser.value ? `¿Está seguro que quiere eliminar al usuario ${selectedUser.value.fullName}?` : '')
 watch(rolSelected, () => {getUsers(filterValue.value, rolSelected.value)})
 </script>

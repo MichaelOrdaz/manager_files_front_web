@@ -23,18 +23,19 @@
           v-model="formData.name"
           width="100%"
           placeHolder="ejemplo.pdf"
+          maxLength="254"
           label="Nombre archivo"
-          :rules="[(value:string) => !!value.trim() || 'Agrega un nombre válido']"
+          :rules="[(value:string) => /^[a-z0-9_\-\s\.]+$/i.test(value) || 'El nombre solo puede contener caracteres alfanuméricos, guion bajo/medio, espacios y puntos']"
           data-cy="file-name"
         />
         <div class="textarea-container text-left p-mt-18">
           <PText variant="subtitle-3">
-            Describe tu evento
+            Descripción
           </PText>
           <textarea
             v-model="formData.description"
             class="puller-textarea"
-            placeholder="Contenido del evento..."
+            placeholder="Descripción del archivo..."
             data-cy="file-desc"
           />
         </div>
@@ -49,7 +50,7 @@
             v-model="formData.min_identifier"
             label="Rango de folio"
             width="253px"
-            :rules="[(value:string) => !!value.trim() || 'Agrega folio/s']"
+            :rules="[(value:string) => /^[0-9]*?-?[0-9]*$/g.test(value) || 'El folio solo puede contener números o un guión para separar']"
             data-cy="identifier-input"
           />
         </div>
@@ -96,6 +97,11 @@ const formData = reactive<File>({
 async function createFile() {
     const isValidForm: boolean = formRef.value.validate()
     if (!isValidForm) return
+    if (formData.min_identifier.includes('-')){
+        const [min, max] = formData.min_identifier.split('-')
+        formData.min_identifier = min
+        formData.max_identifier = max
+    }
     try {
         await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
         Notify.create({message: 'Se ha subido el archivo', color: 'green'})
