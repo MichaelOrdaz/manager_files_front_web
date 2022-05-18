@@ -14,19 +14,19 @@
 /**
  * 
  * @export
- * @interface DocumentType
+ * @interface Action
  */
-export interface DocumentType {
+export interface Action {
     /**
      * 
      * @type {number}
-     * @memberof DocumentType
+     * @memberof Action
      */
     id?: any;
     /**
      * 
      * @type {string}
-     * @memberof DocumentType
+     * @memberof Action
      */
     name?: any;
 }

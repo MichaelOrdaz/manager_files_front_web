@@ -79,6 +79,18 @@ export interface Document {
     date?: any;
     /**
      * 
+     * @type {Array&lt;History&gt;}
+     * @memberof Document
+     */
+    historical?: any;
+    /**
+     * 
+     * @type {Array&lt;User&gt;}
+     * @memberof Document
+     */
+    shared?: any;
+    /**
+     * 
      * @type {DocumentType}
      * @memberof Document
      */

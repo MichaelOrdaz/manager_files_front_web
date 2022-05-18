@@ -16,7 +16,7 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { Folder } from '../models';
+import { InlineResponse20010 } from '../models';
 import { InlineResponse2008 } from '../models';
 import { InlineResponse2009 } from '../models';
 import { InlineResponse400 } from '../models';
@@ -33,11 +33,12 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
         /**
          * create a folder in the system
          * @summary Create - Folder
-         * @param {Folder} [body] Request in format json format
+         * @param {string} [name] 
+         * @param {number} [parentId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createDocumentFolder: async (body?: Folder, options: any = {}): Promise<RequestArgs> => {
+        createDocumentFolder: async (name?: string, parentId?: number, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/folders`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -48,10 +49,137 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            const localVarFormParams = new FormData();
 
             // authentication bearerAuth required
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+
+            if (parentId !== undefined) { 
+                localVarFormParams.append('parent_id', parentId as any);
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * create a document in the system
+         * @summary Create - File
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createFile: async (name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/documents`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new FormData();
+
+            // authentication bearerAuth required
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+
+            if (description !== undefined) { 
+                localVarFormParams.append('description', description as any);
+            }
+
+            if (minIdentifier !== undefined) { 
+                localVarFormParams.append('min_identifier', minIdentifier as any);
+            }
+
+            if (maxIdentifier !== undefined) { 
+                localVarFormParams.append('max_identifier', maxIdentifier as any);
+            }
+
+            if (date !== undefined) { 
+                localVarFormParams.append('date', date as any);
+            }
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+
+            if (parentId !== undefined) { 
+                localVarFormParams.append('parent_id', parentId as any);
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Delete the document in a single request
+         * @summary Delete - Document
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteDocument: async (documentId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'documentId' is not null or undefined
+            if (documentId === null || documentId === undefined) {
+                throw new RequiredError('documentId','Required parameter documentId was null or undefined when calling deleteDocument.');
+            }
+            const localVarPath = `/documents/{document_id}`
+                .replace(`{${"document_id"}}`, encodeURIComponent(String(documentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -63,8 +191,6 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -166,12 +292,47 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
         /**
          * create a folder in the system
          * @summary Create - Folder
-         * @param {Folder} [body] Request in format json format
+         * @param {string} [name] 
+         * @param {number} [parentId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createDocumentFolder(body?: Folder, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
-            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).createDocumentFolder(body, options);
+        async createDocumentFolder(name?: string, parentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).createDocumentFolder(name, parentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * create a document in the system
+         * @summary Create - File
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createFile(name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).createFile(name, description, minIdentifier, maxIdentifier, date, file, parentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Delete the document in a single request
+         * @summary Delete - Document
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteDocument(documentId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse20010>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).deleteDocument(documentId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -217,12 +378,39 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
         /**
          * create a folder in the system
          * @summary Create - Folder
-         * @param {Folder} [body] Request in format json format
+         * @param {string} [name] 
+         * @param {number} [parentId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createDocumentFolder(body?: Folder, options?: any): AxiosPromise<InlineResponse2009> {
-            return DocumentsApiFp(configuration).createDocumentFolder(body, options).then((request) => request(axios, basePath));
+        createDocumentFolder(name?: string, parentId?: number, options?: any): AxiosPromise<InlineResponse2009> {
+            return DocumentsApiFp(configuration).createDocumentFolder(name, parentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * create a document in the system
+         * @summary Create - File
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createFile(name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any): AxiosPromise<InlineResponse2009> {
+            return DocumentsApiFp(configuration).createFile(name, description, minIdentifier, maxIdentifier, date, file, parentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Delete the document in a single request
+         * @summary Delete - Document
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteDocument(documentId: number, options?: any): AxiosPromise<InlineResponse20010> {
+            return DocumentsApiFp(configuration).deleteDocument(documentId, options).then((request) => request(axios, basePath));
         },
         /**
          * Get the document in a single request
@@ -257,13 +445,42 @@ export class DocumentsApi extends BaseAPI {
     /**
      * create a folder in the system
      * @summary Create - Folder
-     * @param {Folder} [body] Request in format json format
+     * @param {string} [name] 
+     * @param {number} [parentId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DocumentsApi
      */
-    public createDocumentFolder(body?: Folder, options?: any) {
-        return DocumentsApiFp(this.configuration).createDocumentFolder(body, options).then((request) => request(this.axios, this.basePath));
+    public createDocumentFolder(name?: string, parentId?: number, options?: any) {
+        return DocumentsApiFp(this.configuration).createDocumentFolder(name, parentId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * create a document in the system
+     * @summary Create - File
+     * @param {string} [name] 
+     * @param {string} [description] 
+     * @param {string} [minIdentifier] 
+     * @param {string} [maxIdentifier] 
+     * @param {string} [date] 
+     * @param {string} [file] 
+     * @param {number} [parentId] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DocumentsApi
+     */
+    public createFile(name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any) {
+        return DocumentsApiFp(this.configuration).createFile(name, description, minIdentifier, maxIdentifier, date, file, parentId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Delete the document in a single request
+     * @summary Delete - Document
+     * @param {number} documentId document id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DocumentsApi
+     */
+    public deleteDocument(documentId: number, options?: any) {
+        return DocumentsApiFp(this.configuration).deleteDocument(documentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Get the document in a single request

@@ -4,7 +4,7 @@
       variant="text-3"
       class="p-mb-16"
     >
-      Propietario
+      Información de carpeta
     </PText>
     <div class="flex column justify-start items-start">
       <div class="flex justify-start items-start">
@@ -37,19 +37,19 @@
       variant="text-5"
       class="p-mb-16"
     >
-      Creado
+      Creado por: {{ props.docData?.creator?.name ?? 'Sin nombre' }}
     </PText>
     <PText
       variant="text-5"
       class="p-mb-16"
     >
-      Ubicación
+      Ubicación: {{ props.docData?.location ?? 'Sin ubicación' }}
     </PText>
     <PText
       variant="text-5"
       class="p-mb-16"
     >
-      Informacion de carpeta
+      Fecha de creación: {{ formatDate(props?.docData?.createdAt) ?? 'Sin fecha' }}
     </PText>
     <div class="cursor-pointer p-mt-47 p-mb-16">
       <PIcon
@@ -69,8 +69,13 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import Modal from './Modal.vue'
+import type {Document} from '@/Types/Document'
+import formatDate from '@/utils/FormatDate'
+
+interface Props { docData: Document }
+const props = defineProps<Props>()
 
 const tags = ref<string[]>([])
 const showTagsModal = ref<boolean>(false)
@@ -82,9 +87,18 @@ function updateTagsList(params: string[]): void {
     tags.value = params
     showTagsModal.value = false
 }
+watch(() => props.docData, () => {
+    tags.value = props.docData.tags
+}, {deep: true})
 </script>
 
 <style scoped lang="scss">
+.truncate{
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .dir-data-container{
     padding: 12px;
     display: flex;

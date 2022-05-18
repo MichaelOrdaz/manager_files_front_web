@@ -9,6 +9,7 @@
         placeHolder="Buscar"
         width="758px"
         enableCursorPointerOnIcon
+        data-cy="filter-docs-input"
         @append-icon-action="showAdvancedSearch = true"
       />
       <PButton class="p-mt-4">
@@ -22,11 +23,17 @@
     </div>
   </div>
   <div>
-    <ViewBreadcumb />
-    <ViewFoldersDescAndActions />
+    <ViewBreadcumb
+      :actualFolder="selectedFolder"
+      @change-folder="changeFolder"
+    />
+    <ViewFoldersDescAndActions
+      :selectedFolderId="selectedFolder ? selectedFolder.id : undefined"
+      @update-list="changeFolder"
+    />
   </div>
   <div
-    v-if="!documentsList.length"
+    v-if="!list.length"
     class="no-data p-mt-122"
   >
     <img
@@ -40,13 +47,14 @@
   >
     <div class="items-col">
       <DirFileRowComponent
-        v-for="(document, index) in filterList"
+        v-for="(document, index) in list"
         :key="index"
         class="cursor-pointer"
         :firstText="document.name"
         :secondText="document.createdAt"
         :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
         :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
+        data-cy="document-item-row"
         @click="showFolderInfo(document)"
       />
     </div>
@@ -58,33 +66,56 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {computed, provide, ref} from 'vue'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import ViewFoldersDescAndActions from '@/Pages/HeadOfDepartment/Home/ViewFoldersDescAndActions.vue'
 import AdvancedSearch from './AdvancedSearch.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
 import DirFileRowComponent from '@/components/Organism/DirFileRowComponent.vue'
-import {useGetDocumentsList} from '@/Composables/useDocumentsClientMethods'
 import DirectorySvg from '@/assets/directory-img.svg'
 import FileImg from '@/assets/pdfimg.png'
 import type {Document} from '@/Types/Document'
 import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import Dayjs from 'dayjs'
+import store from '@/store/index'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
 const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
-const {documentsList} = useGetDocumentsList(undefined)
+const timer = ref(null)
+const clicksCount = ref<number>(0)
 
-const filterList = computed<Document[]>(() => documentsList.value.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase())))
-
+const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value)))
 function showFolderInfo(doc: Document) {
-    if (doc.type.name === 'Carpeta') {
-        selectedFolder.value = doc
-        showFolderInfoSection.value = true
+    clicksCount.value++
+    if (clicksCount.value === 1) {
+        timer.value = setTimeout(() => {
+            selectedFolder.value = doc
+            store.commit('SET_SELECTED_ITEM', doc)
+            clicksCount.value = 0
+            showFolderInfoSection.value = true
+        }, 250)
+    }else {
+        clearTimeout(timer.value)
+        if (doc.type.name === 'Carpeta'){
+            store.commit('SET_CURRENT_FOLDER',doc)
+            store.commit('BUILD_BREADCRUMB', doc)
+            store.dispatch('get_folder_content')
+            clicksCount.value = 0
+        }
     }
 }
+
+function changeFolder() {
+    store.dispatch('get_folder_content')
+}
+async function hideFolderInfo() {
+    showFolderInfoSection.value = false
+    await store.dispatch('get_folder_content')
+}
+provide('hide-folder-info-section', hideFolderInfo)
+store.dispatch('get_folder_content')
 </script>
 
 <style scoped lang="scss">

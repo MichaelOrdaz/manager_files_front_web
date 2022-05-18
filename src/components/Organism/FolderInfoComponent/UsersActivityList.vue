@@ -4,17 +4,59 @@
       Historial
     </PText>
     <MiniCard
-      v-for="number in 3"
-      :key="number"
-      descriptionText="Test text for the card description and more data"
-      cardTitle="Test text for everyone"
+      :descriptionText="props?.history[props.history.length - 1]?.action?.name"
+      :cardTitle="`${formatDate(props?.history[props.history.length -1]?.date, 'DD')} de ${formatDate(props?.history[props.history.length -1]?.date, 'MMMM')}`"
     />
-    <PLinkText>Ver más...</PLinkText>
+    <PLinkText @click="showHistoryModal = true">
+      Ver más...
+    </PLinkText>
   </div>
+  <PModal
+    v-if="showHistoryModal"
+    modalTitle="Historial de carpeta"
+    width="632px"
+    heigth="652px"
+    class="text-left"
+  >
+    <template #body>
+      <div class="history-items">
+        <div
+          v-for="record in props.history"
+          :key="record.id"
+          class="history-item"
+        >
+          <PText variant="text-5">
+            {{ `${formatDate(record?.date, 'DD')} de ${formatDate(record?.date, 'MMMM')}` }}
+          </PText>
+          <PText
+            variant="text-5"
+            color="grey-5"
+          >
+            {{ record?.action.name }} {{ record.name?.name ?? 'Sin nombre' }}
+          </PText>
+        </div>
+      </div>
+    </template>
+    <template #footer>
+      <PButton
+        size="xlg"
+        @click="showHistoryModal = false"
+      >
+        Salir
+      </PButton>
+    </template>
+  </PModal>
 </template>
 
 <script setup lang="ts">
 import MiniCard from '@/components/Molecules/MiniCard.vue'
+import PModal from '@/components/Molecules/PModal.vue'
+import {ref} from 'vue'
+import {DocumentRecord} from '@/Types/Document'
+import formatDate from '@/utils/FormatDate'
+interface Props{ history: DocumentRecord[]}
+const props = withDefaults(defineProps<Props>(), {history: () => []})
+const showHistoryModal = ref<boolean>(false)
 
 </script>
 
@@ -30,5 +72,17 @@ import MiniCard from '@/components/Molecules/MiniCard.vue'
 div :deep(.mini-card-container){
     border: none;
     border-bottom: solid 1px $gray-8;
+}
+.history-items{
+    height: 400px;
+    overflow-y: scroll;
+    .history-item{
+        width: 100%;
+        height: 50px;
+        padding: 6px;
+        border: solid 1px $grey-1;
+        display: flex;
+        flex-direction: column;
+    }
 }
 </style>
