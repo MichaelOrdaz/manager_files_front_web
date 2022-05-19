@@ -1,4 +1,4 @@
-import { createLogger, createStore } from 'vuex'
+import { createStore } from 'vuex'
 import { auth } from './auth'
 import {foldersTree} from '@/store/FoldersStore'
 import createPersistedState  from 'vuex-persistedstate'
@@ -8,7 +8,7 @@ export interface StateInterface {
   modules: {auth: Auth, foldersStore: FoldersStore}
 }
 const store = createStore<StateInterface>({
-    plugins: [ import.meta.env.DEV && createLogger(), createPersistedState()],
+    plugins: [createPersistedState()],
     modules: {
         auth,
         foldersTree,
