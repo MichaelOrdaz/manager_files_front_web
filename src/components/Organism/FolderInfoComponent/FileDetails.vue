@@ -4,7 +4,7 @@
       variant="text-3"
       class="p-mb-16"
     >
-      Información de carpeta
+      Información de archivo
     </PText>
     <PText
       variant="text-5"

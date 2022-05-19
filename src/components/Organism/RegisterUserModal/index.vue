@@ -244,6 +244,15 @@ watch(rolesList, () => {
     }
     newUser.value.rolId = 1
 })
+
+watch([departmentSelectedId, rolSelectedId], () => {
+    if (departmentSelectedId.value){
+        newUser.value.department = departmentsList.value.find(dep =>dep.id === departmentSelectedId.value)
+    }
+    if (rolSelectedId.value) {
+        newUser.value.rolId = rolSelectedId.value
+    }
+})
 </script>
 
 <style scoped lang="scss">
