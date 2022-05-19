@@ -9,7 +9,7 @@
     <QTree
       v-model:selected="select"
       :nodes="tree"
-      node-key="label"
+      node-key="folderId"
       no-connectors
       accordion
       no-selection-unset
@@ -20,18 +20,19 @@
 
 <script setup lang="ts">
 import {QTree} from 'quasar'
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import {DocumentsApi} from '@/services/api/api'
 import type {QTreeNode} from 'quasar'
+import store from '@/store'
 
 
-const select = ref(null)
+const select = ref(0)
 const tree: QTreeNode[] = [{
     label: 'Mi unidad',
     icon: 'folder',
     selectable: true,
     lazy: true,
-    id: 0,
+    folderId: 0,
 }]
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
 async function getNewNodes({node, key, done, fail}) {
@@ -49,6 +50,22 @@ async function getNewNodes({node, key, done, fail}) {
     done(newNodes)
     fail([])
 }
+
+async function getDocumentContent(id: number) {
+    const resp = await new DocumentsApi().getDocument(id)
+    store.commit('SET_CURRENT_FOLDER', resp.data.data)
+    store.commit('BUILD_BREADCRUMB', resp.data.data)
+    await store.dispatch('get_folder_content')
+}
+watch(select, () => {
+    if (select.value) {
+        getDocumentContent(select.value)
+    } else {
+        store.commit('RESET_BREADCRUMB_STRUCTURE')
+        store.commit('RESET_CURRENT_FOLDER')
+        store.dispatch('get_folder_content')
+    }
+})
 </script>
 
 <style scoped lang="scss">
