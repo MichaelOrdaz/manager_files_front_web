@@ -60,7 +60,7 @@ describe('Folder actions', () => {
         cy.intercept('DELETE','**/api/v1/documents/**').as('deleteFile')
         cy.get('[data-cy="filter-docs-input"]').type(randomFileCharacters)
         cy.get('[data-cy="document-item-row"]').click()
-        cy.contains('Eliminar carpeta').click()
+        cy.contains('Eliminar archivo').click()
         cy.contains('Aceptar').click()
         cy.wait('@deleteFile').then( response => {
             expect(response.response.statusCode).to.equal(200)

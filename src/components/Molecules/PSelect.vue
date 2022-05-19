@@ -5,7 +5,7 @@
   >
     <PText
       class="label"
-      color="black"
+      color="gray-6"
       variant="text-3"
     >
       {{ componentLabel }}

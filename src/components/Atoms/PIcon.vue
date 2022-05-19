@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, withDefaults} from 'vue'
+import {computed, ref, withDefaults} from 'vue'
 interface Props {
     iconName?: string,
     size?: string,
@@ -19,11 +19,14 @@ const props = withDefaults(defineProps<Props>(), {
     size: 'pmd',
     color: 'negro',
 })
-const computedStyles = computed<string>(() => `${props.color} ${props.size}`)
+const componentSize = ref<string>(['pxsm' ,'psm', 'pmd'].includes(props.size) ? props.size : '')
+const computedStyles = computed<string>(() => `${props.color} ${['pxsm' ,'psm', 'pmd'].includes(props.size) ? props.size : ''}`)
 </script>
 
 <style scoped lang="scss">
-.material-icons{ padding: 0; margin: 0; width: auto; background-color: transparent; border: none}
+.material-icons{
+    font-size: v-bind(componentSize);
+    padding: 0; margin: 0; width: auto; background-color: transparent; border: none}
 .pxsm{
     font-size: 6px;
 }
@@ -39,6 +42,7 @@ const computedStyles = computed<string>(() => `${props.color} ${props.size}`)
 .link{color: $ocean}
 .gold{color: $gold}
 .brown-6{color: $brown-6}
+.grey{color: $grey}
 .gray7{color: $gray-7}
 .gray10{color: $grey-10}
 </style>

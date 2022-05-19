@@ -2,7 +2,7 @@
   <div class="pinput-main-container">
     <PText
       v-if="props.showLabel"
-      color="black"
+      color="gray-6"
       variant="text-4"
     >
       {{ props.label }}

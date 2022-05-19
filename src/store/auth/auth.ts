@@ -6,7 +6,8 @@ export interface UserData {
     phone?: string,
     image?: string,
     department_id?: number,
-    email?: string
+    email?: string,
+    department?: {id: number, name: string}
 }
 export interface Auth {
     access_token?: string,
@@ -19,9 +20,9 @@ export interface Auth {
     roles?: string[],
     views: object,
     initialPage: {
-        Admin: 'Admin Dashboard',
-        Analyst: 'Dashboard',
-        'Head of Department': 'Dashboard'
+        Administrador: 'Admin Dashboard',
+        Analista: 'Dashboard',
+        'Jefe de Departamento': 'Dashboard'
     }
 }
 
@@ -34,9 +35,9 @@ export default function state(): Auth {
         access_token: localStorage.getItem('access_token') ?? '',
         views: [],
         initialPage: {
-            Admin: 'Admin Dashboard',
-            Analyst: 'Dashboard',
-            'Head of Department': 'Dashboard'
+            Administrador: 'Admin Dashboard',
+            Analista: 'Dashboard',
+            'Jefe de Departamento': 'Dashboard'
         },
         roles: [],
         isValidToken: false,

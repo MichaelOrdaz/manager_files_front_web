@@ -16,6 +16,7 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { DocumentIdRenameBody } from '../models';
 import { InlineResponse20010 } from '../models';
 import { InlineResponse2008 } from '../models';
 import { InlineResponse2009 } from '../models';
@@ -280,6 +281,53 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Rename the document in a single request
+         * @summary Rename - Document
+         * @param {number} documentId document id
+         * @param {DocumentIdRenameBody} [body] Request in format json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        renameDocument: async (documentId: number, body?: DocumentIdRenameBody, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'documentId' is not null or undefined
+            if (documentId === null || documentId === undefined) {
+                throw new RequiredError('documentId','Required parameter documentId was null or undefined when calling renameDocument.');
+            }
+            const localVarPath = `/documents/{document_id}/:rename`
+                .replace(`{${"document_id"}}`, encodeURIComponent(String(documentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -366,6 +414,21 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
                 return axios.request(axiosRequestArgs);
             };
         },
+        /**
+         * Rename the document in a single request
+         * @summary Rename - Document
+         * @param {number} documentId document id
+         * @param {DocumentIdRenameBody} [body] Request in format json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async renameDocument(documentId: number, body?: DocumentIdRenameBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).renameDocument(documentId, body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
     }
 };
 
@@ -431,6 +494,17 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
          */
         getDocuments(parent?: number, options?: any): AxiosPromise<InlineResponse2008> {
             return DocumentsApiFp(configuration).getDocuments(parent, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Rename the document in a single request
+         * @summary Rename - Document
+         * @param {number} documentId document id
+         * @param {DocumentIdRenameBody} [body] Request in format json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        renameDocument(documentId: number, body?: DocumentIdRenameBody, options?: any): AxiosPromise<InlineResponse2009> {
+            return DocumentsApiFp(configuration).renameDocument(documentId, body, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -503,5 +577,17 @@ export class DocumentsApi extends BaseAPI {
      */
     public getDocuments(parent?: number, options?: any) {
         return DocumentsApiFp(this.configuration).getDocuments(parent, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Rename the document in a single request
+     * @summary Rename - Document
+     * @param {number} documentId document id
+     * @param {DocumentIdRenameBody} [body] Request in format json format
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DocumentsApi
+     */
+    public renameDocument(documentId: number, body?: DocumentIdRenameBody, options?: any) {
+        return DocumentsApiFp(this.configuration).renameDocument(documentId, body, options).then((request) => request(this.axios, this.basePath));
     }
 }

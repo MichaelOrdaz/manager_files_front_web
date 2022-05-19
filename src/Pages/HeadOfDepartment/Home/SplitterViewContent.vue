@@ -4,15 +4,16 @@
       <PInput
         v-model="searchValue"
         class="q-mr-sm"
-        appendIconName="tune"
         prependIconName="search"
         placeHolder="Buscar"
         width="758px"
-        enableCursorPointerOnIcon
         data-cy="filter-docs-input"
-        @append-icon-action="showAdvancedSearch = true"
       />
-      <PButton class="p-mt-4">
+      <!--        TODO: 2f79yuc-->
+      <PButton
+        v-if="false"
+        class="p-mt-4"
+      >
         Buscar
       </PButton>
       <AdvancedSearch
@@ -86,7 +87,8 @@ const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
 
-const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value)))
+const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value))
+    .sort((a) => a.type.name ==='Archivo' ? 1 : -1))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (clicksCount.value === 1) {
