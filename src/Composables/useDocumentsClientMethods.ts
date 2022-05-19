@@ -49,3 +49,11 @@ export async function useDeleteFolder(folderId: number) {
             .catch(error => reject(error))
     })
 }
+
+export function useEditItemName(doc:Document, newName: string) {
+    return new Promise((resolve, reject) => {
+        new DocumentsApi().renameDocument(doc.id, {name: newName})
+            .then(resp => resolve(resp))
+            .catch(error => reject(error))
+    })
+}

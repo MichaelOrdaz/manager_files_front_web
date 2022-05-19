@@ -4,7 +4,7 @@
       variant="text-3"
       class="p-mb-16"
     >
-      Información de carpeta
+      Información de archivo
     </PText>
     <PText
       variant="text-5"
@@ -42,7 +42,9 @@
         color="link"
         iconName="download"
       />
-      <PLinkText>Descargar</PLinkText>
+      <PLinkText @click="downloadFile">
+        Descargar
+      </PLinkText>
     </div>
   </div>
 </template>
@@ -53,6 +55,10 @@ import formatDate from '@/utils/FormatDate'
 
 interface Props { docData: Document }
 const props = defineProps<Props>()
+
+function downloadFile() {
+    window.open(props.docData.url)
+}
 
 </script>
 

@@ -22,7 +22,7 @@ export default function state(): FoldersStore {
         breadcrumbStructure: [{
             id: 0,
             type: {id: 1, name: 'Carpeta'},
-            name: 'Inicio',
+            name: 'Mi unidad',
             date: '',
             location: '',
             createdAt: '',
@@ -32,7 +32,7 @@ export default function state(): FoldersStore {
         treeStructure: [{
             folderId: undefined,
             icon: 'folder',
-            label: 'Inicio',
+            label: 'Mi Unidad',
             children: [],
             lazy: true,
         }]

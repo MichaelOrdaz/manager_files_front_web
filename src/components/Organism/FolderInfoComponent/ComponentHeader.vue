@@ -32,7 +32,7 @@
         color="gray-7"
         variant="text-5"
       >
-        Eliminar carpeta
+        {{ store.getters.isFolder ? 'Eliminar carpeta': 'Eliminar archivo' }}
       </PText>
     </div>
   </div>
@@ -40,6 +40,7 @@
     v-if="showEditFolderNameModal"
     modalTitle="Cambiar el nombre de la carpeta"
     @cancel="showEditFolderNameModal = false"
+    @accept="editItemName"
   >
     <template #body>
       <PInput
@@ -61,7 +62,7 @@ import PModal from '@/components/Molecules/PModal.vue'
 import {inject, ref} from 'vue'
 import store from '@/store'
 import type {Document} from '@/Types/Document'
-import {useDeleteFolder} from '@/Composables/useDocumentsClientMethods'
+import {useDeleteFolder, useEditItemName} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
 
 interface Props { docData: Document}
@@ -80,6 +81,17 @@ async function deleteFolder() {
         Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue'})
     } catch (e) {
         Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red'})
+    }
+}
+
+async function editItemName() {
+    try {
+        await useEditItemName(store.getters.getSelectedItem, newFolderName.value)
+        hideFolderInfoSection()
+        showEditFolderNameModal.value = false
+        Notify.create({message: 'El nombre ha sido editado', color: 'blue'})
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error', color: 'red'})
     }
 }
 </script>

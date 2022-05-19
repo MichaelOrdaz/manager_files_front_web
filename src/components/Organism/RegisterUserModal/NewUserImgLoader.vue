@@ -1,6 +1,10 @@
 <template>
   <div class="user-img">
-    <PText variant="text-1">
+    <PText
+      variant="text-1"
+      color="gray-6"
+      fontWeight="700"
+    >
       Dar de alta usuario
     </PText>
     <div class="btn-img">
@@ -10,6 +14,7 @@
         alt="userImg"
       >
       <PButton
+        class="upload-btn"
         variant="white"
         @click.prevent="loadUserImg"
       >
@@ -58,5 +63,8 @@ function loadUserImg() {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+.upload-btn{
+    margin-top: 10px;
 }
 </style>
