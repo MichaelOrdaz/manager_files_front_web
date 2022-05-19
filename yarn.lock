@@ -3370,7 +3370,7 @@
     "@volar/shared" "0.29.8"
     "vscode-vue-languageservice" "0.29.8"
 
-"vue@^3.0.0", "vue@^3.0.2", "vue@^3.0.5", "vue@^3.2.25", "vue@3.2.31":
+"vue@^3.0.0", "vue@^3.0.2", "vue@^3.2.25", "vue@3.2.31":
   "integrity" "sha512-odT3W2tcffTiQCy57nOT93INw1auq5lYLLYtWpPYQQYQOOdHiqFct9Xhna6GJ+pJQaF67yZABraH47oywkJgFw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.2.31.tgz"
   "version" "3.2.31"
@@ -3380,11 +3380,6 @@
     "@vue/runtime-dom" "3.2.31"
     "@vue/server-renderer" "3.2.31"
     "@vue/shared" "3.2.31"
-
-"vue3-tree-vue@^1.0.15":
-  "integrity" "sha512-35f1eFLP8Fqa8pbRbnyon0nIJefNT3Y6pPD3ceY1pe0K9uLZy9o1RPjVye7rpso03fL8Yk7fUfJzAStca42Weg=="
-  "resolved" "https://registry.npmjs.org/vue3-tree-vue/-/vue3-tree-vue-1.0.15.tgz"
-  "version" "1.0.15"
 
 "vuex-persistedstate@^4.1.0":
   "integrity" "sha512-3SkEj4NqwM69ikJdFVw6gObeB0NHyspRYMYkR/EbhR0hbvAKyR5gksVhtAfY1UYuWUOCCA0QNGwv9pOwdj+XUQ=="

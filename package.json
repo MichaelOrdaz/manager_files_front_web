@@ -24,7 +24,6 @@
     "quasar": "^2.5.5",
     "vue": "^3.2.25",
     "vue-router": "^4.0.12",
-    "vue3-tree-vue": "^1.0.15",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0"
   },
