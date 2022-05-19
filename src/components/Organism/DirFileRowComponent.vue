@@ -28,6 +28,7 @@
       {{ props.thirdText ?? '' }}
     </PText>
     <PText
+      v-if="props.fourthText"
       class="text truncate"
       variant="text-5"
       :title="props.fourthText"
@@ -54,7 +55,7 @@ interface Props{
 }
 const props = withDefaults(defineProps<Props>(),{
     firstText: 'Text 1', secondText: 'Text 2', thirdText: 'Text 3', optionsList: undefined, image: DirectorySvg
-    ,fourthText: 'Text 4'
+    ,fourthText: undefined
 })
 </script>
 
