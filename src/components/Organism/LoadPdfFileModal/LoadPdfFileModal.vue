@@ -78,13 +78,13 @@ import ModalMask from '@/components/Atoms/ModalMask.vue'
 import PForm from '@/components/Organism/PForm.vue'
 import PFormComp from '@/Types/PFormComp'
 import PInputDate from '@/components/Molecules/PInputDate.vue'
-import {reactive, ref, withDefaults} from 'vue'
+import {onMounted, reactive, ref, withDefaults} from 'vue'
 import type {File} from '@/Types/File'
 import {useCreateFile} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
 import store from '@/store'
 interface Props {
-    newFile?: string, actualFolderId?: number
+    newFile?: File, actualFolderId?: number
 }
 const emit = defineEmits(['cancel'])
 const props = withDefaults(defineProps<Props>(), {newFile: undefined, actualFolderId: 0})
@@ -111,6 +111,7 @@ async function createFile() {
         Notify.create({message: 'Valida los campos', color: 'red'})
     }
 }
+onMounted(() => { formData.name = props.newFile.name })
 </script>
 
 <style scoped lang="scss">
