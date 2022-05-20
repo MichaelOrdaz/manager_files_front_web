@@ -50,12 +50,13 @@
       <DirFileRowComponent
         v-for="(document, index) in list"
         :key="index"
-        class="cursor-pointer"
+        class="cursor-pointer p-m-8"
         :firstText="document.name"
         :secondText="document.createdAt"
         :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
         :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
         data-cy="document-item-row"
+        :is-selected="selectedFolder?.id === document.id"
         @click="showFolderInfo(document)"
       />
     </div>
@@ -112,9 +113,10 @@ function showFolderInfo(doc: Document) {
 function changeFolder() {
     store.dispatch('get_folder_content')
 }
-async function hideFolderInfo() {
+async function hideFolderInfo(reloadConten?: boolean) {
     showFolderInfoSection.value = false
-    await store.dispatch('get_folder_content')
+    reloadConten && await store.dispatch('get_folder_content')
+    selectedFolder.value = undefined
 }
 provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')

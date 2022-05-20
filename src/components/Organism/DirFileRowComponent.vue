@@ -1,5 +1,8 @@
 <template>
-  <div class="dir-file-component-container">
+  <div
+    class="dir-file-component-container"
+    :class="props.isSelected && 'is-selected'"
+  >
     <div class="avatar-title">
       <PAvatar
         size="pmd"
@@ -51,11 +54,12 @@ interface Props{
     secondText?: string,
     thirdText?: string,
     fourthText?: string,
-    image?: string
+    image?: string,
+    isSelected?: boolean,
 }
 const props = withDefaults(defineProps<Props>(),{
     firstText: 'Text 1', secondText: 'Text 2', thirdText: 'Text 3', optionsList: undefined, image: DirectorySvg
-    ,fourthText: undefined
+    ,fourthText: undefined, isSelected: false,
 })
 </script>
 
@@ -70,6 +74,7 @@ const props = withDefaults(defineProps<Props>(),{
 .dir-file-component-container:hover{
     background-color: #F1F1F2;
 }
+.is-selected {background-color: #f1f1f2}
 .avatar-title{
     width: 25%;
     display: flex;

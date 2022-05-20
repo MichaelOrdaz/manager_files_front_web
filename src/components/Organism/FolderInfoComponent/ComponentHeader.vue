@@ -68,7 +68,8 @@ import {Notify} from 'quasar'
 interface Props { docData: Document}
 const props = defineProps<Props>()
 
-const hideFolderInfoSection = inject<() => void>('hide-folder-info-section')
+// eslint-disable-next-line no-unused-vars
+const hideFolderInfoSection = inject<(reloadContent?: boolean) => void>('hide-folder-info-section')
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
@@ -87,7 +88,7 @@ async function deleteFolder() {
 async function editItemName() {
     try {
         await useEditItemName(store.getters.getSelectedItem, newFolderName.value)
-        hideFolderInfoSection()
+        hideFolderInfoSection(true)
         showEditFolderNameModal.value = false
         Notify.create({message: 'El nombre ha sido editado', color: 'blue'})
     } catch (e) {

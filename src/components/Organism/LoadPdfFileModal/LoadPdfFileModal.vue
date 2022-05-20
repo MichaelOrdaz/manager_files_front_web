@@ -44,6 +44,7 @@
             v-model="formData.date"
             label="Fecha"
             width="200px"
+            place-holder="2000-01-01"
             :rules="[(value:string) => !!value.trim() || 'Agrega una fecha válida']"
           />
           <PInput
@@ -52,6 +53,7 @@
             width="253px"
             :rules="[(value:string) => /^[0-9]*?-?[0-9]*$/g.test(value) || 'El folio solo puede contener números o un guión para separar']"
             data-cy="identifier-input"
+            placeHolder="0001-0002"
           />
         </div>
         <div class="buttons flex justify-end p-mt-46">
