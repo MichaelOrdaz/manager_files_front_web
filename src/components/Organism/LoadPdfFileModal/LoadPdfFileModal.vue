@@ -106,11 +106,11 @@ async function createFile() {
     }
     try {
         await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
-        Notify.create({message: 'Se ha subido el archivo', color: 'green'})
+        Notify.create({message: 'Se ha subido el archivo', color: 'blue', type: 'positive'})
         await store.dispatch('get_folder_content')
         emit('cancel')
     } catch (e) {
-        Notify.create({message: 'Valida los campos', color: 'red'})
+        Notify.create({message: 'Valida los campos', color: 'red', type: 'negative'})
     }
 }
 onMounted(() => { formData.name = props.newFile.name })

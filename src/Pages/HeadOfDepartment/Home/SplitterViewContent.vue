@@ -29,15 +29,21 @@
       @change-folder="changeFolder"
     />
     <ViewFoldersDescAndActions
+      ref="FoldersDescAndActionsRef"
       :selectedFolderId="selectedFolder ? selectedFolder.id : undefined"
       @update-list="changeFolder"
     />
   </div>
   <div
     v-if="!list.length"
-    class="no-data p-mt-122"
+    class="no-data"
+    @dragenter.prevent
+    @dragleave.prevent
+    @dragover.prevent
+    @drop.prevent="event($event)"
   >
     <img
+      class="p-mt-122"
       :src="NoDataSvg"
       alt="No data"
     >
@@ -45,12 +51,16 @@
   <div
     v-else
     class="section"
+    @dragenter.prevent
+    @dragleave.prevent
+    @dragover.prevent
+    @drop.prevent="event($event)"
   >
     <div class="items-col">
       <DirFileRowComponent
         v-for="(document, index) in list"
         :key="index"
-        class="cursor-pointer p-m-8"
+        class="cursor-pointer"
         :firstText="document.name"
         :secondText="document.createdAt"
         :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
@@ -80,6 +90,7 @@ import type {Document} from '@/Types/Document'
 import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import Dayjs from 'dayjs'
 import store from '@/store/index'
+import {Notify} from 'quasar'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -87,6 +98,7 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
+const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
 const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value))
     .sort((a) => a.type.name ==='Archivo' ? 1 : -1))
@@ -112,6 +124,13 @@ function showFolderInfo(doc: Document) {
 
 function changeFolder() {
     store.dispatch('get_folder_content')
+}
+function event(event: DragEvent) {
+    if (event.dataTransfer?.files[0]?.type === 'application/pdf'){
+        FoldersDescAndActionsRef.value.takeDropFile(event.dataTransfer?.files[0])
+        return
+    }
+    Notify.create({message: 'El archivo no es PDF', color: 'red', type: 'negative'})
 }
 async function hideFolderInfo(reloadConten?: boolean) {
     showFolderInfoSection.value = false

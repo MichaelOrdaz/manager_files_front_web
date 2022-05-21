@@ -26,6 +26,11 @@ const mutations: MutationTree<Auth> = {
         state.status = ''
         state.permissions = []
         state.roles = []
+        state.initialPage = {
+            Administrador: 'Admin Dashboard',
+            Analista: 'Dashboard',
+            'Jefe de Departamento': 'Dashboard'
+        }
     },
     AUTH_SET_IS_VALID_TOKEN(state, payload:boolean): void{
         state.isValidToken = payload

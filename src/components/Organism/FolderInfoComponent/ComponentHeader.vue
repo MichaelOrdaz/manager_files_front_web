@@ -79,9 +79,9 @@ async function deleteFolder() {
         await useDeleteFolder(props.docData.id)
         hideFolderInfoSection()
         showDeleteFolderModal.value = false
-        Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue'})
+        Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue', type: 'positive'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red'})
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
     }
 }
 
@@ -90,9 +90,9 @@ async function editItemName() {
         await useEditItemName(store.getters.getSelectedItem, newFolderName.value)
         hideFolderInfoSection(true)
         showEditFolderNameModal.value = false
-        Notify.create({message: 'El nombre ha sido editado', color: 'blue'})
+        Notify.create({message: 'El nombre ha sido editado', color: 'blue', type: 'positive'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
     }
 }
 </script>
