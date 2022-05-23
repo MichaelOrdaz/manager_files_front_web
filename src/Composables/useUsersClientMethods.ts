@@ -49,3 +49,15 @@ export async function useDeleteUser(user:User): Promise<AxiosResponse> {
         return e
     }
 }
+
+export async function useUpdateUserPassword(userId: number,newPassword: string, passwordConfirmation: string): Promise<AxiosResponse> {
+    return new Promise((resolve, reject) => {
+        new UsersApi().changePasswordUser(userId, {
+            password: '',
+            passwordConfirmation: passwordConfirmation,
+            newPassword: newPassword
+        })
+            .then(resp => resolve(resp))
+            .catch(error => reject(error))
+    })
+}
