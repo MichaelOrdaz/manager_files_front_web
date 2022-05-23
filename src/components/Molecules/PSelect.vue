@@ -41,14 +41,6 @@
         {{ msg }}
       </PText>
     </div>
-    <div v-else>
-      <PText
-        color="black"
-        variant="text-4"
-      >
-        {{ '' }}
-      </PText>
-    </div>
     <div
       v-if="!isObject && componentOptions.length"
       class="items"

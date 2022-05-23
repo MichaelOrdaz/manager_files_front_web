@@ -68,7 +68,8 @@ import {Notify} from 'quasar'
 interface Props { docData: Document}
 const props = defineProps<Props>()
 
-const hideFolderInfoSection = inject<() => void>('hide-folder-info-section')
+// eslint-disable-next-line no-unused-vars
+const hideFolderInfoSection = inject<(reloadContent?: boolean) => void>('hide-folder-info-section')
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
@@ -78,20 +79,20 @@ async function deleteFolder() {
         await useDeleteFolder(props.docData.id)
         hideFolderInfoSection()
         showDeleteFolderModal.value = false
-        Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue'})
+        Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue', type: 'positive'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red'})
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
     }
 }
 
 async function editItemName() {
     try {
         await useEditItemName(store.getters.getSelectedItem, newFolderName.value)
-        hideFolderInfoSection()
+        hideFolderInfoSection(true)
         showEditFolderNameModal.value = false
-        Notify.create({message: 'El nombre ha sido editado', color: 'blue'})
+        Notify.create({message: 'El nombre ha sido editado', color: 'blue', type: 'positive'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
     }
 }
 </script>

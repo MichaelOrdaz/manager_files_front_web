@@ -44,6 +44,7 @@
             v-model="formData.date"
             label="Fecha"
             width="200px"
+            place-holder="2000-01-01"
             :rules="[(value:string) => !!value.trim() || 'Agrega una fecha válida']"
           />
           <PInput
@@ -52,6 +53,7 @@
             width="253px"
             :rules="[(value:string) => /^[0-9]*?-?[0-9]*$/g.test(value) || 'El folio solo puede contener números o un guión para separar']"
             data-cy="identifier-input"
+            placeHolder="0001-0002"
           />
         </div>
         <div class="buttons flex justify-end p-mt-46">
@@ -78,13 +80,13 @@ import ModalMask from '@/components/Atoms/ModalMask.vue'
 import PForm from '@/components/Organism/PForm.vue'
 import PFormComp from '@/Types/PFormComp'
 import PInputDate from '@/components/Molecules/PInputDate.vue'
-import {reactive, ref, withDefaults} from 'vue'
+import {onMounted, reactive, ref, withDefaults} from 'vue'
 import type {File} from '@/Types/File'
 import {useCreateFile} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
 import store from '@/store'
 interface Props {
-    newFile?: string, actualFolderId?: number
+    newFile?: File, actualFolderId?: number
 }
 const emit = defineEmits(['cancel'])
 const props = withDefaults(defineProps<Props>(), {newFile: undefined, actualFolderId: 0})
@@ -104,13 +106,14 @@ async function createFile() {
     }
     try {
         await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
-        Notify.create({message: 'Se ha subido el archivo', color: 'green'})
+        Notify.create({message: 'Se ha subido el archivo', color: 'blue', type: 'positive'})
         await store.dispatch('get_folder_content')
         emit('cancel')
     } catch (e) {
-        Notify.create({message: 'Valida los campos', color: 'red'})
+        Notify.create({message: 'Valida los campos', color: 'red', type: 'negative'})
     }
 }
+onMounted(() => { formData.name = props.newFile.name })
 </script>
 
 <style scoped lang="scss">

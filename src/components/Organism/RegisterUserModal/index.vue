@@ -165,15 +165,15 @@ const getNewImage = (file: File) => {
     }
 }
 async function validateFields() {
+    const isValid = formRef.value.validate()
     if (!isEditUser.value && password.value !== newUser.value.password){
         Notify.create({message: 'Las contraseñas son diferentes', color: 'red', badgeStyle: {zIndex: '99999', position: 'fixed'}})
         return
     }
     if (newUser.value.password.trim() === newUser.value.name.trim() || newUser.value.password.trim() === newUser.value.email.trim() || newUser.value.email.trim() === newUser.value.name.trim()) {
-        Notify.create({message: 'La contraseña, el nombre y el email no pueden ser iguales', color: 'red'})
+        Notify.create({message: 'La contraseña, el nombre y el email no pueden ser iguales', color: 'red', type: 'negative'})
         return
     }
-    const isValid = formRef.value.validate()
     if (isValid){
         if (!isEditUser.value) {
             await createUser()
@@ -188,22 +188,22 @@ async function validateFields() {
 async function createUser() {
     try {
         await useCreateUser(newUser.value)
-        Notify.create({message: 'Se ha creado el usuario', color: 'blue'})
+        Notify.create({message: 'Se ha creado el usuario', color: 'blue', type: 'positive'})
         emit('cancel')
         resetValues()
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
     }
 }
 
 async function editUser() {
     try {
         await useEditUser(newUser.value)
-        Notify.create({message: 'Se ha editado el usuario', color: 'blue'})
+        Notify.create({message: 'Se ha editado el usuario', color: 'blue', type: 'positive'})
         resetValues()
         emit('cancel')
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'blue'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'blue', type: 'nehative'})
     }
 }
 

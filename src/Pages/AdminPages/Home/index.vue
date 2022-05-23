@@ -8,7 +8,7 @@
     <UsersManagementTable
       :filter="filterValue"
       :users="filterUsers"
-      @delete-user="showDeleteModal"
+      @delete-user="validateUserToDelete"
       @edit-user="edit"
     />
     <RegisterUserModal
@@ -36,6 +36,7 @@ import UsersInputFilters from '@/Pages/AdminPages/Home/UsersInputFilters.vue'
 import {User} from '@/Types/User'
 import {useGetRolesList} from '@/Composables/useGetRolesList'
 import {Notify} from 'quasar'
+import store from '@/store'
 
 const filterValue = ref<string>('')
 const rolSelected = ref<number>(0)
@@ -62,15 +63,24 @@ function cancel() {
     showUserModal.value = false
     getUsers(filterValue.value,rolSelected.value)
 }
+function validateUserToDelete(user: User) {
+    if (store.getters.getUserData.user_data.id === user.id) {
+        Notify.create({color: 'red', type: 'negative', message: 'Eliminar a tu propio usuario podría generar problemas',
+            actions: [{label: 'Entendido', color: 'white'}]
+        })
+        return
+    }
+    showDeleteModal(user)
+}
 async function deleteUser() {
     try {
         await useDeleteUser(selectedUser.value)
         showDeleteUserModal.value = false
         selectedUser.value = undefined
         await getUsers(filterValue.value, rolSelected.value)
-        Notify.create({message: 'Se ha eliminado al usuario', color: 'green'})
+        Notify.create({message: 'Se ha eliminado al usuario', color: 'green', type: 'positive'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
     }
 }
 const filterUsers = computed<User[]>(() => users.value.filter(user => user.name.toLowerCase()

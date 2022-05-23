@@ -1,5 +1,8 @@
 <template>
-  <div class="component-container">
+  <div
+    ref="componentRef"
+    class="component-container"
+  >
     <ComponentHeader :docData="documentData" />
     <UsersList :docData="documentData" />
     <FolderDetails
@@ -21,9 +24,17 @@ import FolderDetails from './FolderDetails.vue'
 import FileDetails from './FileDetails.vue'
 import UsersActivityList from './UsersActivityList.vue'
 import store from '@/store'
-import {watch} from 'vue'
+import {inject, ref, watch} from 'vue'
 import {useGetDocumentData} from '@/Composables/useDocumentsClientMethods'
+import useDetectOutsideClick from '@/utils/useDetectOutsideClick'
+const hideSection = inject<() => void >('hide-folder-info-section')
+const componentRef = ref<{action: () => void} | null>(null)
 const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedItem.id)
+
+useDetectOutsideClick(componentRef,() => {
+    hideSection()
+    store.commit('SET_SELECTED_ITEM', undefined)
+})
 watch(() => store.getters.getSelectedItem, () => {
     if (store.getters.getSelectedItem) {
         getDocData(store.getters.getSelectedItem.id)

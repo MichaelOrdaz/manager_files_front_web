@@ -4,6 +4,6 @@ export type File = {
     min_identifier: string,
     max_identifier?: string,
     date: string,
-    file?: string,
+    file?: string | File,
     parent_id?: number
 }

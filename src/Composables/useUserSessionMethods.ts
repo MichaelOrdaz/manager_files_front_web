@@ -5,7 +5,7 @@ import {Notify} from 'quasar'
 async function useLogOut() {
     try {
         await store.dispatch('user_logout')
-        Notify.create({message: 'Se ha cerrado sesión', color: 'green'})
+        Notify.create({message: 'Se ha cerrado sesión', color: 'blue', type: 'positive'})
         await router.push('/')
     } catch (e) {
         store.commit('USER_ERROR')
@@ -24,7 +24,7 @@ async function useLogIn(email: string, password: string): Promise<void> {
             404: 'Registro no encontrado',
             422: 'Credenciales invalidas',
         }
-        Notify.create({message: `${errorsHandlersMap[e.status] || 'Error'}`, color: 'red'})
+        Notify.create({message: `${errorsHandlersMap[e.status] || 'Error'}`, color: 'red', type: 'negative'})
     }
 }
 
