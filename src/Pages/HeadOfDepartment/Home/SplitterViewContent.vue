@@ -67,6 +67,9 @@
         :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
         data-cy="document-item-row"
         :is-selected="selectedFolder?.id === document.id"
+        :optionsList="rowOptions"
+        @mouseover="holdDocumentDocused(document)"
+        @mouseleave="documentFocused = undefined"
         @click="showFolderInfo(document)"
       />
     </div>
@@ -74,6 +77,7 @@
       v-if="showFolderInfoSection && selectedFolder"
       class="folder-info"
     />
+    <!--    <ShareDocsModalIndex />-->
   </div>
 </template>
 
@@ -91,6 +95,8 @@ import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import Dayjs from 'dayjs'
 import store from '@/store/index'
 import {Notify} from 'quasar'
+import {Option} from '@/components/Molecules/POptionList.vue'
+import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/ShareDocsModalIndex.vue'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -98,6 +104,8 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
+const rowOptions = ref<Option[]>([{optionLabel: 'Compartir', icon: 'link', action: () => []}])
+const documentFocused = ref<Document | undefined>(undefined)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
@@ -137,6 +145,10 @@ async function hideFolderInfo(reloadConten?: boolean) {
     showFolderInfoSection.value = false
     reloadConten && await store.dispatch('get_folder_content')
     selectedFolder.value = undefined
+}
+function holdDocumentDocused(doc: Document) {
+    console.log(doc)
+    documentFocused.value =doc
 }
 provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')
