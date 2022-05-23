@@ -1,5 +1,5 @@
 import {User} from '@/Types/User'
-import {UsersApi} from '@/services/api/api'
+import {AdminApi, UsersApi} from '@/services/api/api'
 import {ref} from 'vue'
 import {AxiosResponse} from 'axios'
 
@@ -52,11 +52,7 @@ export async function useDeleteUser(user:User): Promise<AxiosResponse> {
 
 export async function useUpdateUserPassword(userId: number,newPassword: string, passwordConfirmation: string): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
-        new UsersApi().changePasswordUser(userId, {
-            password: '',
-            passwordConfirmation: passwordConfirmation,
-            newPassword: newPassword
-        })
+        new AdminApi().resetPasswordUser(userId, {new_password: newPassword, new_password_confirmation: passwordConfirmation})
             .then(resp => resolve(resp))
             .catch(error => reject(error))
     })

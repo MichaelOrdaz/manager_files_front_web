@@ -143,6 +143,10 @@ function validatePasswords() {
         Notify.create({message: 'Las contraseñas son diferentes', color: 'red', type: 'negative'})
         return
     }
+    if (newPssword.value.length < 8 || passwordConfirmation.value.length < 8) {
+        Notify.create({message: 'La contraseña debe contener 8 caracteres', color: 'red', type: 'negative'})
+        return
+    }
     updatePassword()
 }
 
