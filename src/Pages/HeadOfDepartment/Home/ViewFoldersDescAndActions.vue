@@ -78,16 +78,16 @@ const newFolderName = ref<string>('')
 const newFile = ref<string | File>('')
 async function createNewFolder() {
     if (!newFolderName.value) {
-        Notify.create({message: 'Agrega un nombre de carpeta valido', color: 'red'})
+        Notify.create({message: 'Agrega un nombre de carpeta valido', color: 'red', type: 'negative'})
         return
     }
     try {
         await useCreateFolder(newFolderName.value, store.getters?.getCurrentFolder ? store.getters?.getCurrentFolder?.id : undefined)
-        Notify.create({message: 'Se ha creaco la carpeta', color: 'green'})
+        Notify.create({message: 'Se ha creaco la carpeta', color: 'green', type: 'positive'})
         showCreateFolderModal.value = false
         emit('update-list')
     }catch (e) {
-        Notify.create({message: 'Se ha generado un error', color: 'red'})
+        Notify.create({message: 'Se ha generado un error', color: 'red', type: 'negative'})
     }
 }
 
@@ -105,6 +105,11 @@ function loadUserImg() {
         showLoadFileModal.value = true
     }
 }
+function takeDropFile(file: File) {
+    newFile.value = file
+    showLoadFileModal.value = true
+}
+defineExpose({takeDropFile})
 </script>
 <style scoped lang="scss">
 div :deep(.modal-container){text-align: start}

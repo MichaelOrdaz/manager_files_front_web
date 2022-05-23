@@ -23,18 +23,19 @@
           v-model="formData.name"
           width="100%"
           placeHolder="ejemplo.pdf"
+          maxLength="254"
           label="Nombre archivo"
-          :rules="[(value:string) => !!value.trim() || 'Agrega un nombre válido']"
+          :rules="[(value:string) => /^[a-z0-9_\-\s\.]+$/i.test(value) || 'El nombre solo puede contener caracteres alfanuméricos, guion bajo/medio, espacios y puntos']"
           data-cy="file-name"
         />
         <div class="textarea-container text-left p-mt-18">
           <PText variant="subtitle-3">
-            Describe tu evento
+            Descripción
           </PText>
           <textarea
             v-model="formData.description"
             class="puller-textarea"
-            placeholder="Contenido del evento..."
+            placeholder="Descripción del archivo..."
             data-cy="file-desc"
           />
         </div>
@@ -43,14 +44,16 @@
             v-model="formData.date"
             label="Fecha"
             width="200px"
+            place-holder="2000-01-01"
             :rules="[(value:string) => !!value.trim() || 'Agrega una fecha válida']"
           />
           <PInput
             v-model="formData.min_identifier"
             label="Rango de folio"
             width="253px"
-            :rules="[(value:string) => !!value.trim() || 'Agrega folio/s']"
+            :rules="[(value:string) => /^[0-9]*?-?[0-9]*$/g.test(value) || 'El folio solo puede contener números o un guión para separar']"
             data-cy="identifier-input"
+            placeHolder="0001-0002"
           />
         </div>
         <div class="buttons flex justify-end p-mt-46">
@@ -77,13 +80,13 @@ import ModalMask from '@/components/Atoms/ModalMask.vue'
 import PForm from '@/components/Organism/PForm.vue'
 import PFormComp from '@/Types/PFormComp'
 import PInputDate from '@/components/Molecules/PInputDate.vue'
-import {reactive, ref, withDefaults} from 'vue'
+import {onMounted, reactive, ref, withDefaults} from 'vue'
 import type {File} from '@/Types/File'
 import {useCreateFile} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
 import store from '@/store'
 interface Props {
-    newFile?: string, actualFolderId?: number
+    newFile?: File, actualFolderId?: number
 }
 const emit = defineEmits(['cancel'])
 const props = withDefaults(defineProps<Props>(), {newFile: undefined, actualFolderId: 0})
@@ -96,15 +99,21 @@ const formData = reactive<File>({
 async function createFile() {
     const isValidForm: boolean = formRef.value.validate()
     if (!isValidForm) return
+    if (formData.min_identifier.includes('-')){
+        const [min, max] = formData.min_identifier.split('-')
+        formData.min_identifier = min
+        formData.max_identifier = max
+    }
     try {
         await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
-        Notify.create({message: 'Se ha subido el archivo', color: 'green'})
+        Notify.create({message: 'Se ha subido el archivo', color: 'blue', type: 'positive'})
         await store.dispatch('get_folder_content')
         emit('cancel')
     } catch (e) {
-        Notify.create({message: 'Valida los campos', color: 'red'})
+        Notify.create({message: 'Valida los campos', color: 'red', type: 'negative'})
     }
 }
+onMounted(() => { formData.name = props.newFile.name })
 </script>
 
 <style scoped lang="scss">

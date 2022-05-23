@@ -2,7 +2,7 @@
   <div class="pinput-main-container">
     <PText
       v-if="props.showLabel"
-      color="black"
+      color="gray-6"
       variant="text-4"
     >
       {{ props.label }}
@@ -60,10 +60,28 @@
       <PText
         v-for="(msg, index) in errorMgs"
         :key="index"
-        color="black"
+        color="red"
         variant="text-4"
       >
+        <PIcon
+          v-if="!validInput"
+          icon-name="info"
+          color="red"
+        />
         {{ msg }}
+      </PText>
+    </div>
+    <div v-if="props.successMsg && validInput && !!value">
+      <PText
+        color="ocean"
+        variant="text-4"
+      >
+        <PIcon
+          v-if="validInput"
+          icon-name="check_circle_outline"
+          color="ocean"
+        />
+        {{ props.successMsg }}
       </PText>
     </div>
   </div>
@@ -90,6 +108,7 @@ interface Props {
     label?: string,
     readonly?: boolean,
     enableCursorPointerOnIcon?: boolean,
+    successMsg?: string,
 }
 
 const emit = defineEmits<{
@@ -98,7 +117,7 @@ const emit = defineEmits<{
     (e: 'append-icon-action'): void,
 }>()
 
-const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: '', showLabel: true, placeHolder: '', width: '320px', label: '', minLength: undefined, readonly: false, enableCursosPointerOnIcon: false,})
+const props = withDefaults(defineProps<Props>(), {type: 'text', rules: null, disabled: true, maxLength: '', prependIconName: '', appendIconName: '', showLabel: true, placeHolder: '', width: '320px', label: '', minLength: undefined, readonly: false, enableCursosPointerOnIcon: false, successMsg: undefined})
 
 const bindInput = inject('bind-input', (val: any) => {})
 const currentComponent = getCurrentInstance()
@@ -168,7 +187,7 @@ input{
     width: 100%;
     height: 38px;
     border: 1px solid #D1D5DB;
-    border-radius: 2px;
+    border-radius: 4px;
     justify-content: space-between;
     margin-bottom: 8px;
     margin-top: 4px;

@@ -32,7 +32,7 @@
             variant="text-5"
             color="grey-5"
           >
-            {{ record?.action.name }} {{ record.name?.name ?? 'Sin nombre' }}
+            {{ record?.action.name }} {{ record.user?.name ?? 'Sin nombre' }}
           </PText>
         </div>
       </div>

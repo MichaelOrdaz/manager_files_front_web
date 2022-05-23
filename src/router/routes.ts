@@ -54,6 +54,14 @@ const HeadOfDepartment: RouteRecordRaw[] = [
                 },
             },
             {
+                path: '/shared-filed',
+                name: 'Shared files',
+                component: () => import('../Pages/HeadOfDepartment/SharedFilesPage/index.vue'),
+                meta: {
+                    authRequired: true
+                },
+            },
+            {
                 path: '/users-management',
                 name: 'Users management',
                 component: () => import('../Pages/HeadOfDepartment/UsersManagementPage.vue'),

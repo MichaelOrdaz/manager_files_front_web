@@ -9,7 +9,7 @@ type DocumentType = {
 export type DocumentRecord = {
     id?: number,
     date?: string,
-    name?: User,
+    user?: User,
     action?: {
         id?: number,
         name?: string
@@ -28,5 +28,6 @@ export type Document = {
     parent?: number,
     type: DocumentType,
     department?: Department,
-    historical?: DocumentRecord[]
+    historical?: DocumentRecord[],
+    url?: string,
 }

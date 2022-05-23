@@ -4,15 +4,16 @@
       <PInput
         v-model="searchValue"
         class="q-mr-sm"
-        appendIconName="tune"
         prependIconName="search"
         placeHolder="Buscar"
         width="758px"
-        enableCursorPointerOnIcon
         data-cy="filter-docs-input"
-        @append-icon-action="showAdvancedSearch = true"
       />
-      <PButton class="p-mt-4">
+      <!--        TODO: 2f79yuc-->
+      <PButton
+        v-if="false"
+        class="p-mt-4"
+      >
         Buscar
       </PButton>
       <AdvancedSearch
@@ -28,15 +29,21 @@
       @change-folder="changeFolder"
     />
     <ViewFoldersDescAndActions
+      ref="FoldersDescAndActionsRef"
       :selectedFolderId="selectedFolder ? selectedFolder.id : undefined"
       @update-list="changeFolder"
     />
   </div>
   <div
     v-if="!list.length"
-    class="no-data p-mt-122"
+    class="no-data"
+    @dragenter.prevent
+    @dragleave.prevent
+    @dragover.prevent
+    @drop.prevent="takeDragFile($event)"
   >
     <img
+      class="p-mt-122"
       :src="NoDataSvg"
       alt="No data"
     >
@@ -44,6 +51,10 @@
   <div
     v-else
     class="section"
+    @dragenter.prevent
+    @dragleave.prevent
+    @dragover.prevent
+    @drop.prevent="takeDragFile($event)"
   >
     <div class="items-col">
       <DirFileRowComponent
@@ -55,6 +66,7 @@
         :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
         :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
         data-cy="document-item-row"
+        :is-selected="selectedFolder?.id === document.id"
         @click="showFolderInfo(document)"
       />
     </div>
@@ -78,6 +90,7 @@ import type {Document} from '@/Types/Document'
 import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import Dayjs from 'dayjs'
 import store from '@/store/index'
+import {Notify} from 'quasar'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -85,8 +98,11 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
+// eslint-disable-next-line no-unused-vars
+const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
-const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value)))
+const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value))
+    .sort((a) => a.type.name ==='Archivo' ? 1 : -1))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (clicksCount.value === 1) {
@@ -110,9 +126,17 @@ function showFolderInfo(doc: Document) {
 function changeFolder() {
     store.dispatch('get_folder_content')
 }
-async function hideFolderInfo() {
+function takeDragFile(event: DragEvent) {
+    if (event.dataTransfer?.files[0]?.type === 'application/pdf'){
+        FoldersDescAndActionsRef.value.takeDropFile(event.dataTransfer?.files[0])
+        return
+    }
+    Notify.create({message: 'El archivo no es PDF', color: 'red', type: 'negative'})
+}
+async function hideFolderInfo(reloadConten?: boolean) {
     showFolderInfoSection.value = false
-    await store.dispatch('get_folder_content')
+    reloadConten && await store.dispatch('get_folder_content')
+    selectedFolder.value = undefined
 }
 provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')

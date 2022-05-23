@@ -9,10 +9,13 @@
       class="user-data"
     >
       <PText variant="text-4">
-        {{ userData.user_data.name || 'Sin nombre' }}
+        {{ userData.user_data?.name || 'Sin nombre' }}
       </PText>
       <PText variant="text-5">
         {{ userData.roles[0] || ' Sin rol' }}
+      </PText>
+      <PText variant="text-5">
+        {{ userData?.user_data?.department?.name ?? 'Sin departamento' }}
       </PText>
     </div>
   </div>

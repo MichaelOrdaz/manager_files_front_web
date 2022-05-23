@@ -1,6 +1,6 @@
 describe('', () => {
     const randomCharacters = `UsuarioPrueba${(Math.random() + 1).toString(36).substring(7)}`
-    const roles = ['Admin', 'Analyst', 'Head of Department']
+    const roles = ['Administrador', 'Analista', 'Jefe de Departamento']
     const userData= {email: 'administrador@puller.mx', password: '12345678'}
     const selectedRol = roles[Math.floor((Math.random() * roles.length))]
     it('Log In', function () {

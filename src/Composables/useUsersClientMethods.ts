@@ -1,5 +1,5 @@
 import {User} from '@/Types/User'
-import {UsersApi} from '@/services/api/api'
+import {AdminApi, UsersApi} from '@/services/api/api'
 import {ref} from 'vue'
 import {AxiosResponse} from 'axios'
 
@@ -18,36 +18,27 @@ export function useGetUsersList(name: string | undefined, role: number | undefin
 }
 
 export function useCreateUser(user:User) {
-    async function createUser() {
-        try {
-            const response = await new UsersApi().createUsers(
-                user.email, user.name,
-                user.lastname, user.second_lastname,
-                user.phone, user.password,
-                user.image === 'string' ? user.image : '', user.rolId,
-                user.department.id)
-            return response
-        } catch (e) {
-            return e
-        }
-    }
-    createUser()
+    return new Promise((resolve, reject) => {
+        new UsersApi().createUsers(
+            user.email, user.name,
+            user.lastname, user.second_lastname,
+            user.phone, user.password,
+            user.image === 'string' ? user.image : '', user.rolId,
+            user.department.id)
+            .then(resp => resolve(resp))
+            .catch(error => reject(error))
+    })
 }
 
 export function useEditUser(user: User) {
-    async function editUser() {
-        try {
-            const response = await new UsersApi().updateUser(
-                user.id, user.email, user.name, user.lastname,
-                user.second_lastname, user.phone, undefined,
-                undefined, user.rolId, user.department.id
-            )
-            return response
-        } catch (e) {
-            return e
-        }
-    }
-    editUser()
+    return new Promise((resolve, reject) => {
+        new UsersApi().updateUser(
+            user.id, user.email, user.name, user.lastname,
+            user.second_lastname, user.phone, undefined,
+            undefined, user.rolId, user.department.id)
+            .then(resp => resolve(resp))
+            .catch(error => reject(error))
+    })
 }
 
 export async function useDeleteUser(user:User): Promise<AxiosResponse> {
@@ -57,4 +48,12 @@ export async function useDeleteUser(user:User): Promise<AxiosResponse> {
     } catch (e) {
         return e
     }
+}
+
+export async function useUpdateUserPassword(userId: number,newPassword: string, passwordConfirmation: string): Promise<AxiosResponse> {
+    return new Promise((resolve, reject) => {
+        new AdminApi().resetPasswordUser(userId, {new_password: newPassword, new_password_confirmation: passwordConfirmation})
+            .then(resp => resolve(resp))
+            .catch(error => reject(error))
+    })
 }

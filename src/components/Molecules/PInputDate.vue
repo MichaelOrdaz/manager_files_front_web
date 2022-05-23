@@ -5,6 +5,7 @@
     :label="props.inputLabel"
     :width="props.width"
     :rules="props.rules"
+    :placeHolder="props.placeHolder"
     data-cy="input-date"
   >
     <template #append>
@@ -51,10 +52,11 @@ interface Props {
     inputLabel?: string,
     // eslint-disable-next-line no-unused-vars
     rules?: {(value: number | string ): boolean | string}[] | null,
-    mask?: string
+    mask?: string,
+    placeHolder?: string,
 }
 const props = withDefaults(defineProps<Props>(), {
-    inputLabel: 'Label', rules: null, mask: 'YYYY-MM-DD', width: '258px'
+    inputLabel: 'Label', rules: null, mask: 'YYYY-MM-DD', width: '258px', placeHolder: ''
 })
 
 const showCalendar = ref<boolean>(false)

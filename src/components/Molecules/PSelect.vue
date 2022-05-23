@@ -5,7 +5,7 @@
   >
     <PText
       class="label"
-      color="black"
+      color="gray-6"
       variant="text-3"
     >
       {{ componentLabel }}
@@ -39,14 +39,6 @@
         variant="text-4"
       >
         {{ msg }}
-      </PText>
-    </div>
-    <div v-else>
-      <PText
-        color="black"
-        variant="text-4"
-      >
-        {{ '' }}
       </PText>
     </div>
     <div
