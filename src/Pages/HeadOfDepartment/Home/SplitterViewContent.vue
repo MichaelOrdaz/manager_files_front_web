@@ -40,7 +40,7 @@
     @dragenter.prevent
     @dragleave.prevent
     @dragover.prevent
-    @drop.prevent="event($event)"
+    @drop.prevent="takeDragFile($event)"
   >
     <img
       class="p-mt-122"
@@ -54,7 +54,7 @@
     @dragenter.prevent
     @dragleave.prevent
     @dragover.prevent
-    @drop.prevent="event($event)"
+    @drop.prevent="takeDragFile($event)"
   >
     <div class="items-col">
       <DirFileRowComponent
@@ -98,6 +98,7 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
+// eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
 const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value))
@@ -125,7 +126,7 @@ function showFolderInfo(doc: Document) {
 function changeFolder() {
     store.dispatch('get_folder_content')
 }
-function event(event: DragEvent) {
+function takeDragFile(event: DragEvent) {
     if (event.dataTransfer?.files[0]?.type === 'application/pdf'){
         FoldersDescAndActionsRef.value.takeDropFile(event.dataTransfer?.files[0])
         return

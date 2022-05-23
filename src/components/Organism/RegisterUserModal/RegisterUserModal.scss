@@ -40,7 +40,7 @@
   .form{
     margin-top: 38px;
     width: 754px;
-    height: 587px;
+    height: clamp(754px, 754px , 850px);
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -58,6 +58,22 @@
     .buttons{
       align-self: flex-end;
       display: flex;
+      margin-bottom: 12px;
+    }
+  }
+}
+@media (max-height: 730px){
+  .modal-container{
+    width: 90%;
+    height: 90%;
+    .form{
+      padding: 24px;
+      width: 100%;
+      overflow-y: scroll;
+      flex-wrap: nowrap;
+      .input-pair{
+        width: 70%;
+      }
     }
   }
 }

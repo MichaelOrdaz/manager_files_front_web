@@ -165,6 +165,7 @@ const getNewImage = (file: File) => {
     }
 }
 async function validateFields() {
+    const isValid = formRef.value.validate()
     if (!isEditUser.value && password.value !== newUser.value.password){
         Notify.create({message: 'Las contraseñas son diferentes', color: 'red', badgeStyle: {zIndex: '99999', position: 'fixed'}})
         return
@@ -173,7 +174,6 @@ async function validateFields() {
         Notify.create({message: 'La contraseña, el nombre y el email no pueden ser iguales', color: 'red', type: 'negative'})
         return
     }
-    const isValid = formRef.value.validate()
     if (isValid){
         if (!isEditUser.value) {
             await createUser()
