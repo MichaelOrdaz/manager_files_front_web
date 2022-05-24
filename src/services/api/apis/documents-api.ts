@@ -531,14 +531,14 @@ export class DocumentsApi extends BaseAPI {
     /**
      * create a document in the system
      * @summary Create - File
-     * @param {string} [name???]
-     * @param {string} [description???]
-     * @param {string} [minIdentifier???]
-     * @param {string} [maxIdentifier???]
-     * @param {string} [date???]
-     * @param {string} [file????]
-     * @param {number} [parentId???]
-     * @param {*} [options????] Override http request option.
+     * @param {string} [name????]
+     * @param {string} [description????]
+     * @param {string} [minIdentifier????]
+     * @param {string} [maxIdentifier????]
+     * @param {string} [date????]
+     * @param {string} [file?????]
+     * @param {number} [parentId????]
+     * @param {*} [options?????] Override http request option.
      * @throws {RequiredError}
      * @memberof DocumentsApi
      */

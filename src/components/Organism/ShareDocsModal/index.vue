@@ -2,6 +2,7 @@
   <ModalMask>
     <UserSelectionStep
       v-if="actualStep === 1"
+      :selected-doc="props.selectedDoc"
       @capture-users="captureUsers"
       @cancel="$emit('cancel')"
       @next-step="nextStep"

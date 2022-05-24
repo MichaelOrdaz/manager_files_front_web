@@ -28,6 +28,7 @@ export function useGetDocumentData(documentId: undefined | number) {
     async function getDocData(DocumentId: number | undefined) {
         const resp = await new DocumentsApi().getDocument(DocumentId)
         documentData.value = resp.data.data
+        console.log(resp.data.data)
     }
     getDocData(documentId)
     return { documentData, getDocData }

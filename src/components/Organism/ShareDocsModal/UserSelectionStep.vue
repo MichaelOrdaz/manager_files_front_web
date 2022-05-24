@@ -26,9 +26,9 @@
       <PText variant="text-3">
         Selecciona usuarios
       </PText>
-      <div v-if="users.length && currentUserDepartment">
+      <div v-if="usersList.length && currentUserDepartment">
         <UserItem
-          v-for="user in users"
+          v-for="user in usersList"
           :key="user.id"
           :icon-text="user.name"
           :item-title-text="user.fullName"
@@ -73,27 +73,29 @@
   </div>
 </template>
 <script setup lang="ts">
+/* eslint-disable */
 import PDropdown from '@/components/Molecules/PDropdown.vue'
 import type {DropdownOption} from '@/components/Molecules/PDropdown.vue'
 import {ref, watch} from 'vue'
 import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
-import {useGetUsersList} from '@/Composables/useUsersClientMethods'
 import UserItem from './UserItem.vue'
 import {User} from '@/Types/User'
 import store from '@/store'
 import {Department} from '@/Types/Department'
 import {Notify} from 'quasar'
+import {useGetUsersOfDocumentList} from '@/Composables/useShareDocumentClientMethods'
+import {Document} from '@/Types/Document'
 
 const emit = defineEmits<{
     (e: 'cancel'):void,
     (e: 'capture-users', payload: User[]): void,
     (e: 'next-step'): void }>()
-
+const props = defineProps<{selectedDoc: Document}>()
 const dropdownOptions = ref<DropdownOption[]>([{label: 'Chido', action: () => []}])
 const selectedUsers = ref<User[]>([])
 const currentUserDepartment = ref<Department | undefined>(undefined)
-const {users, getUsers} = useGetUsersList(undefined, undefined, undefined)
 const {departmentsList} = getDepartmentsList()
+const {usersList, getUsersDocumentList} = useGetUsersOfDocumentList(props.selectedDoc.id, currentUserDepartment?.value?.id ? currentUserDepartment.value.id : undefined)
 const dropdownText = ref<string>('')
 
 function addUserToSelectedList(user: User) {
@@ -108,7 +110,7 @@ function addUserToSelectedList(user: User) {
 }
 
 function nextStep() {
-    if (users.value.length && !selectedUsers.value.length) {
+    if (usersList.value.length && !selectedUsers.value.length) {
         Notify.create({message: 'Debes seleccionar por lo menos un usuario', color: 'red', type: 'negative'})
         return
     }
@@ -123,12 +125,12 @@ watch(departmentsList, () => {
             label: dep.name,
             action: () => {
                 dropdownText.value = dep.name
-                getUsers(undefined,undefined, dep.id)
+                getUsersDocumentList(props.selectedDoc.id, dep.id)
                 selectedUsers.value = []
             },
             extraData: dep
         }))
-    getUsers(undefined,undefined,departmentsList.value.filter(el => el.name !== currentUserDepartment.value.name)[0].id)
+    getUsersDocumentList(props.selectedDoc.id, currentUserDepartment.value.id)
 })
 </script>
 <style scoped lang="scss">
