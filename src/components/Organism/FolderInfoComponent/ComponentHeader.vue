@@ -1,5 +1,11 @@
 <template>
   <div class="header">
+    <PIcon
+      class="close-icon cursor-pointer"
+      iconName="close"
+      size="pmd"
+      @click="closeSection"
+    />
     <div class="folder-options">
       <PIcon
         :color="store.getters.isFolder ? 'black': 'red'"
@@ -95,6 +101,10 @@ async function editItemName() {
         Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
     }
 }
+function closeSection() {
+    store.commit('RESET_CURRENT_FOLDER')
+    hideFolderInfoSection()
+}
 </script>
 
 <style scoped lang="scss">
@@ -105,6 +115,12 @@ async function editItemName() {
     align-items: flex-start;
     flex-direction: column;
     padding: 12px;
+    position: relative;
+    .close-icon{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
     .delete-option{ margin-top: 12px }
     border-bottom: solid 1px $gray-4;
 }

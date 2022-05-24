@@ -29,7 +29,7 @@
   display: flex;
   min-height: 80%;
   .items-col{ width: 100%; }
-  .folder-info{ width: 30%; }
+  .folder-info{ width: 350px; position: fixed; right: 25px; top: 75px }
 }
 @media (max-width: 1216px){
   .header-container{

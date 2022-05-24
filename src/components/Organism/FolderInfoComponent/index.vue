@@ -45,6 +45,6 @@ watch(documentData, () => {
 .component-container{
     background-color: white;
     width: 300px;
-    border: solid 2px $grey-6;
+    border: solid 2px $gray-1;
 }
 </style>
