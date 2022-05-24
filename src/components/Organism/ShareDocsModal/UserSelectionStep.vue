@@ -6,13 +6,54 @@
     >
       1.-Compartir con usuarios
     </PText>
-    <PDropdown :options="dropdownOptions">
+    <PText
+      variant="text-4"
+      class="text-left"
+    >
+      Selecciona un departamento
+    </PText>
+    <PDropdown
+      :text="dropdownText"
+      :options="dropdownOptions"
+    >
       <template #options="item">
         <PText variant="text-5">
           {{ item.option.label }}
         </PText>
       </template>
     </PDropdown>
+    <div class="users-list text-left">
+      <PText variant="text-3">
+        Selecciona usuarios
+      </PText>
+      <div v-if="users.length && currentUserDepartment">
+        <UserItem
+          v-for="user in users"
+          :key="user.id"
+          :icon-text="user.name"
+          :item-title-text="user.fullName"
+          :item-subtitle-text="user.role[0] ? user.role[0] : 'Sin rol'"
+          icon-color="ocean"
+          @click.stop.prevent="addUserToSelectedList(user)"
+        >
+          <template #default>
+            <div class="prox">
+              <PIcon
+                v-if="selectedUsers.some(val => val.id === user.id)"
+                color="link"
+                iconName="done"
+              />
+            </div>
+          </template>
+        </UserItem>
+      </div>
+      <PText
+        v-else
+        variant="subtitle-1"
+      >
+        El departamento no tiene usuarios
+      </PText>
+    </div>
     <div class="action-btns">
       <PButton
         size="plg"
@@ -24,8 +65,9 @@
       <PButton
         size="plg"
         class="q-ml-lg"
+        @click.stop.prevent="nextStep"
       >
-        Enviar
+        Siguiente
       </PButton>
     </div>
   </div>
@@ -36,33 +78,59 @@ import type {DropdownOption} from '@/components/Molecules/PDropdown.vue'
 import {ref, watch} from 'vue'
 import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
 import {useGetUsersList} from '@/Composables/useUsersClientMethods'
+import UserItem from './UserItem.vue'
+import {User} from '@/Types/User'
+import store from '@/store'
+import {Department} from '@/Types/Department'
+import {Notify} from 'quasar'
 
-defineEmits<{(e: 'cancel'):void}>()
+const emit = defineEmits<{
+    (e: 'cancel'):void,
+    (e: 'capture-users', payload: User[]): void,
+    (e: 'next-step'): void }>()
 
 const dropdownOptions = ref<DropdownOption[]>([{label: 'Chido', action: () => []}])
+const selectedUsers = ref<User[]>([])
+const currentUserDepartment = ref<Department | undefined>(undefined)
 const {users, getUsers} = useGetUsersList(undefined, undefined, undefined)
 const {departmentsList} = getDepartmentsList()
+const dropdownText = ref<string>('')
+
+function addUserToSelectedList(user: User) {
+    const index = selectedUsers.value.findIndex(el => el.id === user.id)
+    if (index > -1){
+        selectedUsers.value.splice(index,1)
+        emit('capture-users',selectedUsers.value)
+        return
+    }
+    selectedUsers.value.push(user)
+    emit('capture-users',selectedUsers.value)
+}
+
+function nextStep() {
+    if (users.value.length && !selectedUsers.value.length) {
+        Notify.create({message: 'Debes seleccionar por lo menos un usuario', color: 'red', type: 'negative'})
+        return
+    }
+    emit('next-step')
+}
 
 watch(departmentsList, () => {
-    dropdownOptions.value = departmentsList.value.map(dep => ({
-        label: dep.name,
-        action: () => {
-            getUsers(undefined,undefined, dep.id)
-            console.log(users.value)
-        },
-        extraData: dep
-    }))
+    currentUserDepartment.value = departmentsList.value.find(el => el.name === store.getters.getUserData.user_data.department.name)
+    dropdownText.value = departmentsList.value.filter(el => el.name !== currentUserDepartment.value.name)[0].name ?? ''
+    dropdownOptions.value = departmentsList.value.filter(val => val.name !== currentUserDepartment.value.name)
+        .map(dep => ({
+            label: dep.name,
+            action: () => {
+                dropdownText.value = dep.name
+                getUsers(undefined,undefined, dep.id)
+                selectedUsers.value = []
+            },
+            extraData: dep
+        }))
+    getUsers(undefined,undefined,departmentsList.value.filter(el => el.name !== currentUserDepartment.value.name)[0].id)
 })
 </script>
 <style scoped lang="scss">
-.modal-container {
-    width: 652px;
-    height: 790px;
-    max-height: 700px;
-    background-color: white;
-    padding: 45px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-}
+@import "UserSelectionStep";
 </style>

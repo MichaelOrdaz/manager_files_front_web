@@ -69,7 +69,6 @@
         :is-selected="selectedFolder?.id === document.id"
         :optionsList="rowOptions"
         @mouseover="holdDocumentDocused(document)"
-        @mouseleave="documentFocused = undefined"
         @click="showFolderInfo(document)"
       />
     </div>
@@ -79,6 +78,7 @@
     />
     <ShareDocsModalIndex
       v-if="showShareModal"
+      :selected-doc="documentFocused"
       @cancel="showShareModal = false"
     />
   </div>
@@ -99,7 +99,7 @@ import Dayjs from 'dayjs'
 import store from '@/store/index'
 import {Notify} from 'quasar'
 import {Option} from '@/components/Molecules/POptionList.vue'
-import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/ShareDocsModalIndex.vue'
+import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -151,7 +151,7 @@ async function hideFolderInfo(reloadConten?: boolean) {
     selectedFolder.value = undefined
 }
 function holdDocumentDocused(doc: Document) {
-    documentFocused.value =doc
+    documentFocused.value = doc
 }
 provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')
