@@ -30,4 +30,5 @@ export type Document = {
     department?: Department,
     historical?: DocumentRecord[],
     url?: string,
+    share?: User[]
 }

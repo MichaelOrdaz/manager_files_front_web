@@ -101,7 +101,6 @@ async function savePermissions() {
         Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive'})
         emit('cancel')
     }catch (e) {
-        console.log(e)
         Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
     }
 }
