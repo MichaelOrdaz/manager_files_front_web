@@ -14,97 +14,103 @@
 /**
  * 
  * @export
- * @interface Document
+ * @interface ShareDocumentPermission
  */
-export interface Document {
+export interface ShareDocumentPermission {
     /**
      * 
      * @type {number}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     id?: any;
     /**
      * 
      * @type {string}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     name?: any;
     /**
      * 
      * @type {string}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     description?: any;
     /**
      * 
      * @type {string}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     location?: any;
     /**
      * 
      * @type {string}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     identifier?: any;
     /**
      * 
      * @type {Array&lt;string&gt;}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     tags?: any;
     /**
      * 
      * @type {User}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     creator?: any;
     /**
      * 
      * @type {Date}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     createdAt?: any;
     /**
      * 
      * @type {Date}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     updatedAt?: any;
     /**
      * 
      * @type {string}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     date?: any;
     /**
      * 
      * @type {Array&lt;History&gt;}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     historical?: any;
     /**
      * 
      * @type {Array&lt;User&gt;}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     share?: any;
     /**
      * 
      * @type {DocumentType}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     type?: any;
     /**
      * 
      * @type {Department}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     department?: any;
     /**
      * 
      * @type {DocumentParent}
-     * @memberof Document
+     * @memberof ShareDocumentPermission
      */
     parent?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShareDocumentPermission
+     */
+    permission?: any;
 }

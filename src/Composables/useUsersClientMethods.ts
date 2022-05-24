@@ -3,17 +3,17 @@ import {AdminApi, UsersApi} from '@/services/api/api'
 import {ref} from 'vue'
 import {AxiosResponse} from 'axios'
 
-export function useGetUsersList(name: string | undefined, role: number | undefined ){
+export function useGetUsersList(name: string | undefined, role: number | undefined , departmentId: number | undefined){
     const usersList = ref<User[]>([])
-    async function getUsers(Name: string, Rol: number) {
+    async function getUsers(Name: string, Rol: number, DepartmentId: number) {
         try {
-            const response = await new UsersApi().getUsers(Name, Rol)
+            const response = await new UsersApi().getUsers(Name, Rol, DepartmentId)
             usersList.value = response.data.data
         } catch (e) {
             usersList.value = []
         }
     }
-    getUsers(name, role)
+    getUsers(name, role, departmentId)
     return {users: usersList, getUsers}
 }
 

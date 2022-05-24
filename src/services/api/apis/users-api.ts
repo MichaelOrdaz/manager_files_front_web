@@ -325,10 +325,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
          * @summary List - Users
          * @param {string} [name] Value to filter by full user name
          * @param {number} [role] (role id) Value to filter the role type of the users
+         * @param {number} [departmentId] department id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUsers: async (name?: string, role?: number, options: any = {}): Promise<RequestArgs> => {
+        getUsers: async (name?: string, role?: number, departmentId?: number, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -348,6 +349,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
             if (role !== undefined) {
                 localVarQueryParameter['role'] = role;
+            }
+
+            if (departmentId !== undefined) {
+                localVarQueryParameter['department_id'] = departmentId;
             }
 
             const query = new URLSearchParams(localVarUrlObj.search);
@@ -673,11 +678,12 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @summary List - Users
          * @param {string} [name] Value to filter by full user name
          * @param {number} [role] (role id) Value to filter the role type of the users
+         * @param {number} [departmentId] department id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUsers(name?: string, role?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
-            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).getUsers(name, role, options);
+        async getUsers(name?: string, role?: number, departmentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).getUsers(name, role, departmentId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -820,11 +826,12 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @summary List - Users
          * @param {string} [name] Value to filter by full user name
          * @param {number} [role] (role id) Value to filter the role type of the users
+         * @param {number} [departmentId] department id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUsers(name?: string, role?: number, options?: any): AxiosPromise<InlineResponse2002> {
-            return UsersApiFp(configuration).getUsers(name, role, options).then((request) => request(axios, basePath));
+        getUsers(name?: string, role?: number, departmentId?: number, options?: any): AxiosPromise<InlineResponse2002> {
+            return UsersApiFp(configuration).getUsers(name, role, departmentId, options).then((request) => request(axios, basePath));
         },
         /**
          * filter users with pagination included
@@ -958,12 +965,13 @@ export class UsersApi extends BaseAPI {
      * @summary List - Users
      * @param {string} [name] Value to filter by full user name
      * @param {number} [role] (role id) Value to filter the role type of the users
+     * @param {number} [departmentId] department id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public getUsers(name?: string, role?: number, options?: any) {
-        return UsersApiFp(this.configuration).getUsers(name, role, options).then((request) => request(this.axios, this.basePath));
+    public getUsers(name?: string, role?: number, departmentId?: number, options?: any) {
+        return UsersApiFp(this.configuration).getUsers(name, role, departmentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * filter users with pagination included

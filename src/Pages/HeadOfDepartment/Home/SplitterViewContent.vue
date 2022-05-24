@@ -77,7 +77,10 @@
       v-if="showFolderInfoSection && selectedFolder"
       class="folder-info"
     />
-    <!--    <ShareDocsModalIndex />-->
+    <ShareDocsModalIndex
+      v-if="showShareModal"
+      @cancel="showShareModal = false"
+    />
   </div>
 </template>
 
@@ -104,8 +107,9 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
-const rowOptions = ref<Option[]>([{optionLabel: 'Compartir', icon: 'link', action: () => []}])
+const rowOptions = ref<Option[]>([{optionLabel: 'Compartir', icon: 'link', action: () => {showShareModal.value = true}}])
 const documentFocused = ref<Document | undefined>(undefined)
+const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
@@ -147,7 +151,6 @@ async function hideFolderInfo(reloadConten?: boolean) {
     selectedFolder.value = undefined
 }
 function holdDocumentDocused(doc: Document) {
-    console.log(doc)
     documentFocused.value =doc
 }
 provide('hide-folder-info-section', hideFolderInfo)
