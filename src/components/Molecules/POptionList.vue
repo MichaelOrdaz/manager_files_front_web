@@ -8,13 +8,13 @@
       class="my-icon"
       iconName="more_vert"
       color="black"
-      @click="show = !show"
+      @click.stop.prevent="show = !show"
     />
     <PAvatar
       v-if="props.type === 'avatar'"
       :src="props.avatarSrc"
       class="cursor-pointer"
-      @click="show = !show"
+      @click.stop.prevent="show = !show"
     />
     <div
       v-if="props?.options?.length && show"
@@ -31,7 +31,7 @@
         v-for="(option, index) in props.options"
         :key="index"
         class="option"
-        @click="option.action"
+        @click.stop.prevent="option.action"
       >
         <PIcon
           size="pmd"

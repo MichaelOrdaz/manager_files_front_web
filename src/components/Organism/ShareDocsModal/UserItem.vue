@@ -4,7 +4,7 @@
       <PLetterIcon
         :iconSize="props.letterIconSize"
         :text="props.iconText"
-        :backgroundColor="useGenerateRandomColorClass()"
+        :backgroundColor="backgroundLetterIconColor"
       />
       <div class="texts">
         <PText
@@ -55,6 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
     itemSubtitleVariant: 'text-5', itemTitleVariant: 'text-5', iconColor: 'primary'
 })
 const itemHight = ref<string>(props.itemHight)
+const backgroundLetterIconColor = useGenerateRandomColorClass()
 </script>
 
 <style scoped lang="scss">
