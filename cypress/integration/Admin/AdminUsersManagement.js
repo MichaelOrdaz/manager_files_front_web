@@ -53,6 +53,16 @@ describe('', () => {
             expect(response.response.statusCode).to.equal(200)
         })
     })
+    it('Edit password', function () {
+        cy.intercept('POST','**/reset-password').as('updatePassword')
+        cy.get('[data-cy="update-password-icon"]').click({force: true})
+        cy.get('[data-cy="new-password"]').type('12345678')
+        cy.get('[data-cy="password-confirmation"]').type('12345678')
+        cy.contains('Aceptar').click()
+        cy.wait('@updatePassword').then(response => {
+            expect(response.response.statusCode).to.equal(200)
+        })
+    })
     it('Delete User', function () {
         cy.intercept('**/api/v1/users/**').as('deleteUser')
         cy.get('[data-cy="rol-filter"]').click()

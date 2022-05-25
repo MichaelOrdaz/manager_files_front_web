@@ -31,17 +31,16 @@
       {{ props.thirdText ?? '' }}
     </PText>
     <PText
-      v-if="props.fourthText"
       class="text truncate"
       variant="text-5"
       :title="props.fourthText"
     >
-      {{ props.fourthText ?? '' }}
-      <POptionList
-        v-if="props.optionsList"
-        :options="props.optionsList"
-      />
+      {{ props.fourthText ?? 'Texto de prueba' }}
     </PText>
+    <POptionList
+      v-if="props.optionsList"
+      :options="props.optionsList"
+    />
   </div>
 </template>
 

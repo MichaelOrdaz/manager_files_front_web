@@ -14,79 +14,79 @@
 /**
  * 
  * @export
- * @interface User
+ * @interface UserWithPermissionDocument
  */
-export interface User {
+export interface UserWithPermissionDocument {
     /**
      * 
      * @type {number}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     id?: any;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     email?: any;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     emailVerifiedAt?: any;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     name?: any;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     lastname?: any;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     secondLastname?: any;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     phone?: any;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     password?: any;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     image?: any;
     /**
      * 
      * @type {Role}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     role?: any;
     /**
      * 
      * @type {Department}
-     * @memberof User
+     * @memberof UserWithPermissionDocument
      */
     department?: any;
     /**
      * 
-     * @type {Array&lt;string&gt;}
-     * @memberof User
+     * @type {Array&lt;ShareDocumentPermission&gt;}
+     * @memberof UserWithPermissionDocument
      */
-    authorization?: any;
+    share?: any;
 }
