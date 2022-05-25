@@ -17,14 +17,20 @@
         itemHight="80px"
         letterIconSize="pmd"
         :itemTitleText="user.fullName"
-        :itemSubtitleText="user.name"
+        :itemSubtitleText="user.role[0]"
         itemTitleVariant="subtitle-1"
         itemSubtitleVariant="text-2"
       >
         <template #default>
-          <PDropdown :options="optionsDropdown">
+          <PDropdown
+            text="Selecciona el permiso"
+            :options="optionsDropdown"
+          >
             <template #options="data">
-              <PText variant="text-4">
+              <PText
+                variant="text-4"
+                @click="setPermissionToUser(user.id, data.option.label)"
+              >
                 {{ data.option.label }}
               </PText>
             </template>
@@ -39,23 +45,43 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 import UserItem from '@/components/Organism/ShareDocsModal/UserItem.vue'
 import type {DropdownOption} from '@/components/Molecules/PDropdown.vue'
 import {useGetUsersList} from '@/Composables/useUsersClientMethods'
 import HeaderInput from '@/Pages/HeadOfDepartment/HeaderInput.vue'
 import {User} from '@/Types/User'
+import store from '@/store'
+import {useGetPermissions} from '@/Composables/useShareDocumentClientMethods'
+import {UsersApi} from '@/services/api/api'
+import {Notify} from 'quasar'
 
 const searchValue = ref<string>('')
-const optionsDropdown = ref<DropdownOption[]>([
-    {action: () => [], label: 'Todos los permisos'},
-    {action: () => [], label: 'Solo lectura'},
-    {action: () => [], label: 'Sin permisos'},
-])
-const {users} = useGetUsersList(undefined, undefined)
+const optionsDropdown = ref<DropdownOption[]>([])
+const {users} = useGetUsersList(undefined, undefined, store.getters.getUserDepartment.id)
+const {permissions} = useGetPermissions()
 
 const usersList = computed<User[]>(() => users.value
-    .filter((user) => user.name?.toLowerCase().match(searchValue.value)))
+    .filter((user) => user.name?.toLowerCase().match(searchValue.value) && user.role[0] !=='Jefe de Departamento'))
+
+async function setPermissionToUser(userId: number, permission: string) {
+
+    try {
+        await new UsersApi().saveUserPermission(userId, {permission: permission})
+        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive'})
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
+    }
+
+}
+watch([permissions, users], () => {
+    if (permissions.value.length && users.value.length) {
+        permissions.value.forEach((permission, index) => {
+            optionsDropdown.value[index] = {label: permission.name, extraData: {},action: () => []}
+        })
+        users.value.forEach((user, index) => { optionsDropdown.value[index].extraData = user })
+    }
+})
 </script>
 
 <style scoped lang="scss">

@@ -28,6 +28,18 @@ describe('Folder actions', () => {
         })
     })
 
+    it('Edit folder name', function () {
+        cy.intercept('POST','**/api/v1/documents/**').as('editFolderName')
+        cy.get('[data-cy="filter-docs-input"]').type(randomCharacters)
+        cy.get('[data-cy="document-item-row"]').click()
+        cy.get('[data-cy="edit-name"]').click()
+        cy.get('[data-cy="new-name-input"]').type(randomCharacters + randomCharacters)
+        cy.contains('Aceptar').click({force: true})
+        cy.wait('@editFolderName').then((response) => {
+            expect(response.response.statusCode).to.equal(200)
+        })
+    })
+
     it('Delete folder', function () {
         cy.intercept('DELETE','**/api/v1/documents/**').as('deleteFolder')
         cy.get('[data-cy="filter-docs-input"]').type(randomCharacters)
@@ -53,6 +65,18 @@ describe('Folder actions', () => {
         cy.wait('@createFile').then((response) => {
             expect(response.response.statusCode).to.equal(201)
             cy.get('#q-notify').should('exist')
+        })
+    })
+
+    it('Edit file name', function () {
+        cy.intercept('POST','**/api/v1/documents/**').as('editFileName')
+        cy.get('[data-cy="filter-docs-input"]').type(randomFileCharacters)
+        cy.get('[data-cy="document-item-row"]').click()
+        cy.get('[data-cy="edit-name"]').click()
+        cy.get('[data-cy="new-name-input"]').type(randomFileCharacters + randomFileCharacters)
+        cy.contains('Aceptar').click({force: true})
+        cy.wait('@editFileName').then((response) => {
+            expect(response.response.statusCode).to.equal(200)
         })
     })
 

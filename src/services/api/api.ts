@@ -14,6 +14,7 @@
 export * from './apis/auth-api';
 export * from './apis/departments-api';
 export * from './apis/documents-api';
+export * from './apis/permissions-api';
 export * from './apis/roles-api';
 export * from './apis/share-document-api';
 export * from './apis/share-document-user-api';

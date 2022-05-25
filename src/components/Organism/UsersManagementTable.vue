@@ -91,11 +91,13 @@
         v-model="newPssword"
         label="Nueva contraseña"
         width="320px"
+        data-cy="new-password"
       />
       <PInput
         v-model="passwordConfirmation"
         label="Confirma la cotraseña"
         width="320px"
+        data-cy="password-confirmation"
       />
     </template>
   </PModal>

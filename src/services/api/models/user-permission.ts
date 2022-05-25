@@ -14,25 +14,13 @@
 /**
  * 
  * @export
- * @interface InlineResponse20011
+ * @interface UserPermission
  */
-export interface InlineResponse20011 {
-    /**
-     * 
-     * @type {Array&lt;Permission&gt;}
-     * @memberof InlineResponse20011
-     */
-    data?: any;
+export interface UserPermission {
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse20011
+     * @memberof UserPermission
      */
-    message?: any;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof InlineResponse20011
-     */
-    success?: any;
+    permission?: any;
 }

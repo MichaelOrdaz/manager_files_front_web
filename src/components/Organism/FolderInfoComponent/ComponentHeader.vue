@@ -4,6 +4,7 @@
       class="close-icon cursor-pointer"
       iconName="close"
       size="pmd"
+      data-cy="close-seccion"
       @click="closeSection"
     />
     <div class="folder-options">
@@ -22,6 +23,7 @@
         color="black"
         iconName="edit"
         size="pmd"
+        data-cy="edit-name"
         @click="showEditFolderNameModal = true"
       />
     </div>
@@ -53,6 +55,7 @@
         v-model="newFolderName"
         width="100%"
         placeHolder="Nuevo nombre"
+        data-cy="new-name-input"
       />
     </template>
   </PModal>

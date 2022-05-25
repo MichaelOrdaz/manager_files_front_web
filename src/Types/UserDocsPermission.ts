@@ -1,3 +1,3 @@
 export type UserDocsPermission = {
-    name: 'Escritura' | 'Lectura'
+    name: 'Escritura' | 'Lectura' | 'Solo ver' | 'Todos los permisos'
 }

@@ -48,7 +48,7 @@ import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 export type DropdownOption = {
     label: string,
     action: {():void},
-    extraData?: any
+    extraData?: object
 }
 interface Props { options?: DropdownOption[], text?: string }
 const props = withDefaults(defineProps<Props>(), {options: undefined, text: 'Texto de demostración'})
