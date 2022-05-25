@@ -1,4 +1,4 @@
-import {ShareDocumentApi, ShareDocumentUserApi} from '@/services/api/api'
+import {PermissionsApi, ShareDocumentApi, ShareDocumentUserApi} from '@/services/api/api'
 import {ref} from 'vue'
 import {UserDocsPermission} from '@/Types/UserDocsPermission'
 import {User} from '@/Types/User'
@@ -29,4 +29,14 @@ export function useGetUsersOfDocumentList(documentId: number, department_id?: nu
     }
     getUsersDocumentList(documentId, department_id)
     return {usersList, getUsersDocumentList}
+}
+
+export function useGetPermissions() {
+    const permissions = ref<UserDocsPermission[]>([])
+    async function getPermissions() {
+        const resp = await new PermissionsApi().listAnalystPermissions()
+        permissions.value = resp.data.data
+    }
+    getPermissions()
+    return {permissions, getPermissions}
 }

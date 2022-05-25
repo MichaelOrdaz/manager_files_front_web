@@ -83,4 +83,10 @@ export interface User {
      * @memberof User
      */
     department?: any;
+    /**
+     * 
+     * @type {Array&lt;string&gt;}
+     * @memberof User
+     */
+    authorization?: any;
 }

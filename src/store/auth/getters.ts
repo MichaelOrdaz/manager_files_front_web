@@ -1,6 +1,7 @@
 import type {GetterTree} from 'vuex'
 import {Auth} from './auth'
 import {StateInterface} from '../index'
+import {Department} from '@/Types/Department'
 
 const getters: GetterTree<Auth, StateInterface> = {
     getToken(state){
@@ -23,6 +24,9 @@ const getters: GetterTree<Auth, StateInterface> = {
     },
     getUserData(state: Auth): Auth {
         return state
+    },
+    getUserDepartment(state: Auth): Department {
+        return state.user_data.department
     }
 }
 
