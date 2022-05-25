@@ -29,7 +29,7 @@
             <template #options="data">
               <PText
                 variant="text-4"
-                @click="test(data.option.extraData)"
+                @click="setPermissionToUser(user.id, data.option.label)"
               >
                 {{ data.option.label }}
               </PText>
@@ -53,6 +53,8 @@ import HeaderInput from '@/Pages/HeadOfDepartment/HeaderInput.vue'
 import {User} from '@/Types/User'
 import store from '@/store'
 import {useGetPermissions} from '@/Composables/useShareDocumentClientMethods'
+import {UsersApi} from '@/services/api/api'
+import {Notify} from 'quasar'
 
 const searchValue = ref<string>('')
 const optionsDropdown = ref<DropdownOption[]>([])
@@ -62,6 +64,16 @@ const {permissions} = useGetPermissions()
 const usersList = computed<User[]>(() => users.value
     .filter((user) => user.name?.toLowerCase().match(searchValue.value) && user.role[0] !=='Jefe de Departamento'))
 
+async function setPermissionToUser(userId: number, permission: string) {
+
+    try {
+        await new UsersApi().saveUserPermission(userId, {permission: permission})
+        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive'})
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
+    }
+
+}
 watch([permissions, users], () => {
     if (permissions.value.length && users.value.length) {
         permissions.value.forEach((permission, index) => {
