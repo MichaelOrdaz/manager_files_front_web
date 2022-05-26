@@ -100,6 +100,7 @@ import store from '@/store/index'
 import {Notify} from 'quasar'
 import {Option} from '@/components/Molecules/POptionList.vue'
 import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
+import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -107,7 +108,10 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
-const rowOptions = ref<Option[]>([{optionLabel: 'Compartir', icon: 'link', action: () => {showShareModal.value = true}}])
+const rowOptions = ref<Option[]>([
+    {optionLabel: 'Restaurar permisos', icon: 'settings_backup_restore', action: () => { resetUsersPermissionsToItem() }},
+    {optionLabel: 'Compartir', icon: 'person_add', action: () => {showShareModal.value = true}}
+])
 const documentFocused = ref<Document | undefined>(undefined)
 const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
@@ -152,6 +156,15 @@ async function hideFolderInfo(reloadConten?: boolean) {
 }
 function holdDocumentDocused(doc: Document) {
     documentFocused.value = doc
+}
+
+async function resetUsersPermissionsToItem() {
+    try {
+        Notify.create({message: 'Los permisos se han restaurado', color: 'blue', type: 'positive'})
+        await useSaveUsersDocumentPermissionShare(documentFocused.value.id, [])
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
+    }
 }
 provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')
