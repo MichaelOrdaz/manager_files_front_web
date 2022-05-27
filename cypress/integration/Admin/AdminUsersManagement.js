@@ -22,8 +22,10 @@ describe('', () => {
         cy.contains('Crear usuario').click()
         cy.get('[data-cy="rolIdSelector"]').click()
         cy.get('[data-cy="rolIdSelector"] .item').contains(selectedRol).first().click({force: true})
-        cy.get('[data-cy="departmentIdSelector"]').click()
-        cy.get('.item').last().click({force: true})
+        if (selectedRol === 'Administrador') {
+            cy.get('[data-cy="departmentIdSelector"]').click()
+            cy.get('.item').last().click({force: true})
+        }
         cy.get('[data-cy="userNameInput"]').type(randomCharacters)
         cy.get('[data-cy="userLatNameInput"]').type(randomCharacters)
         cy.get('[data-cy="userSecondLastNameInput"]').type(randomCharacters)

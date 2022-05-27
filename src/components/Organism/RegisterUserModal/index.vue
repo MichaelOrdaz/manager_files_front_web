@@ -15,7 +15,10 @@
           ref="formRef"
           class="form"
         >
-          <NewUserImgLoader @capture-new-image="getNewImage" />
+          <NewUserImgLoader
+            :user-selected="props.userSelected"
+            @capture-new-image="getNewImage"
+          />
           <div class="selects">
             <PSelect
               v-model="rolSelectedId"
@@ -29,6 +32,7 @@
               :forceSelectedIndex="rolSelectedIndex"
             />
             <PSelect
+              v-show="newUser.rolId !== 1"
               v-model="departmentSelectedId"
               label="Selecciona departamento"
               :options="departmentsList"
@@ -141,7 +145,7 @@ import {Notify} from 'quasar'
 import {useGetRolesList} from '@/Composables/useGetRolesList'
 interface Props{userSelected?: User}
 
-const emit = defineEmits(['cancel'])
+const emit = defineEmits(['cancel', 'update-users-list'])
 const props = withDefaults(defineProps<Props>(), {userSelected: undefined})
 
 const isEditUser = ref<boolean>(!!props.userSelected)
@@ -153,7 +157,7 @@ const departmentSelectedId = ref<number>(0)
 const departmentSelectedIndex = ref<number>(0)
 const rolSelectedIndex = ref<number>(0)
 const newUser = ref<User>({
-    name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0
+    name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0, image: undefined
 })
 const {departmentsList} = getDepartmentsList()
 const {rolesList} = useGetRolesList()
@@ -161,7 +165,7 @@ const getNewImage = (file: File) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onload = function () {
-        newUser.value.image = `${reader.result}`
+        newUser.value.image = file
     }
 }
 async function validateFields() {
@@ -170,10 +174,7 @@ async function validateFields() {
         Notify.create({message: 'Las contraseñas son diferentes', color: 'red', badgeStyle: {zIndex: '99999', position: 'fixed'}})
         return
     }
-    if (newUser.value.password.trim() === newUser.value.name.trim() || newUser.value.password.trim() === newUser.value.email.trim() || newUser.value.email.trim() === newUser.value.name.trim()) {
-        Notify.create({message: 'La contraseña, el nombre y el email no pueden ser iguales', color: 'red', type: 'negative'})
-        return
-    }
+    if (!validateMainFormValues(isValid)) return
     if (isValid){
         if (!isEditUser.value) {
             await createUser()
@@ -186,10 +187,13 @@ async function validateFields() {
 }
 
 async function createUser() {
+    if (newUser.value.rolId === 1) {
+        newUser.value.department.id = undefined
+    }
     try {
         await useCreateUser(newUser.value)
         Notify.create({message: 'Se ha creado el usuario', color: 'blue', type: 'positive'})
-        emit('cancel')
+        emit('update-users-list')
         resetValues()
     } catch (e) {
         Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
@@ -197,16 +201,34 @@ async function createUser() {
 }
 
 async function editUser() {
+    if (newUser.value.rolId === 1) {
+        newUser.value.department.id = undefined
+    }
     try {
         await useEditUser(newUser.value)
         Notify.create({message: 'Se ha editado el usuario', color: 'blue', type: 'positive'})
         resetValues()
-        emit('cancel')
+        emit('update-users-list')
     } catch (e) {
         Notify.create({message: 'Ha ocurrido un error', color: 'blue', type: 'nehative'})
     }
 }
-
+function validateMainFormValues(isValidForm: boolean): boolean {
+    if (!isValidForm) return
+    if (!isEditUser.value && newUser.value.password.trim() === newUser.value.name.trim()) {
+        Notify.create({message: 'La contraseña no puede ser igual al nombre del usuario', color: 'red', type: 'negative'})
+        return false
+    }
+    if (!isEditUser.value && newUser.value.password.trim() === newUser.value.email.trim()) {
+        Notify.create({message: 'La contraseña no puede ser igual al email', color: 'red', type: 'negative'})
+        return false
+    }
+    if (newUser.value.email.trim() === newUser.value.name.trim()) {
+        Notify.create({message: 'El correo no puede ser igual al nombre del usuario', color: 'red', type: 'negative'})
+        return false
+    }
+    return true
+}
 function takeUserSelectedValues() {
     // eslint-disable-next-line vue/no-setup-props-destructure
     const tempUser = props.userSelected
@@ -219,13 +241,13 @@ function takeUserSelectedValues() {
 }
 function resetValues() {
     newUser.value = {
-        name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0
+        name: '', lastname: '', second_lastname: '', password: '', phone: '', department: {id:0, name: ''}, email: '', rolId: 0, image: undefined
     }
     rolSelectedId.value = undefined
     departmentSelectedId.value = undefined
 }
 watch(departmentsList, () => {
-    if (props.userSelected) {
+    if (props.userSelected && props.userSelected.department) {
         isEditUser.value = true
         takeUserSelectedValues()
         departmentSelectedIndex.value = departmentsList.value.findIndex(dep => dep.id === props.userSelected.department.id)

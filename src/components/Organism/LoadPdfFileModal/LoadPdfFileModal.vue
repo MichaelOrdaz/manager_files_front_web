@@ -23,9 +23,10 @@
           v-model="formData.name"
           width="100%"
           placeHolder="ejemplo.pdf"
-          maxLength="254"
+          maxLength="50"
           label="Nombre archivo"
-          :rules="[(value:string) => /^[a-z0-9_\-\s\.]+$/i.test(value) || 'El nombre solo puede contener caracteres alfanuméricos, guion bajo/medio, espacios y puntos']"
+          :rules="[(value:string) => /^[a-z0-9_\-\s\.]+$/i.test(value) || 'El nombre solo puede contener caracteres alfanuméricos, guion bajo/medio, espacios y puntos',
+                   (value: string) => !!value.trim() || 'Agrega un nombre para el archivo']"
           data-cy="file-name"
         />
         <div class="textarea-container text-left p-mt-18">
@@ -51,7 +52,7 @@
             v-model="formData.min_identifier"
             label="Rango de folio"
             width="253px"
-            :rules="[(value:string) => /^[0-9]*?-?[0-9]*$/g.test(value) || 'El folio solo puede contener números o un guión para separar']"
+            :rules="[(value:string) => /^(\d)+-?(\d)+$/g.test(value) || 'El folio solo puede contener números o un guión para separar']"
             data-cy="identifier-input"
             placeHolder="0001-0002"
           />
@@ -99,6 +100,10 @@ const formData = reactive<File>({
 async function createFile() {
     const isValidForm: boolean = formRef.value.validate()
     if (!isValidForm) return
+    if (!formData.description.length) {
+        Notify.create({message: 'Agrega una descripción', color: 'red', type: 'negative'})
+        return
+    }
     if (formData.min_identifier.includes('-')){
         const [min, max] = formData.min_identifier.split('-')
         formData.min_identifier = min
@@ -110,7 +115,7 @@ async function createFile() {
         await store.dispatch('get_folder_content')
         emit('cancel')
     } catch (e) {
-        Notify.create({message: 'Valida los campos', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error al cargar el archivo, intentalo de nuevo', color: 'red', type: 'negative'})
     }
 }
 onMounted(() => { formData.name = props.newFile.name })

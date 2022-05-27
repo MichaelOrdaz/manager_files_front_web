@@ -16,6 +16,7 @@
       :userSelected="selectedUser"
       :roles="rolesList"
       @cancel="cancel"
+      @update-users-list="updateUsersList"
     />
     <PModal
       v-if="showDeleteUserModal"
@@ -43,7 +44,7 @@ const rolSelected = ref<number>(0)
 const showUserModal = ref<boolean>(false)
 const showDeleteUserModal = ref<boolean>(false)
 const selectedUser = ref<User | undefined>(undefined)
-const {users, getUsers} = useGetUsersList(filterValue.value,rolSelected.value)
+const {users, getUsers} = useGetUsersList(filterValue.value,rolSelected.value, undefined)
 const {rolesList} = useGetRolesList([{id: 0, name: 'Todos'}])
 
 function captureFilters(params: {text: string, rolId: number}): void {
@@ -61,7 +62,12 @@ function edit(user: User) {
 function cancel() {
     selectedUser.value = undefined
     showUserModal.value = false
-    getUsers(filterValue.value,rolSelected.value)
+}
+
+async function updateUsersList() {
+    selectedUser.value = undefined
+    showUserModal.value = false
+    await getUsers(filterValue.value, rolSelected.value, undefined)
 }
 function validateUserToDelete(user: User) {
     if (store.getters.getUserData.user_data.id === user.id) {
@@ -77,7 +83,7 @@ async function deleteUser() {
         await useDeleteUser(selectedUser.value)
         showDeleteUserModal.value = false
         selectedUser.value = undefined
-        await getUsers(filterValue.value, rolSelected.value)
+        await getUsers(filterValue.value, rolSelected.value, undefined)
         Notify.create({message: 'Se ha eliminado al usuario', color: 'green', type: 'positive'})
     } catch (e) {
         Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
@@ -87,7 +93,7 @@ const filterUsers = computed<User[]>(() => users.value.filter(user => user.name.
     .normalize('NFC').replace(/[\u0300-\u036f]/g, '')
     .match(filterValue.value.toLowerCase().normalize('NFC').replace(/[\u0300-\u036f]/g, ''))))
 const deleteUserModalText = computed<string>(() => selectedUser.value ? `¿Está seguro que quiere eliminar al usuario ${selectedUser.value.fullName}?` : '')
-watch(rolSelected, () => {getUsers(filterValue.value, rolSelected.value)})
+watch(rolSelected, () => {getUsers(filterValue.value, rolSelected.value, undefined)})
 </script>
 
 <style scoped lang="scss">
