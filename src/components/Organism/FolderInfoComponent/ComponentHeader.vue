@@ -46,7 +46,7 @@
   </div>
   <PModal
     v-if="showEditFolderNameModal"
-    modalTitle="Cambiar el nombre de la carpeta"
+    :modalTitle="`Cambiar el nombre ${store.getters.isFolder ? 'de la carpeta' : 'del archivo'}`"
     @cancel="showEditFolderNameModal = false"
     @accept="editItemName"
   >
@@ -61,7 +61,8 @@
   </PModal>
   <PModal
     v-if="showDeleteFolderModal"
-    modalTitle="¿Está seguro que quiere eliminar la carpeta?"
+    class="text-center"
+    :modalTitle="`¿Está seguro de eliminar ${store.getters.isFolder ? 'la carpeta?' : 'el archivo?'}`"
     @cancel="showDeleteFolderModal = false"
     @accept="deleteFolder"
   />

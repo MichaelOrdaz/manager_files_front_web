@@ -64,7 +64,7 @@
         variant="text-4"
       >
         <PIcon
-          v-if="!validInput"
+          v-if="!validInput && msg"
           icon-name="info"
           color="red"
         />
@@ -175,6 +175,7 @@ input{
     border: none;
     outline: none;
     width: 100%;
+    border-radius: 4px;
 }
 .pinput-main-container{
     width: v-bind(pinputWidth);

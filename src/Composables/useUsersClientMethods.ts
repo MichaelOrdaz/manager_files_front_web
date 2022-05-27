@@ -23,7 +23,7 @@ export function useCreateUser(user:User) {
             user.email, user.name,
             user.lastname, user.second_lastname,
             user.phone, user.password,
-            user.image === 'string' ? user.image : '', user.rolId,
+            user.image, user.rolId,
             user.department.id)
             .then(resp => resolve(resp))
             .catch(error => reject(error))
