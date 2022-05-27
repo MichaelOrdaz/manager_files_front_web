@@ -29,7 +29,6 @@ import store from '@/store'
 const select = ref(0)
 const tree: QTreeNode[] = [{
     label: 'Mi unidad',
-    icon: 'folder',
     selectable: true,
     lazy: true,
     folderId: 0,

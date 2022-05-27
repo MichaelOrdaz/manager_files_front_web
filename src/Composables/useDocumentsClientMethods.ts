@@ -57,3 +57,19 @@ export function useEditItemName(doc:Document, newName: string) {
             .catch(error => reject(error))
     })
 }
+
+export function useUpdateFolderTags(folderId: number, tags: string[]): Promise<AxiosResponse> {
+    return new Promise((resolve, reject) => {
+        new DocumentsApi().saveDocumentTags(folderId, {tags: tags})
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+    })
+}
+
+export function useDeleteFolderTag(folderId: number, tag: string): Promise<AxiosResponse> {
+    return new Promise((resolve, reject) => {
+        new DocumentsApi().deleteDocumentTags(folderId, tag)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+    })
+}

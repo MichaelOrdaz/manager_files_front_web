@@ -23,7 +23,7 @@
     >
       <div
         v-if="$slots.header"
-        class="option"
+        class="header-option"
       >
         <slot name="header" />
       </div>
@@ -88,10 +88,17 @@ useDetectOutsideClick(componentRef, () => { show.value = false})
     background-color: white;
     display: flex;
     justify-content: flex-start;
-    padding: 6px 6px;
+    padding: 12px 12px;
     cursor: pointer;
 }
 .option:hover{
     background: #F1F1F2;
+}
+.header-option{
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: flex-start;
+    padding: 6px 6px;
 }
 </style>

@@ -5,6 +5,8 @@
         v-model="inputValue"
         width="100%"
         label="Agregar etiqueta"
+        data-cy="tags-input"
+        :rules="[validateTags]"
       />
       <div
         v-if="newTags"
@@ -43,6 +45,9 @@ function removeTag(index: number): void {
 }
 function updateTags() {
     emit('update-tags-list', newTags.value)
+}
+function validateTags(value: string) {
+    return value.split(',').map(el => el.trim()).every( tag => tag.length > 2) || 'Cada etiqueta debe tener más de 2 caracteres'
 }
 watch(inputValue, () => {
     if (inputValue.value.trim() !== '' && inputValue.value[inputValue.value.length - 1].includes(',')) {
