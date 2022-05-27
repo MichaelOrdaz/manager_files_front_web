@@ -1,5 +1,5 @@
 describe('Folder actions', () => {
-    const randomCharacters = `CarpetaPrueba${(Math.random() + 1).toString(36).substring(7)}`
+    const randomCharacters = `Prueba${(Math.random() + 1).toString(36).substring(7)}`
     const userData= {email: 'jefe1@puller.mx', password: '12345678'}
     it('Log In', () => {
         cy.visit('')
@@ -31,9 +31,16 @@ describe('Folder actions', () => {
         cy.get('[data-cy="filter-docs-input"]').type(randomCharacters)
         cy.get('[data-cy="document-item-row"]').click()
         cy.get('[data-cy="open-edit-tags-modal"]').click()
-        cy.get('[data-cy="tags-input"]').type(`${randomCharacters}, ${randomCharacters},`)
+        cy.get('[data-cy="tags-input"]').type(`${randomCharacters}, ${randomCharacters}, ${randomCharacters},`)
         cy.contains('Aceptar').click()
         cy.wait('@addTags').then((response) => {
+            expect(response.response.statusCode).to.equal(200)
+        })
+    })
+    it('Delete folder tag', function () {
+        cy.intercept('DELETE','**/api/v1/documents/**').as('deleteTags')
+        cy.get('[data-cy="chip-icon-action"]').last().click()
+        cy.wait('@deleteTags').then((response) => {
             expect(response.response.statusCode).to.equal(200)
         })
     })

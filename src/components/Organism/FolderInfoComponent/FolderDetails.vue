@@ -58,7 +58,9 @@
         color="link"
         iconName="download"
       />
-      <PLinkText>Descargar</PLinkText>
+      <PLinkText @click="downloadFolder">
+        Descargar
+      </PLinkText>
     </div>
     <Modal
       v-if="showTagsModal"
@@ -82,6 +84,10 @@ const props = defineProps<Props>()
 
 const tags = ref<string[]>([])
 const showTagsModal = ref<boolean>(false)
+
+function downloadFolder(): void {
+    window.open(props.docData.url)
+}
 
 async function removeChip(index:number, tag: string) {
     try {

@@ -22,6 +22,7 @@
       size="psm"
       :color="props.iconColor"
       iconName="close"
+      data-cy="chip-icon-action"
       @click="$emit('icon-action')"
     />
   </div>
