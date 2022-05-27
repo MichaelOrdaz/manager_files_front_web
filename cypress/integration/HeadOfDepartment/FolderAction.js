@@ -1,6 +1,5 @@
 describe('Folder actions', () => {
-    const randomCharacters = `CarpetaPrueba${(Math.random() + 1).toString(36).substring(7)}`
-    const randomFileCharacters = `ArchivoPrueba${(Math.random() + 1).toString(36).substring(7)}`
+    const randomCharacters = `Prueba${(Math.random() + 1).toString(36).substring(7)}`
     const userData= {email: 'jefe1@puller.mx', password: '12345678'}
     it('Log In', () => {
         cy.visit('')
@@ -27,11 +26,26 @@ describe('Folder actions', () => {
             cy.get('#q-notify').should('exist')
         })
     })
-
-    it('Edit folder name', function () {
-        cy.intercept('POST','**/api/v1/documents/**').as('editFolderName')
+    it('Add folder tags', function () {
+        cy.intercept('POST','**/api/v1/documents/**').as('addTags')
         cy.get('[data-cy="filter-docs-input"]').type(randomCharacters)
         cy.get('[data-cy="document-item-row"]').click()
+        cy.get('[data-cy="open-edit-tags-modal"]').click()
+        cy.get('[data-cy="tags-input"]').type(`${randomCharacters}, ${randomCharacters}, ${randomCharacters},`)
+        cy.contains('Aceptar').click()
+        cy.wait('@addTags').then((response) => {
+            expect(response.response.statusCode).to.equal(200)
+        })
+    })
+    it('Delete folder tag', function () {
+        cy.intercept('DELETE','**/api/v1/documents/**').as('deleteTags')
+        cy.get('[data-cy="chip-icon-action"]').last().click()
+        cy.wait('@deleteTags').then((response) => {
+            expect(response.response.statusCode).to.equal(200)
+        })
+    })
+    it('Edit folder name', function () {
+        cy.intercept('POST','**/api/v1/documents/**').as('editFolderName')
         cy.get('[data-cy="edit-name"]').click()
         cy.get('[data-cy="new-name-input"]').type(randomCharacters + randomCharacters)
         cy.contains('Aceptar').click({force: true})
@@ -53,43 +67,4 @@ describe('Folder actions', () => {
         })
     })
 
-    it('Create File', function () {
-        cy.intercept('POST','**/api/v1/documents').as('createFile')
-        cy.contains('Subir archivo').click({force: true})
-        cy.get('[data-cy="file-loader"]').attachFile('../tests-assets/file.pdf')
-        cy.get('[data-cy="file-name"]').type(randomFileCharacters)
-        cy.get('[data-cy="file-desc"]').type(randomFileCharacters)
-        cy.get('[data-cy="input-date"]').type('2022-02-02')
-        cy.get('[data-cy="identifier-input"]').type(`${Math.floor(Math.random() * (9000 - 100 + 1) + 100)}`)
-        cy.get('[data-cy="load-file-btn"]').click({force: true})
-        cy.wait('@createFile').then((response) => {
-            expect(response.response.statusCode).to.equal(201)
-            cy.get('#q-notify').should('exist')
-        })
-    })
-
-    it('Edit file name', function () {
-        cy.intercept('POST','**/api/v1/documents/**').as('editFileName')
-        cy.get('[data-cy="filter-docs-input"]').type(randomFileCharacters)
-        cy.get('[data-cy="document-item-row"]').click()
-        cy.get('[data-cy="edit-name"]').click()
-        cy.get('[data-cy="new-name-input"]').type(randomFileCharacters + randomFileCharacters)
-        cy.contains('Aceptar').click({force: true})
-        cy.wait('@editFileName').then((response) => {
-            expect(response.response.statusCode).to.equal(200)
-        })
-    })
-
-    it('Delete File', function () {
-        cy.intercept('DELETE','**/api/v1/documents/**').as('deleteFile')
-        cy.get('[data-cy="filter-docs-input"]').type(randomFileCharacters)
-        cy.get('[data-cy="document-item-row"]').click()
-        cy.contains('Eliminar archivo').click()
-        cy.contains('Aceptar').click()
-        cy.wait('@deleteFile').then( response => {
-            expect(response.response.statusCode).to.equal(200)
-            cy.get('#q-notify').should('exist')
-            cy.get('[data-cy="filter-docs-input"] input').clear()
-        })
-    })
 })
