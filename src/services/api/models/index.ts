@@ -9,6 +9,7 @@ export * from './auth';
 export * from './department';
 export * from './document';
 export * from './document-id-rename-body';
+export * from './document-id-tags-body';
 export * from './document-parent';
 export * from './document-simple';
 export * from './document-simple-parent';

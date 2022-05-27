@@ -5,6 +5,7 @@
         v-model="inputValue"
         width="100%"
         label="Agregar etiqueta"
+        data-cy="tags-input"
       />
       <div
         v-if="newTags"

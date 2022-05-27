@@ -17,6 +17,7 @@
           class="p-ml-4 cursor-pointer"
           size="psm"
           iconName="edit"
+          data-cy="open-edit-tags-modal"
           @click="showTagsModal = true"
         />
       </div>
@@ -29,7 +30,7 @@
           chipType="secondary"
           :chipText="tag"
           class="chip"
-          @icon-action="removeChip(index)"
+          @icon-action="removeChip(index, tag)"
         />
       </div>
     </div>
@@ -73,6 +74,8 @@ import {ref, watch} from 'vue'
 import Modal from './Modal.vue'
 import type {Document} from '@/Types/Document'
 import formatDate from '@/utils/FormatDate'
+import {Notify} from 'quasar'
+import {useDeleteFolderTag, useUpdateFolderTags} from '@/Composables/useDocumentsClientMethods'
 
 interface Props { docData: Document }
 const props = defineProps<Props>()
@@ -80,12 +83,24 @@ const props = defineProps<Props>()
 const tags = ref<string[]>([])
 const showTagsModal = ref<boolean>(false)
 
-function removeChip(index:number): void {
-    tags.value.splice(index, 1)
+async function removeChip(index:number, tag: string) {
+    try {
+        await useDeleteFolderTag(props.docData.id, tag)
+        tags.value.splice(index, 1)
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative'})
+    }
+
 }
-function updateTagsList(params: string[]): void {
+async function updateTagsList(params: string[]) {
     tags.value = params
     showTagsModal.value = false
+    try {
+        await useUpdateFolderTags(props.docData.id, tags.value)
+        Notify.create({message: 'Se han actualizado las etiquetas', color: 'blue', type: 'positive'})
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative'})
+    }
 }
 watch(() => props.docData, () => {
     tags.value = props.docData.tags
