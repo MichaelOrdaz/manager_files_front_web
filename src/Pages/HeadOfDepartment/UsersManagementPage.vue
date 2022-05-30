@@ -17,13 +17,13 @@
         itemHight="80px"
         letterIconSize="pmd"
         :itemTitleText="user.fullName"
-        :itemSubtitleText="user.role[0]"
+        :itemSubtitleText="`${user.role[0]} / ${user.authorization[0] ?? 'Sin permiso'}`"
         itemTitleVariant="subtitle-1"
         itemSubtitleVariant="text-2"
       >
         <template #default>
           <PDropdown
-            text="Selecciona el permiso"
+            :text="user.authorization[0] ? user.authorization[0] : 'Sin permiso'"
             :options="optionsDropdown"
           >
             <template #options="data">
