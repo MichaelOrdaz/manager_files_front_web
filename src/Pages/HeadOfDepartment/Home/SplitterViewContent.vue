@@ -37,10 +37,10 @@
   <div
     v-if="!list.length"
     class="no-data"
-    @dragenter.prevent
-    @dragleave.prevent
-    @dragover.prevent
-    @drop.prevent="takeDragFile($event)"
+    @dragenter.prevent.stop
+    @dragleave.prevent.stop
+    @dragover.prevent.stop
+    @drop.prevent.stop="takeDragFile($event)"
   >
     <img
       class="p-mt-122"
@@ -51,10 +51,10 @@
   <div
     v-else
     class="section"
-    @dragenter.prevent
-    @dragleave.prevent
-    @dragover.prevent
-    @drop.prevent="takeDragFile($event)"
+    @dragenter.prevent.stop
+    @dragleave.prevent.stop
+    @dragover.prevent.stop
+    @drop.prevent.stop="takeDragFile($event)"
   >
     <div class="items-col">
       <DirFileRowComponent
@@ -67,7 +67,7 @@
         :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
         data-cy="document-item-row"
         :is-selected="selectedFolder?.id === document.id"
-        :optionsList="rowOptions"
+        :optionsList="rowOptionsByPermission"
         @mouseover="holdDocumentDocused(document)"
         @click="showFolderInfo(document)"
       />
@@ -108,7 +108,7 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
-const rowOptions = ref<Option[]>([
+const rowOptionsAdmin = ref<Option[]>([
     {optionLabel: 'Restaurar permisos', icon: 'settings_backup_restore', action: () => { resetUsersPermissionsToItem() }},
     {optionLabel: 'Compartir', icon: 'person_add', action: () => {showShareModal.value = true}}
 ])
@@ -143,6 +143,10 @@ function changeFolder() {
     store.dispatch('get_folder_content')
 }
 function takeDragFile(event: DragEvent) {
+    if (!store.getters.getAnalystHasAllPermission){
+        Notify.create({message: 'No tienes permiso para subir archivos', color: 'red', type: 'negative'})
+        return
+    }
     if (event.dataTransfer?.files[0]?.type === 'application/pdf'){
         FoldersDescAndActionsRef.value.takeDropFile(event.dataTransfer?.files[0])
         return
@@ -166,6 +170,12 @@ async function resetUsersPermissionsToItem() {
         Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
     }
 }
+const rowOptionsByPermission = computed<Option[]>( () => {
+    if (store.getters.getAnalystHasAllPermission) {
+        return rowOptionsAdmin.value
+    }
+    return [{optionLabel: 'Abrir', action: () => { window.open(documentFocused.value.url)}, icon: ''}]
+})
 provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')
 </script>

@@ -19,6 +19,7 @@
         {{ props.docData?.name ?? 'Sin nombre' }}
       </PText>
       <PIcon
+        v-if="store.getters.getAnalystHasAllPermission"
         class="cursor-pointer"
         color="black"
         iconName="edit"
@@ -28,6 +29,7 @@
       />
     </div>
     <div
+      v-if="store.getters.getAnalystHasAllPermission"
       class="delete-option cursor-pointer"
       @click="showDeleteFolderModal = true"
     >

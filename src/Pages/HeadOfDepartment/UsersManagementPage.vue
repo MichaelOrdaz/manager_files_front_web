@@ -79,7 +79,11 @@ watch([permissions, users], () => {
         permissions.value.forEach((permission, index) => {
             optionsDropdown.value[index] = {label: permission.name, extraData: {},action: () => []}
         })
-        users.value.forEach((user, index) => { optionsDropdown.value[index].extraData = user })
+        users.value.forEach((user, index) => {
+            if (optionsDropdown.value[index]) {
+                optionsDropdown.value[index].extraData = user
+            }
+        })
     }
 })
 </script>
