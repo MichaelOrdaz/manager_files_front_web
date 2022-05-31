@@ -4,10 +4,18 @@
       Gestionar permisos
     </PText>
     <div class="chip-list" />
-    <div class="flex justify-between">
+    <div
+      v-if="store.getters.getAnalystHasAllPermission"
+      class="flex justify-between"
+    >
       <PLinkText @click="showPermissionsModal = true">
         Gestionar permisos
       </PLinkText>
+    </div>
+    <div v-else>
+      <PText variant="text-4">
+        Usted no tiene acceso agestionar los permisos
+      </PText>
     </div>
     <PModal
       v-if="showPermissionsModal"

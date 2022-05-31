@@ -1,7 +1,7 @@
 <template>
   <div
     ref="componentRef"
-    class="dropdown-container"
+    class="dropdown-container text-left"
   >
     <div
       class="dropdown"
@@ -10,7 +10,7 @@
       <PText
         class="truncate"
         color="white"
-        variant="text-4"
+        variant="text-3"
       >
         {{ props.text }}
       </PText>
@@ -61,7 +61,7 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
 
 <style scoped lang="scss">
 .dropdown-container{
-    max-width: 256px;
+    width: 258px;
     position: relative;
 }
 .dropdown{
@@ -88,7 +88,7 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
     height: 35px;
     text-align: left;
     padding-top: 6px;
-    padding-left: 41px;
+    padding-left: 10px;
     cursor: pointer;
 }
 .dropdown-option:hover{

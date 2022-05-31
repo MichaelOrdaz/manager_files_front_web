@@ -10,6 +10,7 @@ const mutations: MutationTree<Auth> = {
         state.user_data = payload.user
         state.views = payload.views
         state.roles = payload.roles
+        state.authorization = payload.authorization
     },
     USER_ERROR(state): void {
         state.status = 'error'
@@ -28,7 +29,7 @@ const mutations: MutationTree<Auth> = {
         state.roles = []
         state.initialPage = {
             Administrador: 'Admin Dashboard',
-            Analista: 'Dashboard',
+            Analista: 'Analyst Home',
             'Jefe de Departamento': 'Dashboard'
         }
     },

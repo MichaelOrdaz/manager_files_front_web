@@ -27,6 +27,16 @@ const getters: GetterTree<Auth, StateInterface> = {
     },
     getUserDepartment(state: Auth): Department {
         return state.user_data.department
+    },
+    getAnalystHasAllPermission(state: Auth): boolean {
+        if (state.roles[0] === 'Analista' && state.authorization.includes('Todos los permisos')) {
+            return true
+        } else if (state.roles[0] === 'Analista' && state.authorization.includes('Solo ver')) {
+            return false
+        }else if (state.roles[0] === 'Jefe de Departamento') {
+            return true
+        }
+        return false
     }
 }
 

@@ -17,18 +17,19 @@
         itemHight="80px"
         letterIconSize="pmd"
         :itemTitleText="user.fullName"
-        :itemSubtitleText="user.role[0]"
-        itemTitleVariant="subtitle-1"
+        :icon-text="user.fullName"
+        :itemSubtitleText="`${user.role[0]} / ${user.authorization[0] ?? 'Sin permiso'}`"
+        itemTitleVariant="text-1"
         itemSubtitleVariant="text-2"
       >
         <template #default>
           <PDropdown
-            text="Selecciona el permiso"
+            :text="user.authorization[0] ? user.authorization[0] : 'Sin permiso'"
             :options="optionsDropdown"
           >
             <template #options="data">
               <PText
-                variant="text-4"
+                variant="text-4 full-width"
                 @click="setPermissionToUser(user.id, data.option.label)"
               >
                 {{ data.option.label }}
@@ -65,9 +66,10 @@ const usersList = computed<User[]>(() => users.value
     .filter((user) => user.name?.toLowerCase().match(searchValue.value) && user.role[0] !=='Jefe de Departamento'))
 
 async function setPermissionToUser(userId: number, permission: string) {
-
+    const foundUser = users.value.find(user => userId === user.id)
     try {
         await new UsersApi().saveUserPermission(userId, {permission: permission})
+        foundUser.authorization[0] = permission
         Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive'})
     } catch (e) {
         Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
@@ -79,7 +81,11 @@ watch([permissions, users], () => {
         permissions.value.forEach((permission, index) => {
             optionsDropdown.value[index] = {label: permission.name, extraData: {},action: () => []}
         })
-        users.value.forEach((user, index) => { optionsDropdown.value[index].extraData = user })
+        users.value.forEach((user, index) => {
+            if (optionsDropdown.value[index]) {
+                optionsDropdown.value[index].extraData = user
+            }
+        })
     }
 })
 </script>
