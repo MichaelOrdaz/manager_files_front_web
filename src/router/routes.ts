@@ -100,7 +100,7 @@ const AnalystViews: RouteRecordRaw[] = [
                 name: 'Analyst Home',
                 component: () => import('../Pages/HeadOfDepartment/Home/index.vue'),
                 meta: {
-                    authRequired: false
+                    authRequired: true
                 },
             },
         ]
