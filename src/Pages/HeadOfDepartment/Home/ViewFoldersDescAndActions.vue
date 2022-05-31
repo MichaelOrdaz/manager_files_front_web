@@ -15,7 +15,7 @@
       </PText>
       <PText
         variant="text-4"
-        class="p-pt-5"
+        class="p-pt-5 q-ml-xl"
       >
         Subido el
       </PText>

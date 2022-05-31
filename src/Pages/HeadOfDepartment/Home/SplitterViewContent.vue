@@ -60,11 +60,11 @@
       <DirFileRowComponent
         v-for="(document, index) in list"
         :key="index"
-        class="cursor-pointer"
+        class="cursor-pointer item-row"
         :firstText="document.name"
         :secondText="document.createdAt"
         :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
-        :image="document.type.name === 'Carpeta' ? DirectorySvg : FileImg"
+        :image="document.type.name === 'Carpeta' ? DirectorySvg : PdfSvg"
         data-cy="document-item-row"
         :is-selected="selectedFolder?.id === document.id"
         :optionsList="rowOptionsByPermission"
@@ -92,7 +92,7 @@ import AdvancedSearch from './AdvancedSearch.vue'
 import NoDataSvg from '@/assets/uploadfiles.svg'
 import DirFileRowComponent from '@/components/Organism/DirFileRowComponent.vue'
 import DirectorySvg from '@/assets/directory-img.svg'
-import FileImg from '@/assets/pdfimg.png'
+import PdfSvg from '@/assets/pdficon.png'
 import type {Document} from '@/Types/Document'
 import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import Dayjs from 'dayjs'
