@@ -30,6 +30,10 @@
   min-height: 80%;
   .items-col{ width: 100%; }
   .folder-info{ width: 350px; position: fixed; right: 25px; top: 75px }
+  .item-row{
+    margin: 6px 0;
+    padding: 0 8px;
+  }
 }
 @media (max-width: 1216px){
   .header-container{

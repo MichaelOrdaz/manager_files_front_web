@@ -11,7 +11,9 @@ const HeadOfDepartmentModules: Module[] = [
     {name: 'Users management', icon: 'people'}
     //TODO: 2f79yuc
 ]
-const AnalystModules: Module[] = []
+const AnalystModules: Module[] = [
+    {name: 'Analyst Home', icon: 'home'}
+]
 export const RolesModules = {
     Admin: AdminModules,
     'Jefe de Departamento': HeadOfDepartmentModules,

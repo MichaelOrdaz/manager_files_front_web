@@ -19,9 +19,10 @@ export interface Auth {
     user_data?: UserData,
     roles?: string[],
     views: object,
+    authorization?: string[],
     initialPage: {
         Administrador: 'Admin Dashboard',
-        Analista: 'Dashboard',
+        Analista: 'Analyst Home',
         'Jefe de Departamento': 'Dashboard'
     }
 }
@@ -36,10 +37,11 @@ export default function state(): Auth {
         views: [],
         initialPage: {
             Administrador: 'Admin Dashboard',
-            Analista: 'Dashboard',
+            Analista: 'Analyst Home',
             'Jefe de Departamento': 'Dashboard'
         },
         roles: [],
         isValidToken: false,
+        authorization: []
     }
 }

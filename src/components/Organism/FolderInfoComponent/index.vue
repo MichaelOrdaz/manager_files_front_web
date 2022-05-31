@@ -13,7 +13,10 @@
       v-else
       :docData="documentData"
     />
-    <UsersActivityList :history="documentData?.historical" />
+    <UsersActivityList
+      v-if="store.getters.getAnalystHasAllPermission"
+      :history="documentData?.historical"
+    />
   </div>
 </template>
 

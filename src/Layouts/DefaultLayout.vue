@@ -4,6 +4,7 @@
       class="avatar"
       :options="options"
       type="avatar"
+      :avatarSrc="store.getters.getUserData?.user_data?.image ? store.getters.getUserData?.user_data?.image : undefined"
     >
       <template #header>
         <PUserDescription />
@@ -38,6 +39,7 @@ import {useStore} from 'vuex'
 import PUserDescription from '@/components/Molecules/PUserDescription.vue'
 import {Option} from '@/components/Molecules/POptionList.vue'
 import {useLogOut} from '@/Composables/useUserSessionMethods'
+import store from '@/store'
 const options = ref<Option[]>([
     {optionLabel: 'Cerrar sesión', action: useLogOut, icon: 'logout'},
 ])
@@ -77,7 +79,7 @@ const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
 .avatar{
     position: absolute;
     top: 12px;
-    right: 24px;
+    right: 40px;
     z-index: 10;
 }
 </style>

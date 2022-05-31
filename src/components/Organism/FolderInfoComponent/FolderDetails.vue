@@ -14,6 +14,7 @@
           Etiquetas
         </PText>
         <PIcon
+          v-if="store.getters.getAnalystHasAllPermission"
           class="p-ml-4 cursor-pointer"
           size="psm"
           iconName="edit"
@@ -30,6 +31,7 @@
           chipType="secondary"
           :chipText="tag"
           class="chip"
+          :showIconAction="store.getters.getAnalystHasAllPermission"
           @icon-action="removeChip(index, tag)"
         />
       </div>
@@ -78,6 +80,7 @@ import type {Document} from '@/Types/Document'
 import formatDate from '@/utils/FormatDate'
 import {Notify} from 'quasar'
 import {useDeleteFolderTag, useUpdateFolderTags} from '@/Composables/useDocumentsClientMethods'
+import store from '@/store'
 
 interface Props { docData: Document }
 const props = defineProps<Props>()

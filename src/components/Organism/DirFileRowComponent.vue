@@ -35,7 +35,7 @@
       variant="text-5"
       :title="props.fourthText"
     >
-      {{ props.fourthText ?? 'Texto de prueba' }}
+      {{ props.fourthText ?? '' }}
     </PText>
     <POptionList
       v-if="props.optionsList"
@@ -83,6 +83,7 @@ const props = withDefaults(defineProps<Props>(),{
 .text{
     width: 25%;
     padding-right: 24px;
+    text-align: left;
 }
 .truncate{
     white-space: nowrap;
