@@ -1,5 +1,6 @@
 import {User} from '@/Types/User'
 import {Department} from '@/Types/Department'
+import {UserDocsPermission} from '@/Types/UserDocsPermission'
 
 type DocumentType = {
     id: 1 | 2,
@@ -30,5 +31,6 @@ export type Document = {
     department?: Department,
     historical?: DocumentRecord[],
     url?: string,
-    share?: User[]
+    share?: User[],
+    permission?: UserDocsPermission,
 }

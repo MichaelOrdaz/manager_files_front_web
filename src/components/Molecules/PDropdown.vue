@@ -9,13 +9,13 @@
     >
       <PText
         class="truncate"
-        color="white"
+        color="black"
         variant="text-3"
       >
         {{ props.text }}
       </PText>
       <PIcon
-        color="white"
+        color="black"
         :iconName="iconArrowDirection"
       />
     </div>
@@ -65,7 +65,7 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
     position: relative;
 }
 .dropdown{
-    background-color: $brown-6;
+    background-color: $gray-10;
     display: flex;
     justify-content: space-between;
     align-items: center;

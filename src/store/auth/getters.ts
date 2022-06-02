@@ -33,7 +33,7 @@ const getters: GetterTree<Auth, StateInterface> = {
             return true
         } else if (state.roles[0] === 'Analista' && state.authorization.includes('Solo ver')) {
             return false
-        }else if (state.roles[0] === 'Jefe de Departamento') {
+        }else if (state.roles[0] === 'Jefe de Departamento' && !state.authorization.length) {
             return true
         }
         return false

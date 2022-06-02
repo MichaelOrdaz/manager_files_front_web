@@ -69,7 +69,7 @@ watch(select, () => {
 
 <style scoped lang="scss">
 .folders-section-container{
-    background-color: $grey-10;
+    background-color: $gray-10;
     display: flex;
     align-items: flex-start;
     flex-direction: column;

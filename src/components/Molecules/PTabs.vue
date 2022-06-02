@@ -10,6 +10,7 @@
         <PText
           color="black"
           :variant="props.tabTitleVariant"
+          @click.prevent="$emit('title-action')"
         >
           {{ title }}
         </PText>
@@ -21,6 +22,8 @@
 
 <script setup lang="ts">
 import {ref, provide, getCurrentInstance, onMounted} from 'vue'
+
+defineEmits(['title-action'])
 interface Props{
     tabTitleVariant?: string
 }
