@@ -1,5 +1,6 @@
 import type {MutationTree} from 'vuex'
 import {Auth} from './auth'
+import {Document} from '@/Types/Document'
 
 const mutations: MutationTree<Auth> = {
     AUTH_SUCCESS(state, payload): void {
@@ -11,6 +12,7 @@ const mutations: MutationTree<Auth> = {
         state.views = payload.views
         state.roles = payload.roles
         state.authorization = payload.authorization
+        state.originalAuthorization = payload.authorization
     },
     USER_ERROR(state): void {
         state.status = 'error'
@@ -35,6 +37,17 @@ const mutations: MutationTree<Auth> = {
     },
     AUTH_SET_IS_VALID_TOKEN(state, payload:boolean): void{
         state.isValidToken = payload
+    },
+    SET_AUTHORIZATION(state, payload: string): void {
+        const r = payload
+        const permissions = {
+            Lectura: 'Solo ver',
+            Escritura: 'Todos los permisos'
+        }
+        state.authorization[0] = permissions[r]
+    },
+    RESET_AUTHORIZATION(state): void{
+        state.authorization = state.originalAuthorization
     }
 }
 

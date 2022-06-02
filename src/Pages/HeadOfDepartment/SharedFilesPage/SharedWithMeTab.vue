@@ -68,9 +68,9 @@ function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (clicksCount.value === 1) {
         timer.value = setTimeout(() => {
-            console.log(doc)
             selectedFolder.value = doc
             store.commit('SET_SELECTED_ITEM', doc)
+            store.commit('SET_AUTHORIZATION', doc.permission)
             clicksCount.value = 0
             showFolderInfoSection.value = true
         }, 250)

@@ -12,7 +12,7 @@ const HeadOfDepartmentModules: Module[] = [
     //TODO: 2f79yuc
 ]
 const AnalystModules: Module[] = [
-    {name: 'Analyst Home', icon: 'home'}
+    {name: 'Analyst home', icon: 'home'}
 ]
 export const RolesModules = {
     Admin: AdminModules,

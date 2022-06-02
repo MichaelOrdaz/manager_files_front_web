@@ -20,6 +20,7 @@ export interface Auth {
     roles?: string[],
     views: object,
     authorization?: string[],
+    originalAuthorization?: string[],
     initialPage: {
         Administrador: 'Admin Dashboard',
         Analista: 'Analyst home',

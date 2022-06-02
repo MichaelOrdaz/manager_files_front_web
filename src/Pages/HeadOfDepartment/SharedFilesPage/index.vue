@@ -31,10 +31,11 @@ import SharedWithMeTab from '@/Pages/HeadOfDepartment/SharedFilesPage/SharedWith
 import store from '@/store'
 
 const searchValue = ref<string>('')
-const sharedFilesCompRef = ref<{hideFolderInfo:() => void, null}>(null)
-const sharedWithMeCompRef = ref<{hideFolderInfo:() => void, null}>(null)
+const sharedFilesCompRef = ref<{hideFolderInfo:() => void} | null>(null)
+const sharedWithMeCompRef = ref<{hideFolderInfo:() => void} | null>(null)
 function resetSelectedFolder() {
     store.commit('RESET_SELECTED_ITEM')
+    store.commit('RESET_AUTHORIZATION')
     sharedWithMeCompRef.value.hideFolderInfo()
     sharedFilesCompRef.value.hideFolderInfo()
 }
