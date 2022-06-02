@@ -23,7 +23,7 @@ export async function useCreateFolder(newFolderName: string, parentId?: number):
 }
 
 export function useGetDocumentData(documentId: undefined | number) {
-    const documentData = ref<Document>()
+    const documentData = ref<Document>(undefined)
     if (!documentId) return {}
     async function getDocData(DocumentId: number | undefined) {
         const resp = await new DocumentsApi().getDocument(DocumentId)

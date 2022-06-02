@@ -97,7 +97,7 @@ const AnalystViews: RouteRecordRaw[] = [
         children: [
             {
                 path: '/analyst',
-                name: 'Analyst Home',
+                name: 'Analyst home',
                 component: () => import('../Pages/HeadOfDepartment/Home/index.vue'),
                 meta: {
                     authRequired: true
