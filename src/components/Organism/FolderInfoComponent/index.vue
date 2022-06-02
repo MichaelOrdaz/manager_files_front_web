@@ -38,7 +38,6 @@ const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedIt
 const {documentSharedData, getDocumentSharedWithMe} = useGetDocumentSharedWithMe(store.getters.getSelectedItem.id)
 
 watch(() => store.getters.getSelectedItem?.id, () => {
-    console.log('cambio')
     if (store.getters.getSelectedItem && props.isGetSharedDocument) {
         getDocumentSharedWithMe(store.getters.getSelectedItem?.id)
     } else if (store.getters.getSelectedItem && !props.isGetSharedDocument) {

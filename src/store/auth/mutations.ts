@@ -47,7 +47,6 @@ const mutations: MutationTree<Auth> = {
         state.authorization[0] = permissions[permission]
     },
     RESET_AUTHORIZATION(state): void{
-        console.log(state.authorization, state.originalAuthorization)
         state.authorization = [...state.originalAuthorization]
     }
 }
