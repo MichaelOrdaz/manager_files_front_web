@@ -25,7 +25,7 @@ const splitterModel = ref<number>(20)
 <style scoped lang="scss">
 div :deep(.q-splitter__before){
     height: auto;
-    background-color: $grey-10;
+    background-color: $gray-10;
     overflow-y: auto;
 }
 </style>

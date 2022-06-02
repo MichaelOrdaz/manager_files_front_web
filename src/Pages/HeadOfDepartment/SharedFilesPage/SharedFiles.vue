@@ -1,20 +1,16 @@
 <template>
   <div class="shared-files-container">
     <div class="section-head">
-      <PText variant="text-1">
-        Archivos que he compartido con
-      </PText>
+      <ViewBreadcumb @change-folder="changeFolder" />
       <div class="filter-btn">
-        <PText variant="text-4">
-          Selecciona el departamento
-        </PText>
+        <!--        TODO: 2f79yuc-->
         <PDropdown
+          v-if="false"
           :options="options"
-          text="Hola a todos"
+          text="Filtro"
         />
       </div>
     </div>
-    <ViewBreadcumb @change-folder="changeFolder" />
     <ColumnsDescription />
     <div class="shared-files-body">
       <div class="full-width">
@@ -25,9 +21,11 @@
           second-text="Editar"
           :third-text="document.creator.name"
           :options-list="rowOptionsAdmin"
-          :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
+          thirdText=" "
+          :fourth-text="Dayjs(document.date).format('YYYY-MM-DD')"
           :image="document.type.name === 'Carpeta' ? DirectorySvg : PdfSvg"
-          class="cursor-pointer"
+          class="cursor-pointer item-row"
+          :is-selected="selectedFolder?.id === document.id"
           @click="showFolderInfo(document)"
         />
       </div>
@@ -43,7 +41,7 @@
 import ItemRow from '@/components/Organism/DirFileRowComponent.vue'
 import PDropdown, {DropdownOption} from '@/components/Molecules/PDropdown.vue'
 import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
-import DirectorySvg from '@/assets/directory-img.svg'
+import DirectorySvg from '@/assets/folder2.png'
 import PdfSvg from '@/assets/pdficon.png'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
 import {provide, ref} from 'vue'
@@ -88,6 +86,7 @@ async function hideFolderInfo(reloadConten?: boolean) {
     showFolderInfoSection.value = false
     reloadConten && await store.dispatch('get_folder_content')
     selectedFolder.value = undefined
+    store.commit('RESET_SELECTED_ITEM')
 }
 
 async function changeFolder(doc: Document) {
@@ -98,9 +97,14 @@ async function changeFolder(doc: Document) {
     await getDocumentsByMe(doc.id)
 }
 provide('hide-folder-info-section', hideFolderInfo)
+defineExpose({hideFolderInfo})
 </script>
 
 <style scoped lang="scss">
+.item-row{
+    margin: 6px 0;
+    padding: 0 8px;
+}
 .shared-files-container{
     display: flex;
     flex-direction: column;

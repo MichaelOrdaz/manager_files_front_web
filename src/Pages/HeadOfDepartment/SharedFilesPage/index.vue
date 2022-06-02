@@ -14,12 +14,12 @@
       Buscar
     </PButton>
   </div>
-  <PTabs>
+  <PTabs @title-action="resetSelectedFolder">
     <PTab title="Compartidos por mi">
-      <SharedFiles />
+      <SharedFiles ref="sharedFilesCompRef" />
     </PTab>
     <PTab title="Compartidos conmigo">
-      <SharedWithMeTab />
+      <SharedWithMeTab ref="sharedWithMeCompRef" />
     </PTab>
   </PTabs>
 </template>
@@ -31,8 +31,16 @@ import SharedWithMeTab from '@/Pages/HeadOfDepartment/SharedFilesPage/SharedWith
 import store from '@/store'
 
 const searchValue = ref<string>('')
+const sharedFilesCompRef = ref<{hideFolderInfo:() => void, null}>(null)
+const sharedWithMeCompRef = ref<{hideFolderInfo:() => void, null}>(null)
+function resetSelectedFolder() {
+    store.commit('RESET_SELECTED_ITEM')
+    sharedWithMeCompRef.value.hideFolderInfo()
+    sharedFilesCompRef.value.hideFolderInfo()
+}
 store.commit('RESET_CURRENT_FOLDER')
 store.commit('RESET_BREADCRUMB_STRUCTURE')
+store.commit('RESET_SELECTED_ITEM')
 </script>
 
 <style scoped lang="scss">

@@ -27,20 +27,28 @@ import FolderDetails from './FolderDetails.vue'
 import FileDetails from './FileDetails.vue'
 import UsersActivityList from './UsersActivityList.vue'
 import store from '@/store'
-import {ref, watch} from 'vue'
+import {defineProps, ref, watch} from 'vue'
 import {useGetDocumentData} from '@/Composables/useDocumentsClientMethods'
+import {useGetDocumentSharedWithMe} from '@/Composables/useShareDocsClientMethods'
+
+const props = withDefaults(defineProps<{ isGetSharedDocument?: boolean }>(), {isGetSharedDocument: false})
 
 const componentRef = ref<{action: () => void} | null>(null)
 const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedItem.id)
+const {documentSharedData, getDocumentSharedWithMe} = useGetDocumentSharedWithMe(store.getters.getSelectedItem.id)
 
 watch(() => store.getters.getSelectedItem?.id, () => {
-    if (store.getters.getSelectedItem) {
+    console.log('cambio')
+    if (store.getters.getSelectedItem && props.isGetSharedDocument) {
+        getDocumentSharedWithMe(store.getters.getSelectedItem?.id)
+    } else if (store.getters.getSelectedItem && !props.isGetSharedDocument) {
         getDocData(store.getters.getSelectedItem?.id)
     }
 })
 watch(documentData, () => {
     store.commit('SET_SELECTED_ITEM', documentData.value)
 })
+watch(documentSharedData, () => { documentData.value = documentSharedData.value })
 </script>
 
 
