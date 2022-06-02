@@ -89,4 +89,22 @@ const AdminViews: RouteRecordRaw[] = [
         ]
     },
 ]
-export default [].concat(PublicViews, AdminViews ,HeadOfDepartment)
+const AnalystViews: RouteRecordRaw[] = [
+    {
+        path: '/',
+        name: '',
+        component: () => import('../Layouts/DefaultLayout.vue'),
+        children: [
+            {
+                path: '/analyst',
+                name: 'Analyst home',
+                component: () => import('../Pages/HeadOfDepartment/Home/index.vue'),
+                meta: {
+                    authRequired: true
+                },
+            },
+        ]
+    },
+]
+
+export default [].concat(PublicViews, AdminViews ,HeadOfDepartment, AnalystViews)

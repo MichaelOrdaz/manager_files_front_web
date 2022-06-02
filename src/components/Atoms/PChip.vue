@@ -18,11 +18,18 @@
       {{ props.chipText }}
     </PText>
     <PIcon
+      v-if="props.showIconAction"
       class="cursor-pointer component-icon"
       size="psm"
       :color="props.iconColor"
       iconName="close"
+      data-cy="chip-icon-action"
       @click="$emit('icon-action')"
+    />
+    <PIcon
+      v-else
+      iconName="null"
+      class="null-icon"
     />
   </div>
 </template>
@@ -36,9 +43,10 @@ interface Props{
     chipType?: string,
     iconColor?: string,
     textColor?: string,
+    showIconAction?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
-    chipText: 'Default text', chipType: 'primary', iconColor: 'black', textColor: 'black'
+    chipText: 'Default text', chipType: 'primary', iconColor: 'black', textColor: 'black', showIconAction: true
 })
 const setChipTypeClass = computed<string>(() => `${props.chipType}`)
 </script>
@@ -70,4 +78,8 @@ const setChipTypeClass = computed<string>(() => `${props.chipType}`)
     text-overflow: ellipsis;
 }
 .component-icon{margin-left: 9px}
+.null-icon{
+    overflow: hidden;
+    width: 15px;
+}
 </style>

@@ -15,19 +15,21 @@
       </PText>
       <PText
         variant="text-4"
-        class="p-pt-5"
+        class="p-pt-5 q-ml-xl"
       >
         Subido el
       </PText>
     </div>
     <div class="action-buttons">
       <PTextIcon
+        v-if="store.getters.getAnalystHasAllPermission"
         iconName="create_new_folder"
         iconColor="link"
         text="Nueva carpeta"
         @click="showCreateFolderModal = true"
       />
       <PTextIcon
+        v-if="store.getters.getAnalystHasAllPermission"
         iconName="file_upload"
         iconColor="gold"
         text="Subir archivo"

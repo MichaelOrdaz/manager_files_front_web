@@ -1,5 +1,12 @@
 <template>
   <div class="header">
+    <PIcon
+      class="close-icon cursor-pointer"
+      iconName="close"
+      size="pmd"
+      data-cy="close-seccion"
+      @click="closeSection"
+    />
     <div class="folder-options">
       <PIcon
         :color="store.getters.isFolder ? 'black': 'red'"
@@ -12,14 +19,17 @@
         {{ props.docData?.name ?? 'Sin nombre' }}
       </PText>
       <PIcon
+        v-if="store.getters.getAnalystHasAllPermission"
         class="cursor-pointer"
         color="black"
         iconName="edit"
         size="pmd"
+        data-cy="edit-name"
         @click="showEditFolderNameModal = true"
       />
     </div>
     <div
+      v-if="store.getters.getAnalystHasAllPermission"
       class="delete-option cursor-pointer"
       @click="showDeleteFolderModal = true"
     >
@@ -38,7 +48,7 @@
   </div>
   <PModal
     v-if="showEditFolderNameModal"
-    modalTitle="Cambiar el nombre de la carpeta"
+    :modalTitle="`Cambiar el nombre ${store.getters.isFolder ? 'de la carpeta' : 'del archivo'}`"
     @cancel="showEditFolderNameModal = false"
     @accept="editItemName"
   >
@@ -47,12 +57,14 @@
         v-model="newFolderName"
         width="100%"
         placeHolder="Nuevo nombre"
+        data-cy="new-name-input"
       />
     </template>
   </PModal>
   <PModal
     v-if="showDeleteFolderModal"
-    modalTitle="¿Está seguro que quiere eliminar la carpeta?"
+    class="text-center"
+    :modalTitle="`¿Está seguro de eliminar ${store.getters.isFolder ? 'la carpeta?' : 'el archivo?'}`"
     @cancel="showDeleteFolderModal = false"
     @accept="deleteFolder"
   />
@@ -69,7 +81,7 @@ interface Props { docData: Document}
 const props = defineProps<Props>()
 
 // eslint-disable-next-line no-unused-vars
-const hideFolderInfoSection = inject<(reloadContent?: boolean) => void>('hide-folder-info-section')
+const hideFolderInfoSection = inject<(reloadContent?: boolean) => void>('hide-folder-info-section', () => ({}))
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
@@ -80,6 +92,7 @@ async function deleteFolder() {
         hideFolderInfoSection()
         showDeleteFolderModal.value = false
         Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue', type: 'positive'})
+        await store.dispatch('get_folder_content')
     } catch (e) {
         Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
     }
@@ -95,6 +108,10 @@ async function editItemName() {
         Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
     }
 }
+function closeSection() {
+    store.commit('RESET_CURRENT_FOLDER')
+    hideFolderInfoSection()
+}
 </script>
 
 <style scoped lang="scss">
@@ -105,6 +122,12 @@ async function editItemName() {
     align-items: flex-start;
     flex-direction: column;
     padding: 12px;
+    position: relative;
+    .close-icon{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
     .delete-option{ margin-top: 12px }
     border-bottom: solid 1px $gray-4;
 }

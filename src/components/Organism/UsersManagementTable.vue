@@ -7,6 +7,11 @@
     row-key="name"
     :rows-per-page-options="[25]"
   >
+    <template #pagination>
+      <PText variant="text-5">
+        {{ users.length }}
+      </PText>
+    </template>
     <template #body="item">
       <q-tr>
         <q-td class="text-left">
@@ -81,22 +86,30 @@
   <PModal
     v-if="showUpdatePasswordModal"
     class="text-left"
-    modal-title="Cambair contraseña"
+    modal-title="Cambiar contraseña"
     width="411px"
     heigth="364px"
     @accept="validatePasswords"
+    @cancel="showUpdatePasswordModal = false"
   >
     <template #body>
-      <PInput
-        v-model="newPssword"
-        label="Nueva contraseña"
-        width="320px"
-      />
-      <PInput
-        v-model="passwordConfirmation"
-        label="Confirma la cotraseña"
-        width="320px"
-      />
+      <PForm ref="formRef">
+        <PInput
+          v-model="newPssword"
+          label="Nueva contraseña"
+          width="320px"
+          data-cy="new-password"
+          :rules="[(value: string) => value.length >= 8 || 'La contraseña debe tener 8 caracteres']"
+        />
+        <PInput
+          v-model="passwordConfirmation"
+          label="Confirma la cotraseña"
+          width="320px"
+          data-cy="password-confirmation"
+          :rules="[(value: string) => value.length >= 8 || 'La contraseña debe tener 8 caracteres',
+                   (value: string) => value === newPssword || 'Las contraseñas son diferentes']"
+        />
+      </PForm>
     </template>
   </PModal>
 </template>
@@ -108,12 +121,15 @@ import type {User} from '@/Types/User'
 import PModal from '@/components/Molecules/PModal.vue'
 import {ref} from 'vue'
 import {useUpdateUserPassword} from '@/Composables/useUsersClientMethods'
+import PForm from '@/components/Organism/PForm.vue'
+import PFormComp from '@/Types/PFormComp'
 interface Props {users: User[], filter: string}
 
 defineEmits<{
     (e: 'delete-user', payload: User):void,
     (e: 'edit-user', payload: User):void,
 }>()
+const formRef = ref<PFormComp | null>(null)
 const props = withDefaults(defineProps<Props>(), {users: () => [], filter: ''})
 const newPssword = ref<string>('')
 const passwordConfirmation = ref<string>('')
@@ -135,19 +151,10 @@ function openUpdatePasswordModal(user: User) {
     selectedUSer.value = user
 }
 function validatePasswords() {
-    if (!newPssword.value || !passwordConfirmation.value){
-        Notify.create({message: 'Valida los campos', color: 'red', type: 'negative'})
-        return
+    const isValidForm = formRef.value.validate()
+    if (isValidForm) {
+        updatePassword()
     }
-    if (newPssword.value !== passwordConfirmation.value){
-        Notify.create({message: 'Las contraseñas son diferentes', color: 'red', type: 'negative'})
-        return
-    }
-    if (newPssword.value.length < 8 || passwordConfirmation.value.length < 8) {
-        Notify.create({message: 'La contraseña debe contener 8 caracteres', color: 'red', type: 'negative'})
-        return
-    }
-    updatePassword()
 }
 
 async function updatePassword() {
@@ -156,7 +163,6 @@ async function updatePassword() {
         Notify.create({message: 'La contraseña se ha actualizado', color: 'blue', type: 'positive'})
         showUpdatePasswordModal.value = false
     }catch (e) {
-        console.log(e)
         Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
     }
 }
@@ -169,4 +175,10 @@ async function updatePassword() {
     max-height: 80vh;
 }
 .p-mx-xl{margin: 0 18px}
+@media (max-height: 700px){
+    .table{
+        width: 90%;
+        height: 75vh;
+    }
+}
 </style>

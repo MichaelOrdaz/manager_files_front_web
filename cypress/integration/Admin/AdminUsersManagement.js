@@ -22,8 +22,10 @@ describe('', () => {
         cy.contains('Crear usuario').click()
         cy.get('[data-cy="rolIdSelector"]').click()
         cy.get('[data-cy="rolIdSelector"] .item').contains(selectedRol).first().click({force: true})
-        cy.get('[data-cy="departmentIdSelector"]').click()
-        cy.get('.item').last().click({force: true})
+        if (selectedRol === 'Administrador') {
+            cy.get('[data-cy="departmentIdSelector"]').click()
+            cy.get('.item').last().click({force: true})
+        }
         cy.get('[data-cy="userNameInput"]').type(randomCharacters)
         cy.get('[data-cy="userLatNameInput"]').type(randomCharacters)
         cy.get('[data-cy="userSecondLastNameInput"]').type(randomCharacters)
@@ -50,6 +52,16 @@ describe('', () => {
         cy.get('[data-cy="userPhoneInput"]').type('edit')
         cy.contains('Aceptar').click()
         cy.wait('@editUser').then(response => {
+            expect(response.response.statusCode).to.equal(200)
+        })
+    })
+    it('Edit password', function () {
+        cy.intercept('POST','**/reset-password').as('updatePassword')
+        cy.get('[data-cy="update-password-icon"]').click({force: true})
+        cy.get('[data-cy="new-password"]').type('12345678')
+        cy.get('[data-cy="password-confirmation"]').type('12345678')
+        cy.contains('Aceptar').click()
+        cy.wait('@updatePassword').then(response => {
             expect(response.response.statusCode).to.equal(200)
         })
     })

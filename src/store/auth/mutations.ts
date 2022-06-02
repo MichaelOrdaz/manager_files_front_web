@@ -6,10 +6,13 @@ const mutations: MutationTree<Auth> = {
         state.access_token = payload.token
     },
     USER_SUCCESS(state, payload): void {
+        const [originalPermission] = payload.authorization
         state.status = 'success'
         state.user_data = payload.user
         state.views = payload.views
         state.roles = payload.roles
+        state.authorization = payload.authorization
+        state.originalAuthorization = originalPermission ? originalPermission : []
     },
     USER_ERROR(state): void {
         state.status = 'error'
@@ -28,12 +31,23 @@ const mutations: MutationTree<Auth> = {
         state.roles = []
         state.initialPage = {
             Administrador: 'Admin Dashboard',
-            Analista: 'Dashboard',
+            Analista: 'Analyst home',
             'Jefe de Departamento': 'Dashboard'
         }
     },
     AUTH_SET_IS_VALID_TOKEN(state, payload:boolean): void{
         state.isValidToken = payload
+    },
+    SET_AUTHORIZATION(state, payload: string): void {
+        const permission = payload
+        const permissions = {
+            Lectura: 'Solo ver',
+            Escritura: 'Todos los permisos'
+        }
+        state.authorization[0] = permissions[permission]
+    },
+    RESET_AUTHORIZATION(state): void{
+        state.authorization = [...state.originalAuthorization]
     }
 }
 

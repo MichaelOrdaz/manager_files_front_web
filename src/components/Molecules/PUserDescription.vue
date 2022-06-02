@@ -8,7 +8,11 @@
     <div
       class="user-data"
     >
-      <PText variant="text-4">
+      <PText
+        variant="text-4"
+        class="truncate"
+        :title="userData.user_data?.name"
+      >
         {{ userData.user_data?.name || 'Sin nombre' }}
       </PText>
       <PText variant="text-5">
@@ -32,7 +36,7 @@ const userData = computed<Auth>(() => useStore().getters.getUserData)
 <style scoped lang="scss">
 .user-description-container{
     width: 100%;
-    height: 46px;
+    height: 66px;
     display: flex;
     flex-direction: row;
     .user-data{
@@ -42,6 +46,12 @@ const userData = computed<Auth>(() => useStore().getters.getUserData)
         align-items: flex-start;
         justify-content: center;
         margin-left: 10px;
+    }
+    .truncate{
+        width: 80%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 </style>

@@ -26,6 +26,8 @@ import { InlineResponse404 } from '../models';
 import { InlineResponse422 } from '../models';
 import { UpdatePassword } from '../models';
 import { User } from '../models';
+import { UserPermission } from '../models';
+import { UserSharePermissionByDocument } from '../models';
 /**
  * UsersApi - axios parameter creator
  * @export
@@ -325,10 +327,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
          * @summary List - Users
          * @param {string} [name] Value to filter by full user name
          * @param {number} [role] (role id) Value to filter the role type of the users
+         * @param {number} [departmentId] department id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUsers: async (name?: string, role?: number, options: any = {}): Promise<RequestArgs> => {
+        getUsers: async (name?: string, role?: number, departmentId?: number, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -350,6 +353,10 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['role'] = role;
             }
 
+            if (departmentId !== undefined) {
+                localVarQueryParameter['department_id'] = departmentId;
+            }
+
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -360,6 +367,94 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * save a permission with user in the system
+         * @summary Save - User Permission
+         * @param {number} userId user id
+         * @param {UserPermission} [body] Request in application/json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveUserPermission: async (userId: number, body?: UserPermission, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userId' is not null or undefined
+            if (userId === null || userId === undefined) {
+                throw new RequiredError('userId','Required parameter userId was null or undefined when calling saveUserPermission.');
+            }
+            const localVarPath = `/users/{user_id}/permissions`
+                .replace(`{${"user_id"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * saves the permissions of a user group provided in the request body
+         * @summary Save - Users Permission
+         * @param {UserSharePermissionByDocument} [body] Request in application/json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveUsersPermissions: async (body?: UserSharePermissionByDocument, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/users/*/permissions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -673,11 +768,41 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @summary List - Users
          * @param {string} [name] Value to filter by full user name
          * @param {number} [role] (role id) Value to filter the role type of the users
+         * @param {number} [departmentId] department id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUsers(name?: string, role?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
-            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).getUsers(name, role, options);
+        async getUsers(name?: string, role?: number, departmentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).getUsers(name, role, departmentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * save a permission with user in the system
+         * @summary Save - User Permission
+         * @param {number} userId user id
+         * @param {UserPermission} [body] Request in application/json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async saveUserPermission(userId: number, body?: UserPermission, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).saveUserPermission(userId, body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * saves the permissions of a user group provided in the request body
+         * @summary Save - Users Permission
+         * @param {UserSharePermissionByDocument} [body] Request in application/json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async saveUsersPermissions(body?: UserSharePermissionByDocument, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+            const localVarAxiosArgs = await UsersApiAxiosParamCreator(configuration).saveUsersPermissions(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -820,11 +945,33 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @summary List - Users
          * @param {string} [name] Value to filter by full user name
          * @param {number} [role] (role id) Value to filter the role type of the users
+         * @param {number} [departmentId] department id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUsers(name?: string, role?: number, options?: any): AxiosPromise<InlineResponse2002> {
-            return UsersApiFp(configuration).getUsers(name, role, options).then((request) => request(axios, basePath));
+        getUsers(name?: string, role?: number, departmentId?: number, options?: any): AxiosPromise<InlineResponse2002> {
+            return UsersApiFp(configuration).getUsers(name, role, departmentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * save a permission with user in the system
+         * @summary Save - User Permission
+         * @param {number} userId user id
+         * @param {UserPermission} [body] Request in application/json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveUserPermission(userId: number, body?: UserPermission, options?: any): AxiosPromise<InlineResponse2003> {
+            return UsersApiFp(configuration).saveUserPermission(userId, body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * saves the permissions of a user group provided in the request body
+         * @summary Save - Users Permission
+         * @param {UserSharePermissionByDocument} [body] Request in application/json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveUsersPermissions(body?: UserSharePermissionByDocument, options?: any): AxiosPromise<InlineResponse2002> {
+            return UsersApiFp(configuration).saveUsersPermissions(body, options).then((request) => request(axios, basePath));
         },
         /**
          * filter users with pagination included
@@ -958,12 +1105,36 @@ export class UsersApi extends BaseAPI {
      * @summary List - Users
      * @param {string} [name] Value to filter by full user name
      * @param {number} [role] (role id) Value to filter the role type of the users
+     * @param {number} [departmentId] department id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public getUsers(name?: string, role?: number, options?: any) {
-        return UsersApiFp(this.configuration).getUsers(name, role, options).then((request) => request(this.axios, this.basePath));
+    public getUsers(name?: string, role?: number, departmentId?: number, options?: any) {
+        return UsersApiFp(this.configuration).getUsers(name, role, departmentId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * save a permission with user in the system
+     * @summary Save - User Permission
+     * @param {number} userId user id
+     * @param {UserPermission} [body] Request in application/json format
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public saveUserPermission(userId: number, body?: UserPermission, options?: any) {
+        return UsersApiFp(this.configuration).saveUserPermission(userId, body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * saves the permissions of a user group provided in the request body
+     * @summary Save - Users Permission
+     * @param {UserSharePermissionByDocument} [body] Request in application/json format
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public saveUsersPermissions(body?: UserSharePermissionByDocument, options?: any) {
+        return UsersApiFp(this.configuration).saveUsersPermissions(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * filter users with pagination included

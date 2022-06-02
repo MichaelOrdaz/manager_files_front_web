@@ -5,8 +5,10 @@ import {Notify} from 'quasar'
 async function useLogOut() {
     try {
         await store.dispatch('user_logout')
-        Notify.create({message: 'Se ha cerrado sesión', color: 'blue', type: 'positive'})
-        await router.push('/')
+            .then(() => {
+                Notify.create({message: 'Se ha cerrado sesión', color: 'blue', type: 'positive'})
+                router.push('/')
+            })
     } catch (e) {
         store.commit('USER_ERROR')
         store.commit('AUTH_LOGOUT')

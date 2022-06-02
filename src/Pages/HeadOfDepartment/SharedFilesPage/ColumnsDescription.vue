@@ -1,13 +1,13 @@
 <template>
   <div class="column-description-texts">
     <PText
-      variant="text-1"
+      variant="text-4"
       class="text"
     >
       Nombre de archivo
     </PText>
     <PText
-      variant="text-1"
+      variant="text-4"
       class="text"
     >
       Permiso
@@ -16,10 +16,10 @@
       variant="text-1"
       class="text"
     >
-      Creado por
+      {{ '' }}
     </PText>
     <PText
-      variant="text-1"
+      variant="text-4"
       class="text"
     >
       Compartido el
@@ -34,10 +34,10 @@ export default {
 
 <style scoped lang="scss">
 .column-description-texts{
-    width: 80%;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    padding: 0 80px;
+    justify-content: space-around;
+    margin-top: 24px;
     .text{
         font-weight: 300;
     }

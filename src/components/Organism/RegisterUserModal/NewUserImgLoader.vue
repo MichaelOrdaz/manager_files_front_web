@@ -25,11 +25,14 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {defineProps, ref} from 'vue'
 import ProfileIcon from '../../../assets/profileicon.svg'
+import {User} from '@/Types/User'
 
-const newUserImg = ref<string>(ProfileIcon)
+const newUserImg = ref<string | File>(ProfileIcon)
 const emit = defineEmits(['capture-new-image'])
+interface Props {userSelected?: User}
+const props = withDefaults(defineProps<Props>(), {userSelected: undefined})
 function loadUserImg() {
     const fileInput: HTMLInputElement = document.createElement('input')
     fileInput.type = 'file'
@@ -39,8 +42,12 @@ function loadUserImg() {
     fileInput.onchange = () => {
         const img = fileInput.files?.item(0)
         newUserImg.value = URL.createObjectURL(img)
-        emit('capture-new-image', img)
+        emit('capture-new-image', fileInput.files?.item(0))
     }
+}
+if (props.userSelected?.image) {
+    // eslint-disable-next-line vue/no-setup-props-destructure
+    newUserImg.value = props.userSelected.image
 }
 </script>
 

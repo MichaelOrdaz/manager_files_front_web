@@ -88,7 +88,7 @@ export interface Document {
      * @type {Array&lt;User&gt;}
      * @memberof Document
      */
-    shared?: any;
+    share?: any;
     /**
      * 
      * @type {DocumentType}

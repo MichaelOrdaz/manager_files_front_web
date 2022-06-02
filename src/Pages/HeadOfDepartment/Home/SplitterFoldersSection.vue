@@ -29,7 +29,6 @@ import store from '@/store'
 const select = ref(0)
 const tree: QTreeNode[] = [{
     label: 'Mi unidad',
-    icon: 'folder',
     selectable: true,
     lazy: true,
     folderId: 0,
@@ -70,7 +69,7 @@ watch(select, () => {
 
 <style scoped lang="scss">
 .folders-section-container{
-    background-color: $grey-10;
+    background-color: $gray-10;
     display: flex;
     align-items: flex-start;
     flex-direction: column;

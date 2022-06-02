@@ -3,6 +3,11 @@
     <div class="modal-wrapper">
       <transition name="modal">
         <div class="modal-container">
+          <PIcon
+            iconName="close"
+            class="close-icon"
+            @click="$emit('cancel')"
+          />
           <div
             v-if="props.modalTitle"
             class="modal-header"
@@ -121,6 +126,13 @@ const componentHeight = ref(props.heigth)
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    position: relative;
+}
+.close-icon{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
 }
 .title{font-weight: 500}
 .modal-footer{

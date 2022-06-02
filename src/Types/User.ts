@@ -1,3 +1,5 @@
+import {UserDocsPermission} from '@/Types/UserDocsPermission'
+
 export type User = {
     id?: number,
     email?: string,
@@ -11,7 +13,9 @@ export type User = {
     department?: {id?: number, name?: string} | undefined | null,
     rolId?: number | undefined,
     role?: string[],
+    permission?: UserDocsPermission | string,
     updated_at?: string,
     created_at?: string,
     deleted_at?: string,
+    authorization?: string[],
 }

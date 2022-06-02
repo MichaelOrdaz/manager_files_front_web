@@ -1,7 +1,7 @@
 <template>
   <div
     ref="componentRef"
-    class="dropdown-container"
+    class="dropdown-container text-left"
   >
     <div
       class="dropdown"
@@ -9,13 +9,13 @@
     >
       <PText
         class="truncate"
-        color="white"
-        variant="text-4"
+        color="black"
+        variant="text-3"
       >
         {{ props.text }}
       </PText>
       <PIcon
-        color="white"
+        color="black"
         :iconName="iconArrowDirection"
       />
     </div>
@@ -48,6 +48,7 @@ import useDetectOutsideClick from '../../utils/useDetectOutsideClick'
 export type DropdownOption = {
     label: string,
     action: {():void},
+    extraData?: object
 }
 interface Props { options?: DropdownOption[], text?: string }
 const props = withDefaults(defineProps<Props>(), {options: undefined, text: 'Texto de demostración'})
@@ -60,11 +61,11 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
 
 <style scoped lang="scss">
 .dropdown-container{
-    max-width: 256px;
+    width: 258px;
     position: relative;
 }
 .dropdown{
-    background-color: $brown-6;
+    background-color: $gray-10;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -87,7 +88,7 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
     height: 35px;
     text-align: left;
     padding-top: 6px;
-    padding-left: 41px;
+    padding-left: 10px;
     cursor: pointer;
 }
 .dropdown-option:hover{

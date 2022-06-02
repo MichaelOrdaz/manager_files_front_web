@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import ShareDocsModal from '@/components/Organism/ShareDocsModal/ShareDocsModalIndex.vue'
+import ShareDocsModal from '@/components/Organism/ShareDocsModal/index.vue'
 import NewUserForm from '@/components/Organism/RegisterUserModal/index.vue'
 </script>
 

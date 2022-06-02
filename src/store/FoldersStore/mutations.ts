@@ -29,6 +29,9 @@ const mutations: MutationTree<FoldersStore> = {
             lazy: true,
         }]
     },
+    RESET_SELECTED_ITEM(state): void {
+        state.selectedItem = undefined
+    },
     BUILD_BREADCRUMB(state, payload: Document): void {
         state.breadcrumbStructure.push(payload)
     },

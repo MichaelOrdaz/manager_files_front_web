@@ -17,6 +17,7 @@ import { Configuration } from '../configuration';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { DocumentIdRenameBody } from '../models';
+import { DocumentIdTagsBody } from '../models';
 import { InlineResponse20010 } from '../models';
 import { InlineResponse2008 } from '../models';
 import { InlineResponse2009 } from '../models';
@@ -199,6 +200,54 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
+         * Delete tag of document in a single request
+         * @summary Delete - Document Tags
+         * @param {number} documentId document id
+         * @param {string} tagName tag name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteDocumentTags: async (documentId: number, tagName: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'documentId' is not null or undefined
+            if (documentId === null || documentId === undefined) {
+                throw new RequiredError('documentId','Required parameter documentId was null or undefined when calling deleteDocumentTags.');
+            }
+            // verify required parameter 'tagName' is not null or undefined
+            if (tagName === null || tagName === undefined) {
+                throw new RequiredError('tagName','Required parameter tagName was null or undefined when calling deleteDocumentTags.');
+            }
+            const localVarPath = `/documents/{document_id}/tags/{tag_name}`
+                .replace(`{${"document_id"}}`, encodeURIComponent(String(documentId)))
+                .replace(`{${"tag_name"}}`, encodeURIComponent(String(tagName)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -328,6 +377,53 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Save tags of document in a single request
+         * @summary Save - Document Tags
+         * @param {number} documentId document id
+         * @param {DocumentIdTagsBody} [body] Request in format json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveDocumentTags: async (documentId: number, body?: DocumentIdTagsBody, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'documentId' is not null or undefined
+            if (documentId === null || documentId === undefined) {
+                throw new RequiredError('documentId','Required parameter documentId was null or undefined when calling saveDocumentTags.');
+            }
+            const localVarPath = `/documents/{document_id}/tags`
+                .replace(`{${"document_id"}}`, encodeURIComponent(String(documentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -387,6 +483,21 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * Delete tag of document in a single request
+         * @summary Delete - Document Tags
+         * @param {number} documentId document id
+         * @param {string} tagName tag name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteDocumentTags(documentId: number, tagName: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).deleteDocumentTags(documentId, tagName, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -424,6 +535,21 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
          */
         async renameDocument(documentId: number, body?: DocumentIdRenameBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
             const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).renameDocument(documentId, body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Save tags of document in a single request
+         * @summary Save - Document Tags
+         * @param {number} documentId document id
+         * @param {DocumentIdTagsBody} [body] Request in format json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async saveDocumentTags(documentId: number, body?: DocumentIdTagsBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).saveDocumentTags(documentId, body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -476,6 +602,17 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
             return DocumentsApiFp(configuration).deleteDocument(documentId, options).then((request) => request(axios, basePath));
         },
         /**
+         * Delete tag of document in a single request
+         * @summary Delete - Document Tags
+         * @param {number} documentId document id
+         * @param {string} tagName tag name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteDocumentTags(documentId: number, tagName: string, options?: any): AxiosPromise<InlineResponse2009> {
+            return DocumentsApiFp(configuration).deleteDocumentTags(documentId, tagName, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Get the document in a single request
          * @summary Get - Document
          * @param {number} documentId document id
@@ -505,6 +642,17 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
          */
         renameDocument(documentId: number, body?: DocumentIdRenameBody, options?: any): AxiosPromise<InlineResponse2009> {
             return DocumentsApiFp(configuration).renameDocument(documentId, body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Save tags of document in a single request
+         * @summary Save - Document Tags
+         * @param {number} documentId document id
+         * @param {DocumentIdTagsBody} [body] Request in format json format
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveDocumentTags(documentId: number, body?: DocumentIdTagsBody, options?: any): AxiosPromise<InlineResponse2009> {
+            return DocumentsApiFp(configuration).saveDocumentTags(documentId, body, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -557,6 +705,18 @@ export class DocumentsApi extends BaseAPI {
         return DocumentsApiFp(this.configuration).deleteDocument(documentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
+     * Delete tag of document in a single request
+     * @summary Delete - Document Tags
+     * @param {number} documentId document id
+     * @param {string} tagName tag name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DocumentsApi
+     */
+    public deleteDocumentTags(documentId: number, tagName: string, options?: any) {
+        return DocumentsApiFp(this.configuration).deleteDocumentTags(documentId, tagName, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
      * Get the document in a single request
      * @summary Get - Document
      * @param {number} documentId document id
@@ -589,5 +749,17 @@ export class DocumentsApi extends BaseAPI {
      */
     public renameDocument(documentId: number, body?: DocumentIdRenameBody, options?: any) {
         return DocumentsApiFp(this.configuration).renameDocument(documentId, body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Save tags of document in a single request
+     * @summary Save - Document Tags
+     * @param {number} documentId document id
+     * @param {DocumentIdTagsBody} [body] Request in format json format
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DocumentsApi
+     */
+    public saveDocumentTags(documentId: number, body?: DocumentIdTagsBody, options?: any) {
+        return DocumentsApiFp(this.configuration).saveDocumentTags(documentId, body, options).then((request) => request(this.axios, this.basePath));
     }
 }
