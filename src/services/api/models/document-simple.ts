@@ -34,6 +34,12 @@ export interface DocumentSimple {
      * @type {string}
      * @memberof DocumentSimple
      */
+    url?: any;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentSimple
+     */
     location?: any;
     /**
      * 

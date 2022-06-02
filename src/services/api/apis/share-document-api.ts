@@ -17,6 +17,8 @@ import { Configuration } from '../configuration';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { InlineResponse20011 } from '../models';
+import { InlineResponse2008 } from '../models';
+import { InlineResponse2009 } from '../models';
 import { InlineResponse400 } from '../models';
 import { InlineResponse401 } from '../models';
 import { InlineResponse403 } from '../models';
@@ -28,6 +30,140 @@ import { InlineResponse422 } from '../models';
  */
 export const ShareDocumentApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Get the document in a single request shared for me
+         * @summary Get - Document For Me
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDocumentForMe: async (documentId: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'documentId' is not null or undefined
+            if (documentId === null || documentId === undefined) {
+                throw new RequiredError('documentId','Required parameter documentId was null or undefined when calling getDocumentForMe.');
+            }
+            const localVarPath = `/share-documents/for-me/{document_id}`
+                .replace(`{${"document_id"}}`, encodeURIComponent(String(documentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get the list of all documents shared by user auth in a single request
+         * @summary List - Documents by me
+         * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {number} [departmentId] department id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listDocumentsByMe: async (parent?: number, departmentId?: number, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/share-documents/by-me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            if (parent !== undefined) {
+                localVarQueryParameter['parent'] = parent;
+            }
+
+            if (departmentId !== undefined) {
+                localVarQueryParameter['department_id'] = departmentId;
+            }
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get the list of all documents shared for user auth in a single request
+         * @summary List - Documents for me
+         * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {number} [departmentId] department id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listDocumentsForMe: async (parent?: number, departmentId?: number, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/share-documents/for-me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+
+            if (parent !== undefined) {
+                localVarQueryParameter['parent'] = parent;
+            }
+
+            if (departmentId !== undefined) {
+                localVarQueryParameter['department_id'] = departmentId;
+            }
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * Get the list of all permission to share document in a single request
          * @summary List - Share Document Permissions
@@ -74,6 +210,50 @@ export const ShareDocumentApiAxiosParamCreator = function (configuration?: Confi
 export const ShareDocumentApiFp = function(configuration?: Configuration) {
     return {
         /**
+         * Get the document in a single request shared for me
+         * @summary Get - Document For Me
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getDocumentForMe(documentId: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await ShareDocumentApiAxiosParamCreator(configuration).getDocumentForMe(documentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Get the list of all documents shared by user auth in a single request
+         * @summary List - Documents by me
+         * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {number} [departmentId] department id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listDocumentsByMe(parent?: number, departmentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
+            const localVarAxiosArgs = await ShareDocumentApiAxiosParamCreator(configuration).listDocumentsByMe(parent, departmentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Get the list of all documents shared for user auth in a single request
+         * @summary List - Documents for me
+         * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {number} [departmentId] department id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listDocumentsForMe(parent?: number, departmentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
+            const localVarAxiosArgs = await ShareDocumentApiAxiosParamCreator(configuration).listDocumentsForMe(parent, departmentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
          * Get the list of all permission to share document in a single request
          * @summary List - Share Document Permissions
          * @param {*} [options] Override http request option.
@@ -96,6 +276,38 @@ export const ShareDocumentApiFp = function(configuration?: Configuration) {
 export const ShareDocumentApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
+         * Get the document in a single request shared for me
+         * @summary Get - Document For Me
+         * @param {number} documentId document id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDocumentForMe(documentId: number, options?: any): AxiosPromise<InlineResponse2009> {
+            return ShareDocumentApiFp(configuration).getDocumentForMe(documentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Get the list of all documents shared by user auth in a single request
+         * @summary List - Documents by me
+         * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {number} [departmentId] department id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listDocumentsByMe(parent?: number, departmentId?: number, options?: any): AxiosPromise<InlineResponse2008> {
+            return ShareDocumentApiFp(configuration).listDocumentsByMe(parent, departmentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Get the list of all documents shared for user auth in a single request
+         * @summary List - Documents for me
+         * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {number} [departmentId] department id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listDocumentsForMe(parent?: number, departmentId?: number, options?: any): AxiosPromise<InlineResponse2008> {
+            return ShareDocumentApiFp(configuration).listDocumentsForMe(parent, departmentId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Get the list of all permission to share document in a single request
          * @summary List - Share Document Permissions
          * @param {*} [options] Override http request option.
@@ -114,6 +326,41 @@ export const ShareDocumentApiFactory = function (configuration?: Configuration, 
  * @extends {BaseAPI}
  */
 export class ShareDocumentApi extends BaseAPI {
+    /**
+     * Get the document in a single request shared for me
+     * @summary Get - Document For Me
+     * @param {number} documentId document id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ShareDocumentApi
+     */
+    public getDocumentForMe(documentId: number, options?: any) {
+        return ShareDocumentApiFp(this.configuration).getDocumentForMe(documentId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Get the list of all documents shared by user auth in a single request
+     * @summary List - Documents by me
+     * @param {number} [parent] (folder id) Value get files from parent folder
+     * @param {number} [departmentId] department id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ShareDocumentApi
+     */
+    public listDocumentsByMe(parent?: number, departmentId?: number, options?: any) {
+        return ShareDocumentApiFp(this.configuration).listDocumentsByMe(parent, departmentId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Get the list of all documents shared for user auth in a single request
+     * @summary List - Documents for me
+     * @param {number} [parent] (folder id) Value get files from parent folder
+     * @param {number} [departmentId] department id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ShareDocumentApi
+     */
+    public listDocumentsForMe(parent?: number, departmentId?: number, options?: any) {
+        return ShareDocumentApiFp(this.configuration).listDocumentsForMe(parent, departmentId, options).then((request) => request(this.axios, this.basePath));
+    }
     /**
      * Get the list of all permission to share document in a single request
      * @summary List - Share Document Permissions

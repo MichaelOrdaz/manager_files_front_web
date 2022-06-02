@@ -81,7 +81,7 @@ interface Props { docData: Document}
 const props = defineProps<Props>()
 
 // eslint-disable-next-line no-unused-vars
-const hideFolderInfoSection = inject<(reloadContent?: boolean) => void>('hide-folder-info-section')
+const hideFolderInfoSection = inject<(reloadContent?: boolean) => void>('hide-folder-info-section', () => ({}))
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')

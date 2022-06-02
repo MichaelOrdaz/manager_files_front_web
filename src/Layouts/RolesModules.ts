@@ -7,7 +7,7 @@ const AdminModules: Module[] = [
 ]
 const HeadOfDepartmentModules: Module[] = [
     {name: 'Dashboard', icon: 'home'},
-    // {name: 'Shared files', icon: 'folder_shared'},
+    {name: 'Shared files', icon: 'folder_shared'},
     {name: 'Users management', icon: 'people'}
     //TODO: 2f79yuc
 ]

@@ -29,7 +29,7 @@ const mutations: MutationTree<Auth> = {
         state.roles = []
         state.initialPage = {
             Administrador: 'Admin Dashboard',
-            Analista: 'Analyst Home',
+            Analista: 'Analyst home',
             'Jefe de Departamento': 'Dashboard'
         }
     },

@@ -22,7 +22,7 @@ export interface Auth {
     authorization?: string[],
     initialPage: {
         Administrador: 'Admin Dashboard',
-        Analista: 'Analyst Home',
+        Analista: 'Analyst home',
         'Jefe de Departamento': 'Dashboard'
     }
 }
@@ -37,7 +37,7 @@ export default function state(): Auth {
         views: [],
         initialPage: {
             Administrador: 'Admin Dashboard',
-            Analista: 'Analyst Home',
+            Analista: 'Analyst home',
             'Jefe de Departamento': 'Dashboard'
         },
         roles: [],

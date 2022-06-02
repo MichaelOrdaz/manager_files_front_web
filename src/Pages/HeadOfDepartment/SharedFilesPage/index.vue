@@ -28,8 +28,11 @@
 import SharedFiles from './SharedFiles.vue'
 import {ref} from 'vue'
 import SharedWithMeTab from '@/Pages/HeadOfDepartment/SharedFilesPage/SharedWithMeTab.vue'
+import store from '@/store'
 
 const searchValue = ref<string>('')
+store.commit('RESET_CURRENT_FOLDER')
+store.commit('RESET_BREADCRUMB_STRUCTURE')
 </script>
 
 <style scoped lang="scss">
