@@ -117,7 +117,7 @@ const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
-const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value))
+const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase()))
     .sort((a) => a.type.name ==='Archivo' ? 1 : -1))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
@@ -144,14 +144,14 @@ function changeFolder() {
 }
 function takeDragFile(event: DragEvent) {
     if (!store.getters.getAnalystHasAllPermission){
-        Notify.create({message: 'No tienes permiso para subir archivos', color: 'red', type: 'negative'})
+        Notify.create({message: 'No tienes permiso para subir archivos', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     if (event.dataTransfer?.files[0]?.type === 'application/pdf'){
         FoldersDescAndActionsRef.value.takeDropFile(event.dataTransfer?.files[0])
         return
     }
-    Notify.create({message: 'El archivo no es PDF', color: 'red', type: 'negative'})
+    Notify.create({message: 'El archivo no es PDF', color: 'red', type: 'negative', position: 'top-right'})
 }
 async function hideFolderInfo(reloadConten?: boolean) {
     showFolderInfoSection.value = false
@@ -164,10 +164,10 @@ function holdDocumentDocused(doc: Document) {
 
 async function resetUsersPermissionsToItem() {
     try {
-        Notify.create({message: 'Los permisos se han restaurado', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Los permisos se han restaurado', color: 'blue', type: 'positive', position: 'top-right'})
         await useSaveUsersDocumentPermissionShare(documentFocused.value.id, [])
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 const rowOptionsByPermission = computed<Option[]>( () => {

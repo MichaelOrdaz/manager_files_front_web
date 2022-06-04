@@ -101,7 +101,7 @@ async function createFile() {
     const isValidForm: boolean = formRef.value.validate()
     if (!isValidForm) return
     if (!formData.description.length) {
-        Notify.create({message: 'Agrega una descripción', color: 'red', type: 'negative'})
+        Notify.create({message: 'Agrega una descripción', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     if (formData.min_identifier.includes('-')){
@@ -111,11 +111,11 @@ async function createFile() {
     }
     try {
         await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
-        Notify.create({message: 'Se ha subido el archivo', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se ha subido el archivo', color: 'blue', type: 'positive', position: 'top-right'})
         await store.dispatch('get_folder_content')
         emit('cancel')
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error al cargar el archivo, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error al cargar el archivo, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 onMounted(() => { formData.name = props.newFile.name })

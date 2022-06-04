@@ -171,7 +171,7 @@ const getNewImage = (file: File) => {
 async function validateFields() {
     const isValid = formRef.value.validate()
     if (!isEditUser.value && password.value !== newUser.value.password){
-        Notify.create({message: 'Las contraseñas son diferentes', color: 'red', badgeStyle: {zIndex: '99999', position: 'fixed'}})
+        Notify.create({message: 'Las contraseñas son diferentes', color: 'red', badgeStyle: {zIndex: '99999', position: 'top-right'}})
         return
     }
     if (!validateMainFormValues(isValid)) return
@@ -192,11 +192,11 @@ async function createUser() {
     }
     try {
         await useCreateUser(newUser.value)
-        Notify.create({message: 'Se ha creado el usuario', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se ha creado el usuario', color: 'blue', type: 'positive', position: 'top-right'})
         emit('update-users-list')
         resetValues()
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 
@@ -206,25 +206,25 @@ async function editUser() {
     }
     try {
         await useEditUser(newUser.value)
-        Notify.create({message: 'Se ha editado el usuario', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se ha editado el usuario', color: 'blue', type: 'positive', position: 'top-right'})
         resetValues()
         emit('update-users-list')
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'blue', type: 'nehative'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'blue', type: 'nehative', position: 'top-right'})
     }
 }
 function validateMainFormValues(isValidForm: boolean): boolean {
     if (!isValidForm) return
     if (!isEditUser.value && newUser.value.password.trim() === newUser.value.name.trim()) {
-        Notify.create({message: 'La contraseña no puede ser igual al nombre del usuario', color: 'red', type: 'negative'})
+        Notify.create({message: 'La contraseña no puede ser igual al nombre del usuario', color: 'red', type: 'negative', position: 'top-right'})
         return false
     }
     if (!isEditUser.value && newUser.value.password.trim() === newUser.value.email.trim()) {
-        Notify.create({message: 'La contraseña no puede ser igual al email', color: 'red', type: 'negative'})
+        Notify.create({message: 'La contraseña no puede ser igual al email', color: 'red', type: 'negative', position: 'top-right'})
         return false
     }
     if (newUser.value.email.trim() === newUser.value.name.trim()) {
-        Notify.create({message: 'El correo no puede ser igual al nombre del usuario', color: 'red', type: 'negative'})
+        Notify.create({message: 'El correo no puede ser igual al nombre del usuario', color: 'red', type: 'negative', position: 'top-right'})
         return false
     }
     return true

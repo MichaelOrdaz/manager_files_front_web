@@ -101,4 +101,7 @@ useDetectOutsideClick(componentRef, () => { show.value = false})
     justify-content: flex-start;
     padding: 6px 6px;
 }
+.option-list-container.avatar{
+    z-index: 1;
+}
 </style>

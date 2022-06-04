@@ -13,10 +13,11 @@
   </div>
   <PModal
     v-if="showHistoryModal"
-    modalTitle="Historial de carpeta"
+    :modalTitle="store.getters.isFolder ? 'Historial de carpeta' : 'Historial de archivo'"
     width="632px"
     heigth="652px"
     class="text-left"
+    @cancel="showHistoryModal = false"
   >
     <template #body>
       <div class="history-items">
@@ -54,6 +55,7 @@ import PModal from '@/components/Molecules/PModal.vue'
 import {ref} from 'vue'
 import {DocumentRecord} from '@/Types/Document'
 import formatDate from '@/utils/FormatDate'
+import store from '@/store'
 interface Props{ history: DocumentRecord[]}
 const props = withDefaults(defineProps<Props>(), {history: () => []})
 const showHistoryModal = ref<boolean>(false)

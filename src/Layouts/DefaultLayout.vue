@@ -80,6 +80,6 @@ const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
     position: absolute;
     top: 12px;
     right: 40px;
-    z-index: 10;
+    z-index: 1;
 }
 </style>

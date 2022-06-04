@@ -98,16 +98,16 @@ function takeUser(permission: UserDocsPermission, userId: number, index: number)
 }
 async function savePermissions() {
     if (!models.value.length) {
-        Notify.create({message: 'Se deben asignar permisos a los usuarios seleccionados', color: 'red', type: 'negative'})
+        Notify.create({message: 'Se deben asignar permisos a los usuarios seleccionados', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     try {
         usersWithPermissionsList.value = models.value.map(user => ({permission: user.permission.name, id: user.id}))
         await useSaveUsersDocumentPermissionShare(selectedItem.value.id, usersWithPermissionsList.value)
-        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive', position: 'top-right'})
         showPermissionsModal.value = false
     }catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 const selectedItem = computed<Document>(() => store.getters.getSelectedItem ?? [])

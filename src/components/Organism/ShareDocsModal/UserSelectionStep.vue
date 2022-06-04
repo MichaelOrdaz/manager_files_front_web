@@ -111,7 +111,7 @@ function addUserToSelectedList(user: User) {
 
 function nextStep() {
     if (usersList.value.length && !selectedUsers.value.length) {
-        Notify.create({message: 'Debes seleccionar por lo menos un usuario', color: 'red', type: 'negative'})
+        Notify.create({message: 'Debes seleccionar por lo menos un usuario', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     emit('next-step')

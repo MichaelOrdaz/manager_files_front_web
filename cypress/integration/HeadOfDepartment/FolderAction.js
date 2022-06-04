@@ -46,6 +46,7 @@ describe('Folder actions', () => {
     })
     it('Edit folder name', function () {
         cy.intercept('POST','**/api/v1/documents/**').as('editFolderName')
+        cy.wait(5000)
         cy.get('[data-cy="edit-name"]').click()
         cy.get('[data-cy="new-name-input"]').type(randomCharacters + randomCharacters)
         cy.contains('Aceptar').click({force: true})

@@ -35,7 +35,7 @@ function captureUsers(payload: User[]) {
 }
 function nextStep() {
     if (!selectedUsers.value.length){
-        Notify.create({message: 'Se deben seleccionar usuarios para continuar', color: 'red', type: 'negative'})
+        Notify.create({message: 'Se deben seleccionar usuarios para continuar', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     actualStep.value = 2

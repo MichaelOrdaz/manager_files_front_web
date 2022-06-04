@@ -70,9 +70,9 @@ async function setPermissionToUser(userId: number, permission: string) {
     try {
         await new UsersApi().saveUserPermission(userId, {permission: permission})
         foundUser.authorization[0] = permission
-        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive', position: 'top-right'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 
 }
