@@ -81,6 +81,22 @@
       :selected-doc="documentFocused"
       @cancel="showShareModal = false"
     />
+    <PModal
+      v-if="showEditFolderNameModal"
+      :modalTitle="`Cambiar el nombre ${store.getters.isFolder ? 'de la carpeta' : 'del archivo'}`"
+      @cancel="showEditFolderNameModal = false"
+      @accept="useEditItemNameFromOptionList(documentFocused,newItemName,() => {showEditFolderNameModal = false;store.dispatch('get_folder_content');})"
+    >
+      <template #body>
+        <PInput
+          v-model="newItemName"
+          width="100%"
+          placeHolder="Nuevo nombre"
+          data-cy="new-name-input"
+          :rules="[(val: string) => !!val.trim() || 'Agrega un nombre valido']"
+        />
+      </template>
+    </PModal>
   </div>
 </template>
 
@@ -101,6 +117,7 @@ import {Notify} from 'quasar'
 import {Option} from '@/components/Molecules/POptionList.vue'
 import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
 import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
+import {useDeleteItemFromOptionList, useEditItemNameFromOptionList} from '@/Composables/useItemOptionListActions'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -108,9 +125,14 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
+const showEditFolderNameModal = ref<boolean>(false)
+const newItemName = ref<string>('')
 const rowOptionsAdmin = ref<Option[]>([
     {optionLabel: 'Restaurar permisos', icon: 'settings_backup_restore', action: () => { resetUsersPermissionsToItem() }},
-    {optionLabel: 'Compartir', icon: 'person_add', action: () => {showShareModal.value = true}}
+    {optionLabel: 'Compartir', icon: 'person_add', action: () => {showShareModal.value = true}},
+    {optionLabel: 'Cambiar nombre', icon: 'edit', action: () => { showEditFolderNameModal.value = true }},
+    {optionLabel: 'Descargar', icon: 'download', action: () => {window.open(documentFocused.value.url)}},
+    {optionLabel: 'Quitar', icon: 'delete', action: () => {useDeleteItemFromOptionList(documentFocused.value.id, () => {store.dispatch('get_folder_content')})}},
 ])
 const documentFocused = ref<Document | undefined>(undefined)
 const showShareModal = ref<boolean>(false)
