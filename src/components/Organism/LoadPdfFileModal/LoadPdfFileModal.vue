@@ -52,20 +52,21 @@
             v-model="formData.min_identifier"
             label="Rango de folio"
             width="253px"
-            :rules="[(value:string) => /^(\d)+-?(\d)+$/g.test(value) || 'El folio solo puede contener números o un guión para separar']"
+            :rules="[(value:string) => /^(\d)+-?(\d)+$/g.test(value) || 'El folio solo puede contener números o un guión para separar dos números',
+                     (value: string) => value.trim().length >= 2 || 'El folio debe contener mínimo dos números']"
             data-cy="identifier-input"
             placeHolder="0001-0002"
           />
         </div>
         <div class="buttons flex justify-end p-mt-46">
           <PButton
+            class="p-mr-12"
             variant="white"
             @click.prevent="$emit('cancel')"
           >
             Cancelar
           </PButton>
           <PButton
-            class=""
             data-cy="load-file-btn"
             @click.prevent="createFile"
           >

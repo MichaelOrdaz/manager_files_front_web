@@ -1,8 +1,10 @@
 <template>
   <div class="dir-data-container">
     <PText
-      variant="text-3"
+      variant="text-4"
       class="p-mb-16"
+      fontWeight="600"
+      color="gray-6"
     >
       Información de archivo
     </PText>

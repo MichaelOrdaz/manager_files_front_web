@@ -63,7 +63,7 @@
         class="cursor-pointer item-row"
         :firstText="document.name"
         :secondText="document.createdAt"
-        :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
+        :thirdText="Dayjs(document.createdAt).format('YYYY-MM-DD')"
         :image="document.type.name === 'Carpeta' ? DirectorySvg : PdfSvg"
         data-cy="document-item-row"
         :is-selected="selectedFolder?.id === document.id"
@@ -118,7 +118,8 @@ const showShareModal = ref<boolean>(false)
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
 const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase()))
-    .sort((a) => a.type.name ==='Archivo' ? 1 : -1))
+    .sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1)
+    .sort((a) => a.type.name ==='Archivo' ? -1 : 1))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (clicksCount.value === 1) {

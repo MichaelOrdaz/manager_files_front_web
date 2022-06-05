@@ -26,7 +26,7 @@
       <PText variant="text-3">
         Selecciona usuarios
       </PText>
-      <div v-if="usersList.length && currentUserDepartment">
+      <div v-if="usersList.length && currentUserDepartment && !isLoading">
         <UserItem
           v-for="user in usersList"
           :key="user.id"
@@ -97,6 +97,7 @@ const currentUserDepartment = ref<Department | undefined>(undefined)
 const {departmentsList} = getDepartmentsList()
 const {usersList, getUsersDocumentList} = useGetUsersOfDocumentList(props.selectedDoc.id, currentUserDepartment?.value?.id ? currentUserDepartment.value.id : undefined)
 const dropdownText = ref<string>('')
+const isLoading = ref<boolean>(true)
 
 function addUserToSelectedList(user: User) {
     const index = selectedUsers.value.findIndex(el => el.id === user.id)
@@ -117,7 +118,7 @@ function nextStep() {
     emit('next-step')
 }
 
-watch(departmentsList, () => {
+watch(departmentsList, async () => {
     currentUserDepartment.value = departmentsList.value.find(el => el.name === store.getters.getUserData.user_data.department.name)
     dropdownText.value = departmentsList.value.filter(el => el.name !== currentUserDepartment.value.name)[0].name ?? ''
     dropdownOptions.value = departmentsList.value.filter(val => val.name !== currentUserDepartment.value.name)
@@ -130,7 +131,8 @@ watch(departmentsList, () => {
             },
             extraData: dep
         }))
-    getUsersDocumentList(props.selectedDoc.id, currentUserDepartment.value.id)
+    await getUsersDocumentList(props.selectedDoc.id, currentUserDepartment.value.id)
+    isLoading.value = false
 })
 </script>
 <style scoped lang="scss">

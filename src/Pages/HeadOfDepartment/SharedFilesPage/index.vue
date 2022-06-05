@@ -10,7 +10,7 @@
       enableCursorPointerOnIcon
       data-cy="filter-docs-input"
     />
-    <PButton class="p-mt-4">
+    <PButton class="p-mt-6">
       Buscar
     </PButton>
   </div>
@@ -50,5 +50,8 @@ store.commit('RESET_SELECTED_ITEM')
     width: 100%;
     justify-content: center;
     margin-top: 24px;
+}
+.p-mt-6{
+    margin-top: 6px;
 }
 </style>

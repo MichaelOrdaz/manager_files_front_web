@@ -40,7 +40,7 @@ export function useGetDocumentSharedWithMe(documentId?: number) {
             const resp = await new ShareDocumentApi().getDocumentForMe(DocumentId)
             documentSharedData.value = resp.data.data
         } catch (e) {
-            Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative', position: 'top-right'})
+            // Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative', position: 'top-right'})
         }
     }
     getDocumentSharedWithMe(documentId)

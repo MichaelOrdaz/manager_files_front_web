@@ -13,8 +13,10 @@
         :iconName="store.getters.isFolder ?'folder': 'picture_as_pdf'"
       />
       <PText
+        color="gray-6"
         class="q-mx-md"
         variant="text-4"
+        fontWeight="600"
       >
         {{ props.docData?.name ?? 'Sin nombre' }}
       </PText>
@@ -58,6 +60,7 @@
         width="100%"
         placeHolder="Nuevo nombre"
         data-cy="new-name-input"
+        :rules="[(val: string) => !!val.trim() || 'Agrega un nombre valido']"
       />
     </template>
   </PModal>
@@ -71,7 +74,7 @@
 </template>
 <script setup lang="ts">
 import PModal from '@/components/Molecules/PModal.vue'
-import {inject, ref} from 'vue'
+import {inject, ref, watch} from 'vue'
 import store from '@/store'
 import type {Document} from '@/Types/Document'
 import {useDeleteFolder, useEditItemName} from '@/Composables/useDocumentsClientMethods'
@@ -89,7 +92,7 @@ const newFolderName = ref<string>('')
 async function deleteFolder() {
     try {
         await useDeleteFolder(props.docData.id)
-        hideFolderInfoSection()
+        hideFolderInfoSection(true)
         showDeleteFolderModal.value = false
         Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue', type: 'positive', position: 'top-right'})
         await store.dispatch('get_folder_content')
@@ -99,6 +102,7 @@ async function deleteFolder() {
 }
 
 async function editItemName() {
+    if (!newFolderName.value.trim()) return
     try {
         await useEditItemName(store.getters.getSelectedItem, newFolderName.value)
         hideFolderInfoSection(true)
@@ -112,11 +116,13 @@ function closeSection() {
     store.commit('RESET_CURRENT_FOLDER')
     hideFolderInfoSection()
 }
+watch(() => props.docData, () => {newFolderName.value = props.docData.name}, {deep: true})
 </script>
 
 <style scoped lang="scss">
 .header{
     width: 100%;
+    height: 73px;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;

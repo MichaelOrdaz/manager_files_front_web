@@ -4,9 +4,11 @@
       <ViewBreadcumb @change-folder="changeFolder" />
       <div class="filter-btn">
         <!--        TODO: 2f79yuc-->
+        <PText variant="text-4">
+          Selecciona el departamento
+        </PText>
         <PDropdown
-          v-if="false"
-          :options="options"
+          :options="dropdownOptions"
           text="Filtro"
         />
       </div>
@@ -20,18 +22,24 @@
           :first-text="document.name"
           second-text="Editar"
           :third-text="document.creator.name"
-          :options-list="rowOptionsAdmin"
+          :options-list="rowOptionsByPermission"
           thirdText=" "
-          :fourth-text="Dayjs(document.date).format('YYYY-MM-DD')"
+          :fourth-text="Dayjs(document.createdAt).format('YYYY-MM-DD')"
           :image="document.type.name === 'Carpeta' ? DirectorySvg : PdfSvg"
           class="cursor-pointer item-row"
           :is-selected="selectedFolder?.id === document.id"
+          @mouseover="documentFocused = document"
           @click="showFolderInfo(document)"
         />
       </div>
       <FolderInfo
         v-if="showFolderInfoSection && selectedFolder"
         class="folder-info"
+      />
+      <ShareDocsModalIndex
+        v-if="showShareModal"
+        :selected-doc="documentFocused"
+        @cancel="showShareModal = false"
       />
     </div>
   </div>
@@ -44,25 +52,30 @@ import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import DirectorySvg from '@/assets/folder2.png'
 import PdfSvg from '@/assets/pdficon.png'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
-import {provide, ref} from 'vue'
+import {computed, provide, ref} from 'vue'
 import Dayjs from 'dayjs'
 import ColumnsDescription from '@/Pages/HeadOfDepartment/SharedFilesPage/ColumnsDescription.vue'
 import store from '@/store'
 import {Document} from '@/Types/Document'
 import {useGetDocumentsByMe} from '@/Composables/useShareDocsClientMethods'
 import {Option} from '@/components/Molecules/POptionList.vue'
+import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
+import {Notify} from 'quasar'
+import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
+import {getDepartmentsList} from '../../../Composables/useGetDepartmentsList'
 
-const options = ref<DropdownOption[]>([{label: 'Prueba', action: () => []}])
 const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
+const showShareModal = ref<boolean>(false)
+const documentFocused = ref<Document>()
 const timer = ref(null)
 const clicksCount = ref<number>(0)
 const { documents, getDocumentsByMe } = useGetDocumentsByMe(undefined, undefined)
 const rowOptionsAdmin = ref<Option[]>([
-    {optionLabel: 'Restaurar permisos', icon: 'settings_backup_restore', action: () => []},
-    {optionLabel: 'Compartir', icon: 'person_add', action: () => []}
+    {optionLabel: 'Restaurar permisos', icon: 'settings_backup_restore', action: () => [resetUsersPermissionsToItem()]},
+    {optionLabel: 'Compartir', icon: 'person_add', action: () => [showShareModal.value = true]}
 ])
-
+const {departmentsList} = getDepartmentsList()
 function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (clicksCount.value === 1) {
@@ -87,6 +100,15 @@ async function hideFolderInfo(reloadConten?: boolean) {
     reloadConten && await store.dispatch('get_folder_content')
     selectedFolder.value = undefined
     store.commit('RESET_SELECTED_ITEM')
+    await getDocumentsByMe(store.getters.getCurrentFolder?.id ? store.getters.getCurrentFolder?.id : undefined, undefined)
+}
+async function resetUsersPermissionsToItem() {
+    try {
+        Notify.create({message: 'Los permisos se han restaurado', color: 'blue', type: 'positive', position: 'top-right'})
+        await useSaveUsersDocumentPermissionShare(documentFocused.value.id, [])
+    } catch (e) {
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
+    }
 }
 
 async function changeFolder(doc: Document) {
@@ -96,6 +118,24 @@ async function changeFolder(doc: Document) {
     }
     await getDocumentsByMe(doc.id)
 }
+
+const rowOptionsByPermission = computed<Option[]>( () => {
+    if (store.getters.getAnalystHasAllPermission) {
+        return rowOptionsAdmin.value
+    }
+    return [{optionLabel: 'Abrir', action: () => { window.open(documentFocused.value.url)}, icon: ''}]
+})
+
+const dropdownOptions = computed<DropdownOption[]>(() => {
+    if (departmentsList.value.length) {
+        return departmentsList.value.map(department => ({
+            label: department.name,
+            action: () => [],
+            extraData: {id: department.id}
+        }))
+    }
+    return []
+})
 provide('hide-folder-info-section', hideFolderInfo)
 defineExpose({hideFolderInfo})
 </script>

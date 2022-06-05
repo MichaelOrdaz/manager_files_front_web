@@ -1,6 +1,10 @@
 <template>
   <div class="users-activity-container">
-    <PText variant="text-5">
+    <PText
+      variant="text-4"
+      fontWeight="600"
+      color="gray-6"
+    >
       Historial
     </PText>
     <MiniCard
@@ -73,7 +77,7 @@ const showHistoryModal = ref<boolean>(false)
 }
 div :deep(.mini-card-container){
     border: none;
-    border-bottom: solid 1px $gray-8;
+    margin-bottom: 12px;
 }
 .history-items{
     height: 400px;

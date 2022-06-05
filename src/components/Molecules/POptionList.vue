@@ -69,7 +69,7 @@ useDetectOutsideClick(componentRef, () => { show.value = false})
 .option-list-container{
     width: 24px;
     height: 24px;
-    position: relative;
+    /*position: relative;*/
 }
 .my-icon{
     cursor: pointer;
@@ -102,6 +102,7 @@ useDetectOutsideClick(componentRef, () => { show.value = false})
     padding: 6px 6px;
 }
 .option-list-container.avatar{
+    position: fixed;
     z-index: 1;
 }
 </style>
