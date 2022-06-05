@@ -3,11 +3,9 @@
     <div class="section-head">
       <ViewBreadcumb @change-folder="changeFolder" />
       <div class="filter-btn">
-        <!--        TODO: 2f79yuc-->
         <PDropdown
-          v-if="false"
-          :options="options"
-          text="Filtro"
+          :options="dropdownOptions"
+          :text="selectedDepartmentName"
         />
       </div>
     </div>
@@ -55,7 +53,7 @@ import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import DirectorySvg from '@/assets/folder3.png'
 import PdfSvg from '@/assets/pdficon.png'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
-import {provide, ref} from 'vue'
+import {computed, provide, ref} from 'vue'
 import Dayjs from 'dayjs'
 import ColumnsDescription from '@/Pages/HeadOfDepartment/SharedFilesPage/ColumnsDescription.vue'
 import store from '@/store'
@@ -63,8 +61,8 @@ import {Document} from '@/Types/Document'
 import {useGetDocumentsSharedWithMe} from '@/Composables/useShareDocsClientMethods'
 import {Option} from '@/components/Molecules/POptionList.vue'
 import ModalMask from '@/components/Atoms/ModalMask.vue'
+import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
 
-const options = ref<DropdownOption[]>([{label: 'Prueba', action: () => []}])
 const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
@@ -74,6 +72,8 @@ const editOptions = ref<Option[]>([{optionLabel: 'Descargar', icon: 'file_downlo
 const lectureOptions = ref<Option[]>([{optionLabel: 'Abrir', icon: '', action: () => [showFile.value = true]}])
 const documentFocused = ref<Document | undefined>(undefined)
 const showFile = ref<boolean>(false)
+const {departmentsList} = getDepartmentsList()
+const selectedDepartmentName = ref<string>('Todos')
 
 function showFolderInfo(doc: Document) {
     clicksCount.value++
@@ -118,6 +118,22 @@ function setDocOptions(doc: Document) {
         return lectureOptions.value
     }
 }
+const dropdownOptions = computed<DropdownOption[]>(() => {
+    if (departmentsList.value.length) {
+        return [{label: 'Todos', action: async() => {
+            selectedDepartmentName.value = 'Todos'
+            await getDocumentsSharedWithMe(store.getters.getCurrentFolder?.id ? store.getters.getCurrentFolder?.id : undefined, undefined)
+        }, extraData: {id: undefined}} ,...departmentsList.value.map(department => ({
+            label: department.name,
+            action: async() => {
+                selectedDepartmentName.value = department.name
+                await getDocumentsSharedWithMe(store.getters.getCurrentFolder?.id ? store.getters.getCurrentFolder?.id : undefined, department.id)
+            },
+            extraData: {id: department.id}
+        }))]
+    }
+    return []
+})
 provide('hide-folder-info-section', hideFolderInfo)
 defineExpose({hideFolderInfo})
 </script>

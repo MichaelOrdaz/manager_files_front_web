@@ -9,7 +9,7 @@
         </PText>
         <PDropdown
           :options="dropdownOptions"
-          text="Filtro"
+          :text="selectedDepartmentName"
         />
       </div>
     </div>
@@ -62,10 +62,11 @@ import {Option} from '@/components/Molecules/POptionList.vue'
 import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
 import {Notify} from 'quasar'
 import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
-import {getDepartmentsList} from '../../../Composables/useGetDepartmentsList'
+import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
 
 const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
+const selectedDepartmentName = ref<string>('Todos')
 const showShareModal = ref<boolean>(false)
 const documentFocused = ref<Document>()
 const timer = ref(null)
@@ -128,11 +129,17 @@ const rowOptionsByPermission = computed<Option[]>( () => {
 
 const dropdownOptions = computed<DropdownOption[]>(() => {
     if (departmentsList.value.length) {
-        return departmentsList.value.map(department => ({
+        return [{label: 'Todos', action: async() => {
+            selectedDepartmentName.value = 'Todos'
+            await getDocumentsByMe(store.getters.getCurrentFolder?.id ? store.getters.getCurrentFolder?.id : undefined, undefined)
+        }, extraData: {id: undefined}} ,...departmentsList.value.map(department => ({
             label: department.name,
-            action: () => [],
+            action: async() => {
+                selectedDepartmentName.value = department.name
+                await getDocumentsByMe(store.getters.getCurrentFolder?.id ? store.getters.getCurrentFolder?.id : undefined, department.id)
+            },
             extraData: {id: department.id}
-        }))
+        }))]
     }
     return []
 })
