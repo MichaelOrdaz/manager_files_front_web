@@ -38,11 +38,7 @@ const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedIt
 const {documentSharedData, getDocumentSharedWithMe} = useGetDocumentSharedWithMe(store.getters.getSelectedItem.id)
 
 watch(() => store.getters.getSelectedItem?.id, () => {
-    if (store.getters.getSelectedItem && props.isGetSharedDocument) {
-        getDocumentSharedWithMe(store.getters.getSelectedItem?.id)
-    } else if (store.getters.getSelectedItem && !props.isGetSharedDocument) {
-        getDocData(store.getters.getSelectedItem?.id)
-    }
+    getDocData(store.getters.getSelectedItem?.id)
 })
 watch(documentData, () => {
     store.commit('SET_SELECTED_ITEM', documentData.value)

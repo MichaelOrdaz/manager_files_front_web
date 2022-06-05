@@ -27,7 +27,7 @@ describe('File actions', () => {
         cy.wait('@createFile').then((response) => {
             expect(response.response.statusCode).to.equal(201)
             cy.get('#q-notify').should('exist')
-            cy.wait(3000)
+            cy.wait(5000)
         })
     })
 
@@ -36,7 +36,7 @@ describe('File actions', () => {
         cy.get('[data-cy="filter-docs-input"]').type(`file.pdf${randomFileCharacters}`)
         cy.get('[data-cy="document-item-row"]').click()
         cy.get('[data-cy="edit-name"]').click()
-        cy.get('[data-cy="new-name-input"]').type(randomFileCharacters)
+        cy.get('[data-cy="new-name-input"] input').clear().type(randomFileCharacters)
         cy.contains('Aceptar').click({force: true})
         cy.wait('@editFileName').then((response) => {
             expect(response.response.statusCode).to.equal(200)
