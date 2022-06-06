@@ -1,8 +1,10 @@
 <template>
   <div class="dir-data-container">
     <PText
-      variant="text-3"
+      variant="text-4"
       class="p-mb-16"
+      fontWeight="600"
+      color="gray-6"
     >
       Información de carpeta
     </PText>
@@ -97,7 +99,7 @@ async function removeChip(index:number, tag: string) {
         await useDeleteFolderTag(props.docData.id, tag)
         tags.value.splice(index, 1)
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 
 }
@@ -106,9 +108,9 @@ async function updateTagsList(params: string[]) {
     showTagsModal.value = false
     try {
         await useUpdateFolderTags(props.docData.id, tags.value)
-        Notify.create({message: 'Se han actualizado las etiquetas', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se han actualizado las etiquetas', color: 'blue', type: 'positive', position: 'top-right'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 watch(() => props.docData, () => {
@@ -124,6 +126,7 @@ watch(() => props.docData, () => {
     text-overflow: ellipsis;
 }
 .dir-data-container{
+    height: 290px;
     padding: 12px;
     display: flex;
     flex-direction: column;

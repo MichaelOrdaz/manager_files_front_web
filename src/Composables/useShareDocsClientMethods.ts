@@ -12,7 +12,7 @@ export function useGetDocumentsByMe(parentId?: number, departmentId?: number) {
             const resp = await new ShareDocumentApi().listDocumentsByMe(ParentId, departmentId)
             documents.value = resp.data.data
         } catch (e) {
-            Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative'})
+            Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative', position: 'top-right'})
         }
     }
     getDocumentsByMe(parentId, departmentId)
@@ -26,7 +26,7 @@ export function useGetDocumentsSharedWithMe(parentId: number, departmentId?: num
             const resp = await new ShareDocumentApi().listDocumentsForMe(ParentId, DepartmentId)
             documents.value = resp.data.data
         } catch (e) {
-            Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative'})
+            Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative', position: 'top-right'})
         }
     }
     getDocumentsSharedWithMe(parentId, departmentId)
@@ -40,7 +40,7 @@ export function useGetDocumentSharedWithMe(documentId?: number) {
             const resp = await new ShareDocumentApi().getDocumentForMe(DocumentId)
             documentSharedData.value = resp.data.data
         } catch (e) {
-            Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative'})
+            // Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative', position: 'top-right'})
         }
     }
     getDocumentSharedWithMe(documentId)

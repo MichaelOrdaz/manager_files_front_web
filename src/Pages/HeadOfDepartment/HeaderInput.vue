@@ -8,7 +8,7 @@
       placeHolder="Buscar"
       width="758px"
     />
-    <PButton class="p-mt-4">
+    <PButton class="p-mt-6">
       Buscar
     </PButton>
   </div>
@@ -21,8 +21,8 @@ const searchValue = ref<string>('')
 watch(searchValue, () => { emit('update:modelValue', searchValue.value) })
 </script>
 <style scoped lang="scss">
-.p-mt-4 {
-    margin-top: 4px
+.p-mt-6 {
+    margin-top: 6px
 }
 
 div :deep(.slot) {

@@ -3,11 +3,9 @@
     <div class="section-head">
       <ViewBreadcumb @change-folder="changeFolder" />
       <div class="filter-btn">
-        <!--        TODO: 2f79yuc-->
         <PDropdown
-          v-if="false"
-          :options="options"
-          text="Filtro"
+          :options="dropdownOptions"
+          :text="selectedDepartmentName"
         />
       </div>
     </div>
@@ -20,12 +18,13 @@
           :first-text="document.name"
           second-text="Editar"
           :third-text="document.creator.name"
-          :options-list="rowOptionsAdmin"
+          :options-list="setDocOptions(document)"
           thirdText=" "
           :fourth-text="Dayjs(document.date).format('YYYY-MM-DD')"
           :image="document.type.name === 'Carpeta' ? DirectorySvg : PdfSvg"
           class="cursor-pointer item-row"
           :is-selected="selectedFolder?.id === document.id"
+          @mouseover="documentFocused = document"
           @click="showFolderInfo(document)"
         />
       </div>
@@ -35,6 +34,15 @@
         is-get-shared-document
       />
     </div>
+    <ModalMask
+      v-if="showFile"
+      @click="showFile = false"
+    >
+      <object
+        :data="`${documentFocused.url}#toolbar=0`"
+        type="aplicattion/pdf"
+      />
+    </ModalMask>
   </div>
 </template>
 
@@ -45,24 +53,27 @@ import FolderInfo from '@/components/Organism/FolderInfoComponent/index.vue'
 import DirectorySvg from '@/assets/folder3.png'
 import PdfSvg from '@/assets/pdficon.png'
 import ViewBreadcumb from '@/Pages/HeadOfDepartment/Home/ViewBreadcrumb.vue'
-import {provide, ref} from 'vue'
+import {computed, provide, ref} from 'vue'
 import Dayjs from 'dayjs'
 import ColumnsDescription from '@/Pages/HeadOfDepartment/SharedFilesPage/ColumnsDescription.vue'
 import store from '@/store'
 import {Document} from '@/Types/Document'
 import {useGetDocumentsSharedWithMe} from '@/Composables/useShareDocsClientMethods'
 import {Option} from '@/components/Molecules/POptionList.vue'
+import ModalMask from '@/components/Atoms/ModalMask.vue'
+import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
 
-const options = ref<DropdownOption[]>([{label: 'Prueba', action: () => []}])
 const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
 const { documents, getDocumentsSharedWithMe } = useGetDocumentsSharedWithMe(undefined, undefined)
-const rowOptionsAdmin = ref<Option[]>([
-    {optionLabel: 'Restaurar permisos', icon: 'settings_backup_restore', action: () => []},
-    {optionLabel: 'Compartir', icon: 'person_add', action: () => []}
-])
+const editOptions = ref<Option[]>([{optionLabel: 'Descargar', icon: 'file_download', action: () => [window.open(documentFocused.value.url)]}])
+const lectureOptions = ref<Option[]>([{optionLabel: 'Abrir', icon: '', action: () => [showFile.value = true]}])
+const documentFocused = ref<Document | undefined>(undefined)
+const showFile = ref<boolean>(false)
+const {departmentsList} = getDepartmentsList()
+const selectedDepartmentName = ref<string>('Todos')
 
 function showFolderInfo(doc: Document) {
     clicksCount.value++
@@ -98,6 +109,31 @@ async function changeFolder(doc: Document) {
     }
     await getDocumentsSharedWithMe(doc.id)
 }
+function setDocOptions(doc: Document) {
+    if (doc.type.name === 'Carpeta') {
+        return []
+    }else if (doc.permission === 'Escritura') {
+        return editOptions.value
+    }else if (doc.permission === 'Lectura') {
+        return lectureOptions.value
+    }
+}
+const dropdownOptions = computed<DropdownOption[]>(() => {
+    if (departmentsList.value.length) {
+        return [{label: 'Todos', action: async() => {
+            selectedDepartmentName.value = 'Todos'
+            await getDocumentsSharedWithMe(store.getters.getCurrentFolder?.id ? store.getters.getCurrentFolder?.id : undefined, undefined)
+        }, extraData: {id: undefined}} ,...departmentsList.value.map(department => ({
+            label: department.name,
+            action: async() => {
+                selectedDepartmentName.value = department.name
+                await getDocumentsSharedWithMe(store.getters.getCurrentFolder?.id ? store.getters.getCurrentFolder?.id : undefined, department.id)
+            },
+            extraData: {id: department.id}
+        }))]
+    }
+    return []
+})
 provide('hide-folder-info-section', hideFolderInfo)
 defineExpose({hideFolderInfo})
 </script>

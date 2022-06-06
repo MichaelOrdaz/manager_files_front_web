@@ -6,7 +6,7 @@ async function useLogOut() {
     try {
         await store.dispatch('user_logout')
             .then(() => {
-                Notify.create({message: 'Se ha cerrado sesión', color: 'blue', type: 'positive'})
+                Notify.create({message: 'Se ha cerrado sesión', color: 'blue', type: 'positive', position: 'top-right'})
                 router.push('/')
             })
     } catch (e) {
@@ -26,7 +26,7 @@ async function useLogIn(email: string, password: string): Promise<void> {
             404: 'Registro no encontrado',
             422: 'Credenciales invalidas',
         }
-        Notify.create({message: `${errorsHandlersMap[e.status] || 'Error'}`, color: 'red', type: 'negative'})
+        Notify.create({message: `${errorsHandlersMap[e.status] || 'Error'}`, color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 

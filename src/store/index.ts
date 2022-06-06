@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { auth } from './auth'
-import {foldersTree} from '@/store/FoldersStore'
+import {foldersStore} from '@/store/FoldersStore'
 import createPersistedState  from 'vuex-persistedstate'
 import {Auth} from '@/store/auth/auth'
 import {FoldersStore} from '@/store/FoldersStore/foldersStore'
@@ -11,7 +11,7 @@ const store = createStore<StateInterface>({
     plugins: [createPersistedState()],
     modules: {
         auth,
-        foldersTree,
+        foldersStore,
     }
 })
 export default store

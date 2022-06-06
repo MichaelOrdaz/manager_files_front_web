@@ -34,7 +34,11 @@
           <slot
             name="options"
             :option="option"
-          />
+          >
+            <PText variant="text-4">
+              {{ option.label }}
+            </PText>
+          </slot>
         </div>
       </div>
     </div>
@@ -85,7 +89,7 @@ useDetectOutsideClick(componentRef, () => {dropdownIsOpen.value = false})
     z-index: 99;
 }
 .dropdown-option{
-    height: 35px;
+    min-height: 35px;
     text-align: left;
     padding-top: 6px;
     padding-left: 10px;

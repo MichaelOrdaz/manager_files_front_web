@@ -110,7 +110,7 @@ const componentHeight = ref(props.heigth)
 
 .modal-wrapper {
     display: table-cell;
-    vertical-align: middle;;
+    vertical-align: middle;
 }
 
 .modal-container {

@@ -26,6 +26,7 @@ import { InlineResponse401 } from '../models';
 import { InlineResponse403 } from '../models';
 import { InlineResponse404 } from '../models';
 import { InlineResponse422 } from '../models';
+import { Strings } from '../models';
 /**
  * DocumentsApi - axios parameter creator
  * @export
@@ -293,10 +294,21 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
          * Get the list of all documents in a single request
          * @summary List - Documents
          * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {string} [name] Value to filter by name of document
+         * @param {boolean} [all] if this value is true, it will search in all the user&#x27;s documents, if it is false, it will search in its respective level
+         * @param {string} [type] search by folder or file, allowed values are Carpeta and Archivo
+         * @param {Array&lt;Strings&gt;} [tags] an array of tags
+         * @param {Array&lt;number&gt;} [identifiers] an array of folios
+         * @param {string} [startDate] search date
+         * @param {string} [endDate] search date
+         * @param {number} [page] page to query
+         * @param {number} [perPage] number of items you want the response to return
+         * @param {string} [sortBy] field by which you want to sort
+         * @param {string} [order] sort type, descending or ascending
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDocuments: async (parent?: number, options: any = {}): Promise<RequestArgs> => {
+        getDocuments: async (parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<Strings>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/documents`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -312,6 +324,54 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
 
             if (parent !== undefined) {
                 localVarQueryParameter['parent'] = parent;
+            }
+
+            if (name !== undefined) {
+                localVarQueryParameter['name'] = name;
+            }
+
+            if (all !== undefined) {
+                localVarQueryParameter['all'] = all;
+            }
+
+            if (type !== undefined) {
+                localVarQueryParameter['type'] = type;
+            }
+
+            if (tags) {
+                localVarQueryParameter['tags[]'] = tags;
+            }
+
+            if (identifiers) {
+                localVarQueryParameter['identifiers[]'] = identifiers;
+            }
+
+            if (startDate !== undefined) {
+                localVarQueryParameter['start_date'] = (startDate as any instanceof Date) ?
+                    (startDate as any).toISOString().substr(0,10) :
+                    startDate;
+            }
+
+            if (endDate !== undefined) {
+                localVarQueryParameter['end_date'] = (endDate as any instanceof Date) ?
+                    (endDate as any).toISOString().substr(0,10) :
+                    endDate;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['perPage'] = perPage;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sortBy'] = sortBy;
+            }
+
+            if (order !== undefined) {
+                localVarQueryParameter['order'] = order;
             }
 
             const query = new URLSearchParams(localVarUrlObj.search);
@@ -515,11 +575,22 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
          * Get the list of all documents in a single request
          * @summary List - Documents
          * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {string} [name] Value to filter by name of document
+         * @param {boolean} [all] if this value is true, it will search in all the user&#x27;s documents, if it is false, it will search in its respective level
+         * @param {string} [type] search by folder or file, allowed values are Carpeta and Archivo
+         * @param {Array&lt;Strings&gt;} [tags] an array of tags
+         * @param {Array&lt;number&gt;} [identifiers] an array of folios
+         * @param {string} [startDate] search date
+         * @param {string} [endDate] search date
+         * @param {number} [page] page to query
+         * @param {number} [perPage] number of items you want the response to return
+         * @param {string} [sortBy] field by which you want to sort
+         * @param {string} [order] sort type, descending or ascending
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDocuments(parent?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
-            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).getDocuments(parent, options);
+        async getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<Strings>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).getDocuments(parent, name, all, type, tags, identifiers, startDate, endDate, page, perPage, sortBy, order, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -626,11 +697,22 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
          * Get the list of all documents in a single request
          * @summary List - Documents
          * @param {number} [parent] (folder id) Value get files from parent folder
+         * @param {string} [name] Value to filter by name of document
+         * @param {boolean} [all] if this value is true, it will search in all the user&#x27;s documents, if it is false, it will search in its respective level
+         * @param {string} [type] search by folder or file, allowed values are Carpeta and Archivo
+         * @param {Array&lt;Strings&gt;} [tags] an array of tags
+         * @param {Array&lt;number&gt;} [identifiers] an array of folios
+         * @param {string} [startDate] search date
+         * @param {string} [endDate] search date
+         * @param {number} [page] page to query
+         * @param {number} [perPage] number of items you want the response to return
+         * @param {string} [sortBy] field by which you want to sort
+         * @param {string} [order] sort type, descending or ascending
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDocuments(parent?: number, options?: any): AxiosPromise<InlineResponse2008> {
-            return DocumentsApiFp(configuration).getDocuments(parent, options).then((request) => request(axios, basePath));
+        getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<Strings>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any): AxiosPromise<InlineResponse2008> {
+            return DocumentsApiFp(configuration).getDocuments(parent, name, all, type, tags, identifiers, startDate, endDate, page, perPage, sortBy, order, options).then((request) => request(axios, basePath));
         },
         /**
          * Rename the document in a single request
@@ -731,12 +813,23 @@ export class DocumentsApi extends BaseAPI {
      * Get the list of all documents in a single request
      * @summary List - Documents
      * @param {number} [parent] (folder id) Value get files from parent folder
+     * @param {string} [name] Value to filter by name of document
+     * @param {boolean} [all] if this value is true, it will search in all the user&#x27;s documents, if it is false, it will search in its respective level
+     * @param {string} [type] search by folder or file, allowed values are Carpeta and Archivo
+     * @param {Array&lt;Strings&gt;} [tags] an array of tags
+     * @param {Array&lt;number&gt;} [identifiers] an array of folios
+     * @param {string} [startDate] search date
+     * @param {string} [endDate] search date
+     * @param {number} [page] page to query
+     * @param {number} [perPage] number of items you want the response to return
+     * @param {string} [sortBy] field by which you want to sort
+     * @param {string} [order] sort type, descending or ascending
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DocumentsApi
      */
-    public getDocuments(parent?: number, options?: any) {
-        return DocumentsApiFp(this.configuration).getDocuments(parent, options).then((request) => request(this.axios, this.basePath));
+    public getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<Strings>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any) {
+        return DocumentsApiFp(this.configuration).getDocuments(parent, name, all, type, tags, identifiers, startDate, endDate, page, perPage, sortBy, order, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Rename the document in a single request

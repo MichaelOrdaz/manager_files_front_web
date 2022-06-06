@@ -52,20 +52,21 @@
             v-model="formData.min_identifier"
             label="Rango de folio"
             width="253px"
-            :rules="[(value:string) => /^(\d)+-?(\d)+$/g.test(value) || 'El folio solo puede contener números o un guión para separar']"
+            :rules="[(value:string) => /^(\d)+-?(\d)+$/g.test(value) || 'El folio solo puede contener números o un guión para separar dos números',
+                     (value: string) => value.trim().length >= 2 || 'El folio debe contener mínimo dos números']"
             data-cy="identifier-input"
             placeHolder="0001-0002"
           />
         </div>
         <div class="buttons flex justify-end p-mt-46">
           <PButton
+            class="p-mr-12"
             variant="white"
             @click.prevent="$emit('cancel')"
           >
             Cancelar
           </PButton>
           <PButton
-            class=""
             data-cy="load-file-btn"
             @click.prevent="createFile"
           >
@@ -101,7 +102,7 @@ async function createFile() {
     const isValidForm: boolean = formRef.value.validate()
     if (!isValidForm) return
     if (!formData.description.length) {
-        Notify.create({message: 'Agrega una descripción', color: 'red', type: 'negative'})
+        Notify.create({message: 'Agrega una descripción', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     if (formData.min_identifier.includes('-')){
@@ -111,11 +112,11 @@ async function createFile() {
     }
     try {
         await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
-        Notify.create({message: 'Se ha subido el archivo', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se ha subido el archivo', color: 'blue', type: 'positive', position: 'top-right'})
         await store.dispatch('get_folder_content')
         emit('cancel')
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error al cargar el archivo, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error al cargar el archivo, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 onMounted(() => { formData.name = props.newFile.name })
