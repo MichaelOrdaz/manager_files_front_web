@@ -8,6 +8,9 @@
         placeHolder="Buscar"
         width="758px"
         data-cy="filter-docs-input"
+        appendIconName="tune"
+        enableCursorPointerOnIcon
+        @append-icon-action="showAdvancedSearch = true"
       />
       <!--        TODO: 2f79yuc-->
       <PButton
