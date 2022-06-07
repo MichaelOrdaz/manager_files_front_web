@@ -13,6 +13,7 @@ export interface FoldersStore {
     breadcrumbStructure?: Document[]
     treeStructure: TreeNode[],
     folderContent?: Document[],
+    folderContentTotal?: number
 }
 
 export default function state(): FoldersStore {

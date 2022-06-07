@@ -19,7 +19,7 @@ const actions: ActionTree<FoldersStore, StateInterface> = {
                 payload?.sortBy,
                 payload?.order)
                 .then(resp => {
-                    commit('SET_FOLDER_CONTENT', resp.data.data)
+                    commit('SET_FOLDER_CONTENT', resp.data)
                     if (!state.currentFolder && !state.currentFolder?.id) {
                         commit('SET_SOURCE_FOLDER', resp.data.data)
                     }

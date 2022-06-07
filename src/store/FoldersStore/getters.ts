@@ -9,7 +9,8 @@ const getters: GetterTree<FoldersStore, StateInterface> = {
     getSelectedItem: (state): Document => state.selectedItem,
     getBreadcrumbStructure: (state): Document[] => state.breadcrumbStructure,
     getFolderContent: (state): Document[] => state.folderContent,
-    isFolder: (state): boolean => state.selectedItem?.type?.name === 'Carpeta' ?? false
+    isFolder: (state): boolean => state.selectedItem?.type?.name === 'Carpeta' ?? false,
+    getFolderTotal: (state) : number => state.folderContentTotal
 }
 
 export default getters
