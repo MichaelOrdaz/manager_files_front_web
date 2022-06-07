@@ -59,7 +59,11 @@
     @dragover.prevent.stop
     @drop.prevent.stop="takeDragFile($event)"
   >
-    <div class="items-col">
+    <QInfiniteScroll
+      class="items-col"
+      scroll-target=".q-splitter__panel.q-splitter__after.col"
+      @load="loadMoreContent"
+    >
       <DirFileRowComponent
         v-for="(document, index) in list"
         :key="index"
@@ -74,7 +78,7 @@
         @mouseover="holdDocumentDocused(document)"
         @click="showFolderInfo(document)"
       />
-    </div>
+    </QInfiniteScroll>
     <FolderInfo
       v-if="showFolderInfoSection && selectedFolder"
       class="folder-info"
@@ -121,6 +125,8 @@ import {Option} from '@/components/Molecules/POptionList.vue'
 import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
 import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
 import {useDeleteItemFromOptionList, useEditItemNameFromOptionList} from '@/Composables/useItemOptionListActions'
+import {DocumentsApi} from '@/services/api/api'
+import {QInfiniteScroll} from 'quasar'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -142,7 +148,7 @@ const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
-const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.toLowerCase().match(searchValue.value.toLowerCase()))
+const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name?.toLowerCase().match(searchValue.value.toLowerCase()))
     .sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1)
     .sort((a) => a.type.name ==='Archivo' ? -1 : 1))
 function showFolderInfo(doc: Document) {
@@ -195,6 +201,13 @@ async function resetUsersPermissionsToItem() {
     } catch (e) {
         Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
+}
+
+async function loadMoreContent(index, done) {
+    if (store.getters.getFolderContent.length === store.getters.getFolderTotal) done(true)
+    const resp = await new DocumentsApi().getDocuments(store.getters.getCurrentFolder ? store.getters.getCurrentFolder.id : undefined, undefined,undefined,undefined,undefined, undefined, undefined, undefined, index+1)
+    store.commit('ADD_TO_FOLDER_CONTENT', resp.data.data)
+    done()
 }
 const rowOptionsByPermission = computed<Option[]>( () => {
     if (store.getters.getAnalystHasAllPermission) {

@@ -44,8 +44,10 @@ const mutations: MutationTree<FoldersStore> = {
             state.breadcrumbStructure.splice(1, state.breadcrumbStructure.length)
         }
     },
-    SET_FOLDER_CONTENT(state, payload: Document[]): void {
-        state.folderContent = payload
+    SET_FOLDER_CONTENT(state, payload: {data: Document[], meta: {total: number}}): void {
+        state.folderContent = payload.data
+        state.folderContentTotal = payload.meta.total
+        console.log(payload.meta.total)
     },
     SET_SELECTED_ITEM(state, payload: Document): void {
         state.selectedItem = payload
@@ -55,6 +57,9 @@ const mutations: MutationTree<FoldersStore> = {
     },
     ADD_NODE_TO_TREE(state, payload): void {
         state.treeStructure[0].children.push(payload)
+    },
+    ADD_TO_FOLDER_CONTENT(state, payload): void {
+        state.folderContent.push(...payload)
     }
 }
 
