@@ -47,7 +47,6 @@ const mutations: MutationTree<FoldersStore> = {
     SET_FOLDER_CONTENT(state, payload: {data: Document[], meta: {total: number}}): void {
         state.folderContent = payload.data
         state.folderContentTotal = payload.meta.total
-        console.log(payload.meta.total)
     },
     SET_SELECTED_ITEM(state, payload: Document): void {
         state.selectedItem = payload

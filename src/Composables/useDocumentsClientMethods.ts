@@ -73,3 +73,11 @@ export function useDeleteFolderTag(folderId: number, tag: string): Promise<Axios
             .catch(error => reject(error))
     })
 }
+
+export function useUpdateFile(documentId: number, pdfData: File) {
+    return new Promise((resolve, reject) => {
+        new DocumentsApi().updateFile(documentId,pdfData.name,pdfData.description, pdfData.min_identifier, pdfData.max_identifier, pdfData.date)
+            .then(resp => resolve(resp))
+            .catch(error => reject(error))
+    })
+}
