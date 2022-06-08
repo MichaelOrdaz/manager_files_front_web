@@ -64,6 +64,14 @@
       scroll-target=".q-splitter__panel.q-splitter__after.col"
       @load="loadMoreContent"
     >
+      <template #loading>
+        <div class="row justify-center q-my-md">
+          <q-spinner-dots
+            color="primary"
+            size="40px"
+          />
+        </div>
+      </template>
       <DirFileRowComponent
         v-for="(document, index) in list"
         :key="index"

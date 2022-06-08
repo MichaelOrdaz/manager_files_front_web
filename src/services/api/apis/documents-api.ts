@@ -26,7 +26,6 @@ import { InlineResponse401 } from '../models';
 import { InlineResponse403 } from '../models';
 import { InlineResponse404 } from '../models';
 import { InlineResponse422 } from '../models';
-import { Strings } from '../models';
 /**
  * DocumentsApi - axios parameter creator
  * @export
@@ -297,7 +296,7 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
          * @param {string} [name] Value to filter by name of document
          * @param {boolean} [all] if this value is true, it will search in all the user&#x27;s documents, if it is false, it will search in its respective level
          * @param {string} [type] search by folder or file, allowed values are Carpeta and Archivo
-         * @param {Array&lt;Strings&gt;} [tags] an array of tags
+         * @param {Array&lt;string&gt;} [tags] an array of tags
          * @param {Array&lt;number&gt;} [identifiers] an array of folios
          * @param {string} [startDate] search date
          * @param {string} [endDate] search date
@@ -308,7 +307,7 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDocuments: async (parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<Strings>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options: any = {}): Promise<RequestArgs> => {
+        getDocuments: async (parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<string>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/documents`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -484,6 +483,87 @@ export const DocumentsApiAxiosParamCreator = function (configuration?: Configura
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * update a document in the system
+         * @summary Update - File
+         * @param {number} documentId document id
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateFile: async (documentId: number, name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'documentId' is not null or undefined
+            if (documentId === null || documentId === undefined) {
+                throw new RequiredError('documentId','Required parameter documentId was null or undefined when calling updateFile.');
+            }
+            const localVarPath = `/documents/{document_id}`
+                .replace(`{${"document_id"}}`, encodeURIComponent(String(documentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new FormData();
+
+            // authentication bearerAuth required
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+
+            if (description !== undefined) { 
+                localVarFormParams.append('description', description as any);
+            }
+
+            if (minIdentifier !== undefined) { 
+                localVarFormParams.append('min_identifier', minIdentifier as any);
+            }
+
+            if (maxIdentifier !== undefined) { 
+                localVarFormParams.append('max_identifier', maxIdentifier as any);
+            }
+
+            if (date !== undefined) { 
+                localVarFormParams.append('date', date as any);
+            }
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+
+            if (parentId !== undefined) { 
+                localVarFormParams.append('parent_id', parentId as any);
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -578,7 +658,7 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
          * @param {string} [name] Value to filter by name of document
          * @param {boolean} [all] if this value is true, it will search in all the user&#x27;s documents, if it is false, it will search in its respective level
          * @param {string} [type] search by folder or file, allowed values are Carpeta and Archivo
-         * @param {Array&lt;Strings&gt;} [tags] an array of tags
+         * @param {Array&lt;string&gt;} [tags] an array of tags
          * @param {Array&lt;number&gt;} [identifiers] an array of folios
          * @param {string} [startDate] search date
          * @param {string} [endDate] search date
@@ -589,7 +669,7 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<Strings>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
+        async getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<string>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2008>> {
             const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).getDocuments(parent, name, all, type, tags, identifiers, startDate, endDate, page, perPage, sortBy, order, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -621,6 +701,27 @@ export const DocumentsApiFp = function(configuration?: Configuration) {
          */
         async saveDocumentTags(documentId: number, body?: DocumentIdTagsBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
             const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).saveDocumentTags(documentId, body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * update a document in the system
+         * @summary Update - File
+         * @param {number} documentId document id
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateFile(documentId: number, name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2009>> {
+            const localVarAxiosArgs = await DocumentsApiAxiosParamCreator(configuration).updateFile(documentId, name, description, minIdentifier, maxIdentifier, date, file, parentId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -700,7 +801,7 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
          * @param {string} [name] Value to filter by name of document
          * @param {boolean} [all] if this value is true, it will search in all the user&#x27;s documents, if it is false, it will search in its respective level
          * @param {string} [type] search by folder or file, allowed values are Carpeta and Archivo
-         * @param {Array&lt;Strings&gt;} [tags] an array of tags
+         * @param {Array&lt;string&gt;} [tags] an array of tags
          * @param {Array&lt;number&gt;} [identifiers] an array of folios
          * @param {string} [startDate] search date
          * @param {string} [endDate] search date
@@ -711,7 +812,7 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<Strings>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any): AxiosPromise<InlineResponse2008> {
+        getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<string>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any): AxiosPromise<InlineResponse2008> {
             return DocumentsApiFp(configuration).getDocuments(parent, name, all, type, tags, identifiers, startDate, endDate, page, perPage, sortBy, order, options).then((request) => request(axios, basePath));
         },
         /**
@@ -735,6 +836,23 @@ export const DocumentsApiFactory = function (configuration?: Configuration, base
          */
         saveDocumentTags(documentId: number, body?: DocumentIdTagsBody, options?: any): AxiosPromise<InlineResponse2009> {
             return DocumentsApiFp(configuration).saveDocumentTags(documentId, body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * update a document in the system
+         * @summary Update - File
+         * @param {number} documentId document id
+         * @param {string} [name] 
+         * @param {string} [description] 
+         * @param {string} [minIdentifier] 
+         * @param {string} [maxIdentifier] 
+         * @param {string} [date] 
+         * @param {string} [file] 
+         * @param {number} [parentId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateFile(documentId: number, name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any): AxiosPromise<InlineResponse2009> {
+            return DocumentsApiFp(configuration).updateFile(documentId, name, description, minIdentifier, maxIdentifier, date, file, parentId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -816,7 +934,7 @@ export class DocumentsApi extends BaseAPI {
      * @param {string} [name] Value to filter by name of document
      * @param {boolean} [all] if this value is true, it will search in all the user&#x27;s documents, if it is false, it will search in its respective level
      * @param {string} [type] search by folder or file, allowed values are Carpeta and Archivo
-     * @param {Array&lt;Strings&gt;} [tags] an array of tags
+     * @param {Array&lt;string&gt;} [tags] an array of tags
      * @param {Array&lt;number&gt;} [identifiers] an array of folios
      * @param {string} [startDate] search date
      * @param {string} [endDate] search date
@@ -828,7 +946,7 @@ export class DocumentsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DocumentsApi
      */
-    public getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<Strings>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any) {
+    public getDocuments(parent?: number, name?: string, all?: boolean, type?: string, tags?: Array<string>, identifiers?: Array<number>, startDate?: string, endDate?: string, page?: number, perPage?: number, sortBy?: string, order?: string, options?: any) {
         return DocumentsApiFp(this.configuration).getDocuments(parent, name, all, type, tags, identifiers, startDate, endDate, page, perPage, sortBy, order, options).then((request) => request(this.axios, this.basePath));
     }
     /**
@@ -854,5 +972,23 @@ export class DocumentsApi extends BaseAPI {
      */
     public saveDocumentTags(documentId: number, body?: DocumentIdTagsBody, options?: any) {
         return DocumentsApiFp(this.configuration).saveDocumentTags(documentId, body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * update a document in the system
+     * @summary Update - File
+     * @param {number} documentId document id
+     * @param {string} [name] 
+     * @param {string} [description] 
+     * @param {string} [minIdentifier] 
+     * @param {string} [maxIdentifier] 
+     * @param {string} [date] 
+     * @param {string} [file] 
+     * @param {number} [parentId] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DocumentsApi
+     */
+    public updateFile(documentId: number, name?: string, description?: string, minIdentifier?: string, maxIdentifier?: string, date?: string, file?: string, parentId?: number, options?: any) {
+        return DocumentsApiFp(this.configuration).updateFile(documentId, name, description, minIdentifier, maxIdentifier, date, file, parentId, options).then((request) => request(this.axios, this.basePath));
     }
 }

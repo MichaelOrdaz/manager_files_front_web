@@ -27,7 +27,7 @@
         iconName="edit"
         size="pmd"
         data-cy="edit-name"
-        @click="showEditFolderNameModal = true"
+        @click="openSection"
       />
     </div>
     <div
@@ -71,6 +71,11 @@
     @cancel="showDeleteFolderModal = false"
     @accept="deleteFolder"
   />
+  <LoadPdfModal
+    v-if="showEditPdfModal"
+    is-edit
+    @cancel="closeSection"
+  />
 </template>
 <script setup lang="ts">
 import PModal from '@/components/Molecules/PModal.vue'
@@ -79,6 +84,7 @@ import store from '@/store'
 import type {Document} from '@/Types/Document'
 import {useDeleteFolder, useEditItemName} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
+import LoadPdfModal from '../LoadPdfFileModal/LoadPdfFileModal.vue'
 
 interface Props { docData: Document}
 const props = defineProps<Props>()
@@ -88,7 +94,16 @@ const hideFolderInfoSection = inject<(reloadContent?: boolean) => void>('hide-fo
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
+const showEditPdfModal = ref<boolean>(false)
 
+
+function openSection() {
+    if (store.getters.isFolder) {
+        showEditFolderNameModal.value = true
+        return
+    }
+    showEditPdfModal.value = true
+}
 async function deleteFolder() {
     try {
         await useDeleteFolder(props.docData.id)
@@ -113,6 +128,7 @@ async function editItemName() {
     }
 }
 function closeSection() {
+    showEditPdfModal.value = false
     store.commit('RESET_CURRENT_FOLDER')
     hideFolderInfoSection()
 }
