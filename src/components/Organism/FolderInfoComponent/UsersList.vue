@@ -133,9 +133,6 @@ watch(selectedItem, () => {
     }
     usersWithPermission.value = []
 })
-watch(models, () => {
-    console.log(models.value)
-}, {deep: true})
 </script>
 
 <style scoped lang="scss">
