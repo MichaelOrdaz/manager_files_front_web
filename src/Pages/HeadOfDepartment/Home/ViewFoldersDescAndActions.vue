@@ -5,7 +5,7 @@
         variant="text-4"
         class="p-pt-5"
       >
-        Nombre de carpeta
+        Nombre de archivo
       </PText>
       <PText
         variant="text-4"
@@ -85,7 +85,7 @@ async function createNewFolder() {
     }
     try {
         await useCreateFolder(newFolderName.value, store.getters?.getCurrentFolder ? store.getters?.getCurrentFolder?.id : undefined)
-        Notify.create({message: 'Se ha creaco la carpeta', color: 'blue', type: 'positive', position: 'top-right'})
+        Notify.create({message: `Se ha creado la carpeta ${newFolderName.value}.`, color: 'blue', type: 'positive', position: 'top-right'})
         showCreateFolderModal.value = false
         emit('update-list')
     }catch (e) {

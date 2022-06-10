@@ -109,7 +109,7 @@ async function savePermissions() {
         return
     }
     try {
-        await useSaveUsersDocumentPermissionShare(selectedItem.value.id, models.value)
+        await useSaveUsersDocumentPermissionShare(selectedItem.value.id, models.value.map(el => ({id: el.id, permission: el.permission?.name ? el.permission.name : el.permission})))
         Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive', position: 'top-right'})
         showPermissionsModal.value = false
     }catch (e) {
@@ -133,6 +133,9 @@ watch(selectedItem, () => {
     }
     usersWithPermission.value = []
 })
+watch(models, () => {
+    console.log(models.value)
+}, {deep: true})
 </script>
 
 <style scoped lang="scss">

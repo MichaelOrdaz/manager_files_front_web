@@ -13,7 +13,7 @@
     <div class="shared-files-body">
       <div class="full-width">
         <ItemRow
-          v-for="document in documents"
+          v-for="document in documents.sort(a => a.type.name ==='Carpeta' ? -1 : 1)"
           :key="document.id"
           :first-text="document.name"
           second-text="Editar"
@@ -42,6 +42,7 @@
         :data="`${documentFocused.url}#toolbar=0`"
         type="aplicattion/pdf"
       />
+      <h1>{{ documentFocused.url }}</h1>
     </ModalMask>
   </div>
 </template>
@@ -93,6 +94,7 @@ function showFolderInfo(doc: Document) {
             getDocumentsSharedWithMe(doc.id, undefined)
             clicksCount.value = 0
         }
+        clicksCount.value = 0
     }
 }
 async function hideFolderInfo(reloadConten?: boolean) {
@@ -111,7 +113,7 @@ async function changeFolder(doc: Document) {
 }
 function setDocOptions(doc: Document) {
     if (doc.type.name === 'Carpeta') {
-        return []
+        return null
     }else if (doc.permission === 'Escritura') {
         return editOptions.value
     }else if (doc.permission === 'Lectura') {
@@ -139,6 +141,10 @@ defineExpose({hideFolderInfo})
 </script>
 
 <style scoped lang="scss">
+div :deep(.text){
+    text-align: center;
+    margin-left: 15px;
+}
 .item-row{
     margin: 6px 0;
     padding: 0 8px;

@@ -29,13 +29,11 @@ import UsersActivityList from './UsersActivityList.vue'
 import store from '@/store'
 import {defineProps, ref, watch} from 'vue'
 import {useGetDocumentData} from '@/Composables/useDocumentsClientMethods'
-import {useGetDocumentSharedWithMe} from '@/Composables/useShareDocsClientMethods'
 
 withDefaults(defineProps<{ isGetSharedDocument?: boolean }>(), {isGetSharedDocument: false})
 
 const componentRef = ref<{action: () => void} | null>(null)
 const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedItem.id)
-const {documentSharedData} = useGetDocumentSharedWithMe(store.getters.getSelectedItem.id)
 
 watch(() => store.getters.getSelectedItem?.id, () => {
     getDocData(store.getters.getSelectedItem?.id)
@@ -43,7 +41,6 @@ watch(() => store.getters.getSelectedItem?.id, () => {
 watch(documentData, () => {
     store.commit('SET_SELECTED_ITEM', documentData.value)
 })
-watch(documentSharedData, () => { documentData.value = documentSharedData.value })
 </script>
 
 
