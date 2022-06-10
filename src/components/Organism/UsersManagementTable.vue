@@ -90,7 +90,7 @@
     width="411px"
     heigth="364px"
     @accept="validatePasswords"
-    @cancel="showUpdatePasswordModal = false"
+    @cancel="closeModal"
   >
     <template #body>
       <PForm ref="formRef">
@@ -183,6 +183,12 @@ function buildDepartmentTextByRol(user:User) {
         return ''
     }
     return user.department?.name ?? 'Sin departamento'
+}
+
+function closeModal() {
+    newPssword.value = ''
+    passwordConfirmation.value = ''
+    showUpdatePasswordModal.value = false
 }
 </script>
 

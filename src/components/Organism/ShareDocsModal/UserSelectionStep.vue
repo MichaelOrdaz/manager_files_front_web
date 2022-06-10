@@ -1,5 +1,10 @@
 <template>
   <div class="modal-container">
+    <PIcon
+      iconName="close"
+      class="close-icon cursor-pointer"
+      @click="$emit('cancel')"
+    />
     <PText
       variant="subtitle-2"
       class="text-left"
@@ -119,7 +124,7 @@ function nextStep() {
 }
 
 watch(departmentsList, async () => {
-    currentUserDepartment.value = departmentsList.value.find(el => el.name === store.getters.getUserData.user_data.department.name)
+    currentUserDepartment.value = departmentsList.value.find(el => el.id === store.getters.getUserData.user_data.department.id)
     dropdownText.value = departmentsList.value.filter(el => el.name !== currentUserDepartment.value.name)[0].name ?? ''
     dropdownOptions.value = departmentsList.value.filter(val => val.name !== currentUserDepartment.value.name)
         .map(dep => ({
@@ -131,7 +136,7 @@ watch(departmentsList, async () => {
             },
             extraData: dep
         }))
-    await getUsersDocumentList(props.selectedDoc.id, currentUserDepartment.value.id)
+    await getUsersDocumentList(props.selectedDoc.id, departmentsList.value[0].id)
     isLoading.value = false
 })
 </script>

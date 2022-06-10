@@ -137,7 +137,7 @@ async function createFile() {
     }
     try {
         await useCreateFile(formData, store.getters?.getCurrentFolder?.id)
-        Notify.create({message: 'Se ha subido el archivo', color: 'blue', type: 'positive', position: 'top-right'})
+        Notify.create({message: `Se ha subido el PDF "${formData.name}."`, color: 'blue', type: 'positive', position: 'top-right'})
         await store.dispatch('get_folder_content')
         emit('cancel')
     } catch (e) {

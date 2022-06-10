@@ -17,7 +17,7 @@
     <div class="shared-files-body">
       <div class="full-width">
         <ItemRow
-          v-for="document in documents"
+          v-for="document in documents.sort(a => a.type.name ==='Carpeta' ? -1 : 1)"
           :key="document.id"
           :first-text="document.name"
           second-text="Editar"
@@ -94,6 +94,7 @@ function showFolderInfo(doc: Document) {
             getDocumentsByMe(doc.id, undefined)
             clicksCount.value = 0
         }
+        clicksCount.value = 0
     }
 }
 async function hideFolderInfo(reloadConten?: boolean) {
@@ -148,6 +149,10 @@ defineExpose({hideFolderInfo})
 </script>
 
 <style scoped lang="scss">
+div :deep(.text){
+    text-align: center;
+    margin-left: 15px;
+}
 .item-row{
     margin: 6px 0;
     padding: 0 8px;

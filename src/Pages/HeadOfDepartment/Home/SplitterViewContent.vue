@@ -158,7 +158,7 @@ const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndAction
 
 const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name?.toLowerCase().match(searchValue.value.toLowerCase()))
     .sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1)
-    .sort((a) => a.type.name ==='Archivo' ? -1 : 1))
+    .sort((a) => a.type.name ==='Carpeta' ? -1 : 1))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (clicksCount.value === 1) {
@@ -176,6 +176,7 @@ function showFolderInfo(doc: Document) {
             store.dispatch('get_folder_content')
             clicksCount.value = 0
         }
+        clicksCount.value = 0
     }
 }
 

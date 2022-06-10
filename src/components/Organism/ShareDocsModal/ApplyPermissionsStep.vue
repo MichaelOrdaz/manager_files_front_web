@@ -1,5 +1,10 @@
 <template>
   <div class="modal-container">
+    <PIcon
+      iconName="close"
+      class="close-icon cursor-pointer"
+      @click="$emit('cancel')"
+    />
     <PText
       variant="subtitle-2"
       class="text-left"

@@ -41,6 +41,10 @@
       v-if="props.optionsList"
       :options="props.optionsList"
     />
+    <div
+      v-else
+      class="space"
+    />
   </div>
 </template>
 
@@ -90,4 +94,5 @@ const props = withDefaults(defineProps<Props>(),{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.space{width: 26px}
 </style>
