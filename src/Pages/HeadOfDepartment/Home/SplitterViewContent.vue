@@ -156,9 +156,7 @@ const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 
-const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name?.toLowerCase().match(searchValue.value.toLowerCase()))
-    .sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1)
-    .sort((a) => a.type.name ==='Carpeta' ? -1 : 1))
+const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name?.toLowerCase().match(searchValue.value.toLowerCase())))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
     if (clicksCount.value === 1) {

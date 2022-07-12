@@ -12,7 +12,8 @@ const HeadOfDepartmentModules: Module[] = [
     //TODO: 2f79yuc
 ]
 const AnalystModules: Module[] = [
-    {name: 'Analyst home', icon: 'home'}
+    {name: 'Analyst home', icon: 'home'},
+    {name: 'Shared files', icon: 'folder_shared'},
 ]
 export const RolesModules = {
     Admin: AdminModules,
