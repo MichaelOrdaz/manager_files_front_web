@@ -14,10 +14,21 @@
       Buscar
     </PButton>
   </div>
-  <PTabs @title-action="resetSelectedFolder">
+  <PTabs
+    v-if="store.getters.isRol('Jefe de Departamento')"
+    @title-action="resetSelectedFolder"
+  >
     <PTab title="Compartidos por mi">
       <SharedFiles ref="sharedFilesCompRef" />
     </PTab>
+    <PTab title="Compartidos conmigo">
+      <SharedWithMeTab ref="sharedWithMeCompRef" />
+    </PTab>
+  </PTabs>
+  <PTabs
+    v-if="store.getters.isRol('Analista')"
+    @title-action="resetSelectedFolder"
+  >
     <PTab title="Compartidos conmigo">
       <SharedWithMeTab ref="sharedWithMeCompRef" />
     </PTab>
