@@ -27,20 +27,27 @@ import FolderDetails from './FolderDetails.vue'
 import FileDetails from './FileDetails.vue'
 import UsersActivityList from './UsersActivityList.vue'
 import store from '@/store'
-import {defineProps, ref, watch} from 'vue'
-import {useGetDocumentData} from '@/Composables/useDocumentsClientMethods'
+import {defineProps, ref} from 'vue'
+import {DocumentsApi, ShareDocumentApi} from '@/services/api/api'
+import {Document} from '@/Types/Document'
 
-withDefaults(defineProps<{ isGetSharedDocument?: boolean }>(), {isGetSharedDocument: false})
+const props = withDefaults(defineProps<{ isGetSharedDocument?: boolean }>(), {isGetSharedDocument: false})
 
 const componentRef = ref<{action: () => void} | null>(null)
-const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedItem.id)
+const documentData = ref<Document | null>()
 
-watch(() => store.getters.getSelectedItem?.id, () => {
-    getDocData(store.getters.getSelectedItem?.id)
-})
-watch(documentData, () => {
+async function getData() {
+    if (props.isGetSharedDocument) {
+        const resp = await new ShareDocumentApi().getDocumentForMe(store.getters.getSelectedItem.id)
+        documentData.value = resp.data.data
+        store.commit('SET_SELECTED_ITEM', documentData.value)
+        return
+    }
+    const resp = await new DocumentsApi().getDocument(store.getters.getSelectedItem.id)
+    documentData.value = resp.data.data
     store.commit('SET_SELECTED_ITEM', documentData.value)
-})
+}
+getData()
 </script>
 
 

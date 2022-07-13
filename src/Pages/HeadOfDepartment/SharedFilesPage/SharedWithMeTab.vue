@@ -20,7 +20,7 @@
           :third-text="document.creator.name"
           :options-list="setDocOptions(document)"
           thirdText=" "
-          :fourth-text="Dayjs(document.date).format('YYYY-MM-DD')"
+          :fourth-text="Dayjs(document.createdAt).format('YYYY-MM-DD')"
           :image="document.type.name === 'Carpeta' ? DirectorySvg : PdfSvg"
           class="cursor-pointer item-row"
           :is-selected="selectedFolder?.id === document.id"
@@ -31,7 +31,7 @@
       <FolderInfo
         v-if="showFolderInfoSection && selectedFolder"
         class="folder-info"
-        is-get-shared-document
+        :is-get-shared-document="isGetShare"
       />
     </div>
     <ModalMask
@@ -63,6 +63,7 @@ import {useGetDocumentsSharedWithMe} from '@/Composables/useShareDocsClientMetho
 import {Option} from '@/components/Molecules/POptionList.vue'
 import ModalMask from '@/components/Atoms/ModalMask.vue'
 import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
+withDefaults(defineProps<{isGetShare: boolean}>(), {isGetShare: false})
 
 const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)

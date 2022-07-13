@@ -19,10 +19,17 @@
     @title-action="resetSelectedFolder"
   >
     <PTab title="Compartidos por mi">
-      <SharedFiles ref="sharedFilesCompRef" />
+      <SharedFiles
+        ref="sharedFilesCompRef"
+        @click="isSharedWithMe = false"
+      />
     </PTab>
     <PTab title="Compartidos conmigo">
-      <SharedWithMeTab ref="sharedWithMeCompRef" />
+      <SharedWithMeTab
+        ref="sharedWithMeCompRef"
+        :is-get-share="isSharedWithMe"
+        @click="isSharedWithMe = true"
+      />
     </PTab>
   </PTabs>
   <PTabs
@@ -44,6 +51,7 @@ import store from '@/store'
 const searchValue = ref<string>('')
 const sharedFilesCompRef = ref<{hideFolderInfo:() => void} | null>(null)
 const sharedWithMeCompRef = ref<{hideFolderInfo:() => void} | null>(null)
+const isSharedWithMe = ref<boolean>(false)
 function resetSelectedFolder() {
     store.commit('RESET_SELECTED_ITEM')
     store.commit('RESET_AUTHORIZATION')
