@@ -65,7 +65,7 @@
         :key="index"
         class="cursor-pointer item-row"
         :firstText="document.name"
-        :secondText="document.createdAt"
+        :secondText="document.creator.email"
         :thirdText="Dayjs(document.createdAt).format('YYYY-MM-DD')"
         :image="document.type.name === 'Carpeta' ? DirectorySvg : PdfSvg"
         data-cy="document-item-row"

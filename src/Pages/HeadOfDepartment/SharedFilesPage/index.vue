@@ -37,7 +37,10 @@
     @title-action="resetSelectedFolder"
   >
     <PTab title="Compartidos conmigo">
-      <SharedWithMeTab ref="sharedWithMeCompRef" />
+      <SharedWithMeTab
+        ref="sharedWithMeCompRef"
+        is-get-share
+      />
     </PTab>
   </PTabs>
 </template>

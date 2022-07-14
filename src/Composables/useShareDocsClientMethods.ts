@@ -25,7 +25,6 @@ export function useGetDocumentsSharedWithMe(parentId: number, departmentId?: num
         try {
             const resp = await new ShareDocumentApi().listDocumentsForMe(ParentId, DepartmentId)
             documents.value = resp.data.data
-            console.log(documents.value)
         } catch (e) {
             Notify.create({message: 'Ha ocurrido un error al obtener los datos', color: 'red', type: 'negative', position: 'top-right'})
         }
