@@ -33,7 +33,7 @@
       </PText>
       <div v-if="usersList.length && currentUserDepartment && !isLoading">
         <UserItem
-          v-for="user in usersList"
+          v-for="user in filterListOfUsers"
           :key="user.id"
           :icon-text="user.name"
           :item-title-text="user.fullName"
@@ -81,7 +81,7 @@
 /* eslint-disable */
 import PDropdown from '@/components/Molecules/PDropdown.vue'
 import type {DropdownOption} from '@/components/Molecules/PDropdown.vue'
-import {ref, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
 import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
 import UserItem from './UserItem.vue'
 import {User} from '@/Types/User'
@@ -103,7 +103,7 @@ const {departmentsList} = getDepartmentsList()
 const {usersList, getUsersDocumentList} = useGetUsersOfDocumentList(props.selectedDoc.id, currentUserDepartment?.value?.id ? currentUserDepartment.value.id : undefined)
 const dropdownText = ref<string>('')
 const isLoading = ref<boolean>(true)
-
+const filterListOfUsers = computed<User[]>(() => usersList.value.filter(user => user.role[0] !== 'Administrador'))
 function addUserToSelectedList(user: User) {
     const index = selectedUsers.value.findIndex(el => el.id === user.id)
     if (index > -1){

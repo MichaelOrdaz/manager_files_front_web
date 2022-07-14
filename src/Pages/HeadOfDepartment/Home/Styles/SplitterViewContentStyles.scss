@@ -28,7 +28,16 @@
 .section{
   display: flex;
   min-height: 80%;
-  .items-col{ width: 100%; }
+  .items-col{
+    width: 100%;
+    position: relative;
+    overflow-y: scroll;
+    .load-mora-content-btn{
+      position: absolute;
+      bottom: 15px;
+      right: 50%;
+    }
+  }
   .folder-info{ width: 350px; position: fixed; right: 25px; top: 75px }
   .item-row{
     margin: 6px 0;

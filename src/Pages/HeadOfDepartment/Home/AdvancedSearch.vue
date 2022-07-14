@@ -36,9 +36,12 @@
         :rules="[(value: string) => value[value.length - 1] === ',' || 'Debe incluir una coma al final de cada palabra']"
       />
     </div>
-    <div class="filter-row p-mt-24">
+    <div
+      v-if="itemTypeSelected === 'Archivo'"
+      class="filter-row p-mt-24"
+    >
       <PText variant="text-4">
-        Ordenes
+        Órdenes
       </PText>
       <PInput
         v-model="identifiersString"
@@ -49,7 +52,7 @@
     </div>
     <div class="filter-row p-mt-24">
       <PText variant="text-4">
-        Ordenes
+        Fecha
       </PText>
       <div class="row">
         <PInputDate

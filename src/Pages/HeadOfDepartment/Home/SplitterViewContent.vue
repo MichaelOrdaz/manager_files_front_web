@@ -59,19 +59,7 @@
     @dragover.prevent.stop
     @drop.prevent.stop="takeDragFile($event)"
   >
-    <QInfiniteScroll
-      class="items-col"
-      scroll-target=".q-splitter__panel.q-splitter__after.col"
-      @load="loadMoreContent"
-    >
-      <template #loading>
-        <div class="row justify-center q-my-md">
-          <q-spinner-dots
-            color="primary"
-            size="40px"
-          />
-        </div>
-      </template>
+    <div class="items-col">
       <DirFileRowComponent
         v-for="(document, index) in list"
         :key="index"
@@ -86,7 +74,16 @@
         @mouseover="holdDocumentDocused(document)"
         @click="showFolderInfo(document)"
       />
-    </QInfiniteScroll>
+      <PButton
+        v-if="store.getters.getFolderContent.length !== store.getters.getFolderTotal"
+        class="load-mora-content-btn"
+        variant="flat"
+        size="pxlg"
+        @click="loadMoreContent"
+      >
+        Ver más...
+      </PButton>
+    </div>
     <FolderInfo
       v-if="showFolderInfoSection && selectedFolder"
       class="folder-info"
@@ -134,7 +131,6 @@ import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
 import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
 import {useDeleteItemFromOptionList, useEditItemNameFromOptionList} from '@/Composables/useItemOptionListActions'
 import {DocumentsApi} from '@/services/api/api'
-import {QInfiniteScroll} from 'quasar'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -155,6 +151,7 @@ const documentFocused = ref<Document | undefined>(undefined)
 const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
+const currentPageIndex = ref<number>(1)
 
 const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name?.toLowerCase().match(searchValue.value.toLowerCase())))
 function showFolderInfo(doc: Document) {
@@ -196,6 +193,7 @@ async function hideFolderInfo(reloadConten?: boolean) {
     showFolderInfoSection.value = false
     reloadConten && await store.dispatch('get_folder_content')
     selectedFolder.value = undefined
+    currentPageIndex.value = 1
 }
 function holdDocumentDocused(doc: Document) {
     documentFocused.value = doc
@@ -210,11 +208,11 @@ async function resetUsersPermissionsToItem() {
     }
 }
 
-async function loadMoreContent(index, done) {
-    if (store.getters.getFolderContent.length === store.getters.getFolderTotal) done(true)
-    const resp = await new DocumentsApi().getDocuments(store.getters.getCurrentFolder ? store.getters.getCurrentFolder.id : undefined, undefined,undefined,undefined,undefined, undefined, undefined, undefined, index+1)
+async function loadMoreContent() {
+    if (store.getters.getFolderContent.length === store.getters.getFolderTotal) return
+    currentPageIndex.value += 1
+    const resp = await new DocumentsApi().getDocuments(store.getters.getCurrentFolder ? store.getters.getCurrentFolder.id : undefined, undefined,undefined,undefined,undefined, undefined, undefined, undefined, currentPageIndex.value)
     store.commit('ADD_TO_FOLDER_CONTENT', resp.data.data)
-    done()
 }
 const rowOptionsByPermission = computed<Option[]>( () => {
     if (store.getters.getAnalystHasAllPermission) {
