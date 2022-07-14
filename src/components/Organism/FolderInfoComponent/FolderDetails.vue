@@ -44,12 +44,14 @@
     >
       Creado por: {{ props.docData?.creator?.name ?? 'Sin nombre' }}
     </PText>
-    <PText
-      variant="text-5"
-      class="p-mb-16"
-    >
-      Ubicación: {{ props.docData?.location ?? 'Sin ubicación' }}
-    </PText>
+    <div>
+      <PText
+        variant="text-5"
+        class="p-mb-16 truncate"
+      >
+        Ubicación: {{ props.docData?.location ?? 'Sin ubicación' }}
+      </PText>
+    </div>
     <PText
       variant="text-5"
       class="p-mb-16"
@@ -126,7 +128,7 @@ watch(() => props.docData, () => {
     text-overflow: ellipsis;
 }
 .dir-data-container{
-    height: 290px;
+    min-height: 290px;
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -140,4 +142,10 @@ watch(() => props.docData, () => {
 div :deep(.text-3){font-weight: bold}
 div :deep(.text-5){color: $grey-7}
 div :deep(.pchip-container){width: 117px}
+.truncate{
+    width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>

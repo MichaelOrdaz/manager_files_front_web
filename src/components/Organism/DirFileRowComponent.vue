@@ -90,6 +90,9 @@ const props = withDefaults(defineProps<Props>(),{
     text-align: left;
 }
 .truncate{
+    padding-right: 24px;
+    text-align: left;
+    width: 350px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

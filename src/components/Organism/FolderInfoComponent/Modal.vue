@@ -6,7 +6,7 @@
         width="100%"
         label="Agregar etiqueta"
         data-cy="tags-input"
-        :rules="[validateTags, (val:string) => val[val.length+1] === ',' || 'Agrega una coma al final']"
+        :rules="[validateTags, validateComa]"
       />
       <div
         v-if="newTags"
@@ -45,14 +45,17 @@ function removeTag(index: number): void {
     inputValue.value = newTags.value.join(',')
 }
 function updateTags() {
-    if (inputValue.value[inputValue.value.length] !== ','){
+    if (!validateTags(inputValue.value) || !validateComa(inputValue.value)){
         Notify.create({message: 'Agrega una coma al final', color: 'red', type: 'warning', position: 'top-right'})
         return
     }
     emit('update-tags-list', newTags.value)
 }
 function validateTags(value: string) {
-    return value.split(',').map(el => el.trim()).every( tag => tag.length > 2) || 'Cada etiqueta debe tener más de 2 caracteres'
+    return value.split(',').map(el => el.trim()).filter(el => !!el).every( tag => tag.length > 2) || 'Cada etiqueta debe tener más de 2 caracteres'
+}
+function validateComa(value: string) {
+    return value.split('')[value.length - 1] === ',' || 'Agrega una coma al final'
 }
 watch(inputValue, () => {
     if (inputValue.value.trim() !== '' && inputValue.value[inputValue.value.length - 1].includes(',')) {
