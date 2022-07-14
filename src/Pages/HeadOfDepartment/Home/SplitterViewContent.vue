@@ -22,6 +22,7 @@
       <AdvancedSearch
         v-if="showAdvancedSearch"
         class="search"
+        itemref="advancedSearchRef"
         @cancel="showAdvancedSearch = false"
       />
     </div>
@@ -131,6 +132,7 @@ import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
 import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
 import {useDeleteItemFromOptionList, useEditItemNameFromOptionList} from '@/Composables/useItemOptionListActions'
 import {DocumentsApi} from '@/services/api/api'
+import useDetectOutsideClick from '@/utils/useDetectOutsideClick'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -145,17 +147,22 @@ const rowOptionsAdmin = ref<Option[]>([
     {optionLabel: 'Compartir', icon: 'person_add', action: () => {showShareModal.value = true}},
     {optionLabel: 'Cambiar nombre', icon: 'edit', action: () => { showEditFolderNameModal.value = true }},
     {optionLabel: 'Descargar', icon: 'download', action: () => {window.open(documentFocused.value.url)}},
-    {optionLabel: 'Quitar', icon: 'delete', action: () => {useDeleteItemFromOptionList(documentFocused.value.id, () => {store.dispatch('get_folder_content')})}},
+    {optionLabel: 'Quitar', icon: 'delete', action: (val) => {useDeleteItemFromOptionList(documentFocused.value.id, () => {
+        store.dispatch('get_folder_content')
+        !!val && val()
+    })}},
 ])
 const documentFocused = ref<Document | undefined>(undefined)
 const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 const currentPageIndex = ref<number>(1)
+const advancedSearchRef = ref(null)
 
 const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name?.toLowerCase().match(searchValue.value.toLowerCase())))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
+    showFolderInfoSection.value = false
     if (clicksCount.value === 1) {
         timer.value = setTimeout(() => {
             selectedFolder.value = doc
@@ -222,6 +229,9 @@ const rowOptionsByPermission = computed<Option[]>( () => {
 })
 provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')
+useDetectOutsideClick(advancedSearchRef, () => {
+    showAdvancedSearch.value = false
+})
 </script>
 
 <style scoped lang="scss">

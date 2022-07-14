@@ -6,7 +6,7 @@
         width="100%"
         label="Agregar etiqueta"
         data-cy="tags-input"
-        :rules="[validateTags]"
+        :rules="[validateTags, (val:string) => val[val.length+1] === ',' || 'Agrega una coma al final']"
       />
       <div
         v-if="newTags"
@@ -30,6 +30,7 @@
 <script setup lang="ts">
 import PModal from '@/components/Molecules/PModal.vue'
 import {ref, watch} from 'vue'
+import {Notify} from 'quasar'
 const emit = defineEmits(['update-tags-list'])
 interface Props {
     tags?: string[]
@@ -44,6 +45,10 @@ function removeTag(index: number): void {
     inputValue.value = newTags.value.join(',')
 }
 function updateTags() {
+    if (inputValue.value[inputValue.value.length] !== ','){
+        Notify.create({message: 'Agrega una coma al final', color: 'red', type: 'warning', position: 'top-right'})
+        return
+    }
     emit('update-tags-list', newTags.value)
 }
 function validateTags(value: string) {

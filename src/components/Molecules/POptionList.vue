@@ -31,7 +31,7 @@
         v-for="(option, index) in props.options"
         :key="index"
         class="option"
-        @click.stop.prevent="option.action"
+        @click.stop.prevent="option.action(() => {show = false})"
       >
         <PIcon
           size="pmd"
@@ -46,11 +46,12 @@
 </template>
 
 <script setup lang="ts">
+/* eslint-disable */
 import useDetectOutsideClick from '@/utils/useDetectOutsideClick'
 import DefaultImg from '@/assets/profileicon.svg'
 import { ref} from 'vue'
 export type Option = {
- action: { ():void },
+ action: { (al?: any):void },
  optionLabel: string,
  icon: string,
 }
