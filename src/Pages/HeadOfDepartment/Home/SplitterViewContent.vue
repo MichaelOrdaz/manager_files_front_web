@@ -12,7 +12,6 @@
         enableCursorPointerOnIcon
         @append-icon-action="showAdvancedSearch = true"
       />
-      <!--        TODO: 2f79yuc-->
       <PButton
         v-if="false"
         class="p-mt-4"
@@ -132,7 +131,6 @@ import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
 import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
 import {useDeleteItemFromOptionList, useEditItemNameFromOptionList} from '@/Composables/useItemOptionListActions'
 import {DocumentsApi} from '@/services/api/api'
-import useDetectOutsideClick from '@/utils/useDetectOutsideClick'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -157,7 +155,6 @@ const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
 const currentPageIndex = ref<number>(1)
-const advancedSearchRef = ref(null)
 
 const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name?.toLowerCase().match(searchValue.value.toLowerCase())))
 function showFolderInfo(doc: Document) {
@@ -229,9 +226,6 @@ const rowOptionsByPermission = computed<Option[]>( () => {
 })
 provide('hide-folder-info-section', hideFolderInfo)
 store.dispatch('get_folder_content')
-useDetectOutsideClick(advancedSearchRef, () => {
-    showAdvancedSearch.value = false
-})
 </script>
 
 <style scoped lang="scss">

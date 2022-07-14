@@ -15,10 +15,16 @@
       >
         {{ userData.user_data?.name || 'Sin nombre' }}
       </PText>
-      <PText variant="text-5">
+      <PText
+        class="truncate"
+        variant="text-5"
+      >
         {{ userData.roles[0] || ' Sin rol' }}
       </PText>
-      <PText variant="text-5">
+      <PText
+        class="truncate"
+        variant="text-5"
+      >
         {{ userData?.user_data?.department?.name ?? 'Sin departamento' }}
       </PText>
     </div>

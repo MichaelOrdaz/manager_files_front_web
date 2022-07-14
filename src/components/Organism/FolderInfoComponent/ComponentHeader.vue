@@ -14,9 +14,10 @@
       />
       <PText
         color="gray-6"
-        class="q-mx-md"
+        class="q-mx-lg truncate"
         variant="text-4"
         fontWeight="600"
+        :title="props.docData?.name"
       >
         {{ props.docData?.name ?? 'Sin nombre' }}
       </PText>
@@ -145,6 +146,18 @@ watch(() => props.docData, () => {newFolderName.value = props.docData.name}, {de
     flex-direction: column;
     padding: 12px;
     position: relative;
+    .folder-options{
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .truncate{
+        width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     .close-icon{
         position: absolute;
         top: 0;
