@@ -25,9 +25,7 @@ const actions: ActionTree<FoldersStore, StateInterface> = {
                     }
                     resolve(resp)
                 })
-                .catch(error => {
-                    console.log(error)
-                    reject(error)})
+                .catch(error => reject(error))
         })
     }
 }
