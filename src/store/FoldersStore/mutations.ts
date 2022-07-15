@@ -59,6 +59,9 @@ const mutations: MutationTree<FoldersStore> = {
     },
     ADD_TO_FOLDER_CONTENT(state, payload): void {
         state.folderContent.push(...payload)
+    },
+    SET_FOLDER_PERMISSION(state, payload): void {
+        state.folderPermission = payload
     }
 }
 

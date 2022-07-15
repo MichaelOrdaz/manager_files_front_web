@@ -16,7 +16,7 @@
           v-for="document in documents"
           :key="document.id"
           :first-text="document.name"
-          second-text="Editar"
+          :second-text="document.permission"
           :third-text="document.creator.name"
           :options-list="setDocOptions(document)"
           thirdText=" "
@@ -78,6 +78,7 @@ const {departmentsList} = getDepartmentsList()
 const selectedDepartmentName = ref<string>('Todos')
 
 function showFolderInfo(doc: Document) {
+    showFolderInfoSection.value = false
     clicksCount.value++
     if (clicksCount.value === 1) {
         timer.value = setTimeout(() => {
@@ -92,6 +93,8 @@ function showFolderInfo(doc: Document) {
         if (doc.type.name === 'Carpeta'){
             store.commit('SET_CURRENT_FOLDER',doc)
             store.commit('BUILD_BREADCRUMB', doc)
+            store.commit('SET_AUTHORIZATION', doc.permission)
+            store.commit('SET_FOLDER_PERMISSION', doc.permission)
             getDocumentsSharedWithMe(doc.id, undefined)
             clicksCount.value = 0
         }

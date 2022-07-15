@@ -4,7 +4,10 @@
     class="component-container"
   >
     <ComponentHeader :docData="documentData" />
-    <UsersList :docData="documentData" />
+    <UsersList
+      v-if="store.getters.getAnalystHasAllPermission && !!store.getters.getFolderPermission"
+      :docData="documentData"
+    />
     <FolderDetails
       v-if="store.getters.isFolder"
       :docData="documentData"

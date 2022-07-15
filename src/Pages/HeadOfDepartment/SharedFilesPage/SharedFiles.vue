@@ -78,6 +78,7 @@ const rowOptionsAdmin = ref<Option[]>([
 ])
 const {departmentsList} = getDepartmentsList()
 function showFolderInfo(doc: Document) {
+    showFolderInfoSection.value = false
     clicksCount.value++
     if (clicksCount.value === 1) {
         timer.value = setTimeout(() => {

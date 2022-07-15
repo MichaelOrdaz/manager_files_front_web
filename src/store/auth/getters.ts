@@ -36,6 +36,9 @@ const getters: GetterTree<Auth, StateInterface> = {
         }else if (state.roles[0] === 'Jefe de Departamento' && !state.authorization.length) {
             return true
         }
+    },
+    getFolderAuthorization(state: Auth) {
+        return state.authorization
     }
 }
 

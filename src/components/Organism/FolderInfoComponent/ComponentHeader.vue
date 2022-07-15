@@ -22,7 +22,7 @@
         {{ props.docData?.name ?? 'Sin nombre' }}
       </PText>
       <PIcon
-        v-if="store.getters.getAnalystHasAllPermission"
+        v-if="store.getters.getAnalystHasAllPermission && !!store.getters.getFolderPermission"
         class="cursor-pointer"
         color="black"
         iconName="edit"

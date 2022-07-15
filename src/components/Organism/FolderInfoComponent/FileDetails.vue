@@ -38,7 +38,9 @@
     >
       Ubicación: {{ props.docData?.location ?? 'Sin ubicación' }}
     </PText>
-    <div class="cursor-pointer p-mt-47 p-mb-16">
+    <div
+      class="cursor-pointer p-mt-47 p-mb-16"
+    >
       <PIcon
         size="psm"
         color="link"
@@ -54,7 +56,7 @@
 <script setup lang="ts">
 import type {Document} from '@/Types/Document'
 import formatDate from '@/utils/FormatDate'
-
+import store from '@/store'
 interface Props { docData: Document }
 const props = defineProps<Props>()
 

@@ -58,7 +58,10 @@
     >
       Fecha de creación: {{ formatDate(props?.docData?.createdAt) ?? 'Sin fecha' }}
     </PText>
-    <div class="cursor-pointer p-mt-47 p-mb-16">
+    <div
+      v-if="store.getters.getFolderAuthorization === 'Todos los permisos'"
+      class="cursor-pointer p-mt-47 p-mb-16"
+    >
       <PIcon
         size="psm"
         color="link"
@@ -143,7 +146,7 @@ div :deep(.text-3){font-weight: bold}
 div :deep(.text-5){color: $grey-7}
 div :deep(.pchip-container){width: 117px}
 .truncate{
-    width: 260px;
+    width: 120px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
