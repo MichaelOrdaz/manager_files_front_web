@@ -13,7 +13,7 @@
     <div class="shared-files-body">
       <div class="full-width">
         <ItemRow
-          v-for="document in documents.sort(a => a.type.name ==='Carpeta' ? -1 : 1)"
+          v-for="document in documents"
           :key="document.id"
           :first-text="document.name"
           second-text="Editar"
