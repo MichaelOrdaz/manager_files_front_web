@@ -18,7 +18,6 @@ module.exports = {
         'no-nested-ternary': 'off',
         'max-classes-per-file': 'off',
         indent: ['error', 4],
-        'linebreak-style': ['error', 'unix'],
         'no-unused-vars': 'warn',
         'no-console': 'warn',
         'generator-star-spacing': 'off',

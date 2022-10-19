@@ -106,10 +106,6 @@ const startDate = ref<string>('')
 const endDate = ref<string>('')
 
 function validateFields() {
-    if (!searchName.value) {
-        Notify.create({message: 'Agrega un nombre para buscar', color: 'red', type: 'negative'})
-        return
-    }
     if (!itemTypeSelected.value) {
         Notify.create({message: 'Selecciona un tipo de busqueda', color: 'red', type: 'negative'})
         return
@@ -136,6 +132,7 @@ function formatData() {
 async function searchValues() {
     try {
         await store.dispatch('get_folder_content', {
+            all: 1,
             name: searchName.value, startDate: startDate.value,
             endDate: endDate.value, tags: tags.value, identifiers: identifiers.value
         })
