@@ -5,6 +5,7 @@ import type {Document} from '@/Types/Document'
 
 const getters: GetterTree<FoldersStore, StateInterface> = {
     getBreadcrumb: (state): Document[] => state.breadcrumbStructure,
+    getBread: (state) => state.breadcrumb,
     getCurrentFolder: (state): Document => state.currentFolder,
     getSelectedItem: (state): Document => state.selectedItem,
     getBreadcrumbStructure: (state): Document[] => state.breadcrumbStructure,

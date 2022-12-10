@@ -20,6 +20,7 @@ const actions: ActionTree<FoldersStore, StateInterface> = {
                 payload?.order)
                 .then(resp => {
                     commit('SET_FOLDER_CONTENT', resp.data)
+                    commit('SET_BREADCRUMB',resp?.data?.breadcrumb)
                     if (!state.currentFolder && !state.currentFolder?.id) {
                         commit('SET_SOURCE_FOLDER', resp.data.data)
                     }

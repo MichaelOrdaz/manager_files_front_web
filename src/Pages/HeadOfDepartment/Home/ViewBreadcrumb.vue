@@ -12,11 +12,11 @@
         />
       </template>
       <q-breadcrumbs-el
-        v-for="document in breadcrumbData"
-        :key="document.id"
+        v-for="(item, index) in breadcrumb"
+        :key="index"
         class="cursor-pointer"
-        :label="document.name"
-        @click="changeFolder(document)"
+        :label="item?.name"
+        @click="changeFolder(item?.id)"
       />
     </q-breadcrumbs>
   </div>
@@ -25,6 +25,7 @@
 import {Document} from '@/Types/Document'
 import {computed} from 'vue'
 import store from '@/store/index'
+import {BreadcrumbItem} from '@/store/FoldersStore/foldersStore'
 
 interface Props{
     actualFolder?: Document,
@@ -32,12 +33,10 @@ interface Props{
 }
 const emit = defineEmits(['change-folder'])
 withDefaults(defineProps<Props>(), {actualFolder: undefined, clickCounter: false})
-const breadcrumbData = computed<Document[]>(() => store.getters.getBreadcrumbStructure)
-function changeFolder(doc: Document) {
-    emit('change-folder', doc)
-    store.commit('REBUILD_BREADCRUMB', doc)
-    store.commit('SET_CURRENT_FOLDER', doc)
-    store.dispatch('get_folder_content')
+const breadcrumb = computed<BreadcrumbItem[]>(() => store.getters.getBread)
+async function changeFolder(docId?: number) {
+    store.commit('SET_CURRENT_FOLDER',{id: docId})
+    await store.dispatch('get_folder_content')
 }
 
 </script>
