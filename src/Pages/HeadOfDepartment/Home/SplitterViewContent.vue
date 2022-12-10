@@ -8,8 +8,10 @@
         placeHolder="Buscar"
         width="758px"
         data-cy="filter-docs-input"
+        appendIconName="tune"
+        enableCursorPointerOnIcon
+        @append-icon-action="showAdvancedSearch = true"
       />
-      <!--        TODO: 2f79yuc-->
       <PButton
         v-if="false"
         class="p-mt-4"
@@ -19,6 +21,7 @@
       <AdvancedSearch
         v-if="showAdvancedSearch"
         class="search"
+        itemref="advancedSearchRef"
         @cancel="showAdvancedSearch = false"
       />
     </div>
@@ -62,8 +65,8 @@
         :key="index"
         class="cursor-pointer item-row"
         :firstText="document.name"
-        :secondText="document.createdAt"
-        :thirdText="Dayjs(document.date).format('YYYY-MM-DD')"
+        :secondText="document.creator.email"
+        :thirdText="Dayjs(document.createdAt).format('YYYY-MM-DD')"
         :image="document.type.name === 'Carpeta' ? DirectorySvg : PdfSvg"
         data-cy="document-item-row"
         :is-selected="selectedFolder?.id === document.id"
@@ -71,6 +74,15 @@
         @mouseover="holdDocumentDocused(document)"
         @click="showFolderInfo(document)"
       />
+      <PButton
+        v-if="store.getters.getFolderContent.length !== store.getters.getFolderTotal"
+        class="load-mora-content-btn"
+        variant="flat"
+        size="pxlg"
+        @click="loadMoreContent"
+      >
+        Ver más...
+      </PButton>
     </div>
     <FolderInfo
       v-if="showFolderInfoSection && selectedFolder"
@@ -81,6 +93,22 @@
       :selected-doc="documentFocused"
       @cancel="showShareModal = false"
     />
+    <PModal
+      v-if="showEditFolderNameModal"
+      :modalTitle="`Cambiar el nombre ${store.getters.isFolder ? 'de la carpeta' : 'del archivo'}`"
+      @cancel="showEditFolderNameModal = false"
+      @accept="useEditItemNameFromOptionList(documentFocused,newItemName,() => {showEditFolderNameModal = false;store.dispatch('get_folder_content');})"
+    >
+      <template #body>
+        <PInput
+          v-model="newItemName"
+          width="100%"
+          placeHolder="Nuevo nombre"
+          data-cy="new-name-input"
+          :rules="[(val: string) => !!val.trim() || 'Agrega un nombre valido']"
+        />
+      </template>
+    </PModal>
   </div>
 </template>
 
@@ -101,6 +129,8 @@ import {Notify} from 'quasar'
 import {Option} from '@/components/Molecules/POptionList.vue'
 import ShareDocsModalIndex from '@/components/Organism/ShareDocsModal/index.vue'
 import {useSaveUsersDocumentPermissionShare} from '@/Composables/useShareDocumentClientMethods'
+import {useDeleteItemFromOptionList, useEditItemNameFromOptionList} from '@/Composables/useItemOptionListActions'
+import {DocumentsApi} from '@/services/api/api'
 
 const searchValue = ref<string>('')
 const showAdvancedSearch = ref<boolean>(false)
@@ -108,19 +138,28 @@ const showFolderInfoSection = ref<boolean>(false)
 const selectedFolder = ref<Document | undefined>(undefined)
 const timer = ref(null)
 const clicksCount = ref<number>(0)
+const showEditFolderNameModal = ref<boolean>(false)
+const newItemName = ref<string>('')
 const rowOptionsAdmin = ref<Option[]>([
     {optionLabel: 'Restaurar permisos', icon: 'settings_backup_restore', action: () => { resetUsersPermissionsToItem() }},
-    {optionLabel: 'Compartir', icon: 'person_add', action: () => {showShareModal.value = true}}
+    {optionLabel: 'Compartir', icon: 'person_add', action: () => {showShareModal.value = true}},
+    {optionLabel: 'Cambiar nombre', icon: 'edit', action: () => { showEditFolderNameModal.value = true }},
+    {optionLabel: 'Descargar', icon: 'download', action: () => {window.open(documentFocused.value.url)}},
+    {optionLabel: 'Quitar', icon: 'delete', action: (val) => {useDeleteItemFromOptionList(documentFocused.value.id, () => {
+        store.dispatch('get_folder_content')
+        !!val && val()
+    })}},
 ])
 const documentFocused = ref<Document | undefined>(undefined)
 const showShareModal = ref<boolean>(false)
 // eslint-disable-next-line no-unused-vars
 const FoldersDescAndActionsRef = ref<{component: typeof ViewFoldersDescAndActions, takeDropFile: (file: File) => void } | null>(null)
+const currentPageIndex = ref<number>(1)
 
-const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name.match(searchValue.value))
-    .sort((a) => a.type.name ==='Archivo' ? 1 : -1))
+const list = computed<Document[]>(() => store.getters.getFolderContent.filter(doc => doc.name?.toLowerCase().match(searchValue.value.toLowerCase())))
 function showFolderInfo(doc: Document) {
     clicksCount.value++
+    showFolderInfoSection.value = false
     if (clicksCount.value === 1) {
         timer.value = setTimeout(() => {
             selectedFolder.value = doc
@@ -136,6 +175,7 @@ function showFolderInfo(doc: Document) {
             store.dispatch('get_folder_content')
             clicksCount.value = 0
         }
+        clicksCount.value = 0
     }
 }
 
@@ -144,19 +184,20 @@ function changeFolder() {
 }
 function takeDragFile(event: DragEvent) {
     if (!store.getters.getAnalystHasAllPermission){
-        Notify.create({message: 'No tienes permiso para subir archivos', color: 'red', type: 'negative'})
+        Notify.create({message: 'No tienes permiso para subir archivos', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     if (event.dataTransfer?.files[0]?.type === 'application/pdf'){
         FoldersDescAndActionsRef.value.takeDropFile(event.dataTransfer?.files[0])
         return
     }
-    Notify.create({message: 'El archivo no es PDF', color: 'red', type: 'negative'})
+    Notify.create({message: 'El archivo no es PDF', color: 'red', type: 'negative', position: 'top-right'})
 }
 async function hideFolderInfo(reloadConten?: boolean) {
     showFolderInfoSection.value = false
     reloadConten && await store.dispatch('get_folder_content')
     selectedFolder.value = undefined
+    currentPageIndex.value = 1
 }
 function holdDocumentDocused(doc: Document) {
     documentFocused.value = doc
@@ -164,11 +205,18 @@ function holdDocumentDocused(doc: Document) {
 
 async function resetUsersPermissionsToItem() {
     try {
-        Notify.create({message: 'Los permisos se han restaurado', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Los permisos se han restaurado', color: 'blue', type: 'positive', position: 'top-right'})
         await useSaveUsersDocumentPermissionShare(documentFocused.value.id, [])
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
+}
+
+async function loadMoreContent() {
+    if (store.getters.getFolderContent.length === store.getters.getFolderTotal) return
+    currentPageIndex.value += 1
+    const resp = await new DocumentsApi().getDocuments(store.getters.getCurrentFolder ? store.getters.getCurrentFolder.id : undefined, undefined,undefined,undefined,undefined, undefined, undefined, undefined, currentPageIndex.value)
+    store.commit('ADD_TO_FOLDER_CONTENT', resp.data.data)
 }
 const rowOptionsByPermission = computed<Option[]>( () => {
     if (store.getters.getAnalystHasAllPermission) {

@@ -11,7 +11,7 @@ const mutations: MutationTree<Auth> = {
         state.user_data = payload.user
         state.views = payload.views
         state.roles = payload.roles
-        state.authorization = payload.authorization
+        state.authorization = originalPermission
         state.originalAuthorization = originalPermission ? originalPermission : []
     },
     USER_ERROR(state): void {
@@ -44,10 +44,10 @@ const mutations: MutationTree<Auth> = {
             Lectura: 'Solo ver',
             Escritura: 'Todos los permisos'
         }
-        state.authorization[0] = permissions[permission]
+        state.authorization = permissions[permission]
     },
     RESET_AUTHORIZATION(state): void{
-        state.authorization = [...state.originalAuthorization]
+        state.authorization = state.originalAuthorization
     }
 }
 

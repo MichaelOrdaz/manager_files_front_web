@@ -31,7 +31,7 @@
         v-for="(option, index) in props.options"
         :key="index"
         class="option"
-        @click.stop.prevent="option.action"
+        @click.stop.prevent="option.action(() => {show = false})"
       >
         <PIcon
           size="pmd"
@@ -46,11 +46,12 @@
 </template>
 
 <script setup lang="ts">
+/* eslint-disable */
 import useDetectOutsideClick from '@/utils/useDetectOutsideClick'
 import DefaultImg from '@/assets/profileicon.svg'
 import { ref} from 'vue'
 export type Option = {
- action: { ():void },
+ action: { (al?: any):void },
  optionLabel: string,
  icon: string,
 }
@@ -69,23 +70,22 @@ useDetectOutsideClick(componentRef, () => { show.value = false})
 .option-list-container{
     width: 24px;
     height: 24px;
-    position: relative;
 }
 .my-icon{
     cursor: pointer;
 }
 .list{
-    width: 186px;
+    min-width: 186px;
     position: relative;
     right: 173px;
     top: 3px;
     background-color: white;
     border-radius: 3px;
     box-shadow: 2px 4px 4px 2px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
 }
 .option{
-    width: 100%;
-    background-color: white;
+    width: clamp(156px, 256px, 300px);
     display: flex;
     justify-content: flex-start;
     padding: 12px 12px;
@@ -100,5 +100,9 @@ useDetectOutsideClick(componentRef, () => { show.value = false})
     display: flex;
     justify-content: flex-start;
     padding: 6px 6px;
+}
+.option-list-container.avatar{
+    position: fixed;
+    z-index: 1;
 }
 </style>

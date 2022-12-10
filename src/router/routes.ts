@@ -58,7 +58,7 @@ const HeadOfDepartment: RouteRecordRaw[] = [
                 name: 'Shared files',
                 component: () => import('../Pages/HeadOfDepartment/SharedFilesPage/index.vue'),
                 meta: {
-                    authRequired: true
+                    authRequired: false
                 },
             },
             {

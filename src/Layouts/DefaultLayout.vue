@@ -70,6 +70,9 @@ const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
     height: 100%;
     overflow-y: scroll;
 }
+.body::-webkit-scrollbar{
+    display: none;
+}
 .logo{
     height: 83px;
     width: 73px;
@@ -80,6 +83,5 @@ const onLoadModules = computed<Module[]>(() => RolesModules[userRol.value])
     position: absolute;
     top: 12px;
     right: 40px;
-    z-index: 10;
 }
 </style>

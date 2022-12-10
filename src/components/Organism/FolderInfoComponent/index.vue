@@ -4,7 +4,10 @@
     class="component-container"
   >
     <ComponentHeader :docData="documentData" />
-    <UsersList :docData="documentData" />
+    <UsersList
+      v-if="store.getters.getAnalystHasAllPermission && !!store.getters.getFolderPermission"
+      :docData="documentData"
+    />
     <FolderDetails
       v-if="store.getters.isFolder"
       :docData="documentData"
@@ -27,27 +30,27 @@ import FolderDetails from './FolderDetails.vue'
 import FileDetails from './FileDetails.vue'
 import UsersActivityList from './UsersActivityList.vue'
 import store from '@/store'
-import {defineProps, ref, watch} from 'vue'
-import {useGetDocumentData} from '@/Composables/useDocumentsClientMethods'
-import {useGetDocumentSharedWithMe} from '@/Composables/useShareDocsClientMethods'
+import {defineProps, ref} from 'vue'
+import {DocumentsApi, ShareDocumentApi} from '@/services/api/api'
+import {Document} from '@/Types/Document'
 
 const props = withDefaults(defineProps<{ isGetSharedDocument?: boolean }>(), {isGetSharedDocument: false})
 
 const componentRef = ref<{action: () => void} | null>(null)
-const {getDocData,documentData} = useGetDocumentData(store.getters.getSelectedItem.id)
-const {documentSharedData, getDocumentSharedWithMe} = useGetDocumentSharedWithMe(store.getters.getSelectedItem.id)
+const documentData = ref<Document | null>()
 
-watch(() => store.getters.getSelectedItem?.id, () => {
-    if (store.getters.getSelectedItem && props.isGetSharedDocument) {
-        getDocumentSharedWithMe(store.getters.getSelectedItem?.id)
-    } else if (store.getters.getSelectedItem && !props.isGetSharedDocument) {
-        getDocData(store.getters.getSelectedItem?.id)
+async function getData() {
+    if (props.isGetSharedDocument) {
+        const resp = await new ShareDocumentApi().getDocumentForMe(store.getters.getSelectedItem.id)
+        documentData.value = resp.data.data
+        store.commit('SET_SELECTED_ITEM', documentData.value)
+        return
     }
-})
-watch(documentData, () => {
+    const resp = await new DocumentsApi().getDocument(store.getters.getSelectedItem.id)
+    documentData.value = resp.data.data
     store.commit('SET_SELECTED_ITEM', documentData.value)
-})
-watch(documentSharedData, () => { documentData.value = documentSharedData.value })
+}
+getData()
 </script>
 
 

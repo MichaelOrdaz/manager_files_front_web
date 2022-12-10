@@ -6,6 +6,12 @@
   padding: 45px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  .close-icon{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
   .prox{
     height: 100%;
     display: flex;

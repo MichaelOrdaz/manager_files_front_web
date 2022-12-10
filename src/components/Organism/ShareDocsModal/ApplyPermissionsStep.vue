@@ -1,5 +1,10 @@
 <template>
   <div class="modal-container">
+    <PIcon
+      iconName="close"
+      class="close-icon cursor-pointer"
+      @click="$emit('cancel')"
+    />
     <PText
       variant="subtitle-2"
       class="text-left"
@@ -93,15 +98,15 @@ function removeSelectedUser(index: number) {
 
 async function savePermissions() {
     if (!usersWithPermissionList.value.length) {
-        Notify.create({message: 'Se deben asignar permisos a los usuarios seleccionados', color: 'red', type: 'negative'})
+        Notify.create({message: 'Se deben asignar permisos a los usuarios seleccionados', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     try {
         await useSaveUsersDocumentPermissionShare(props.document.id, usersWithPermissionList.value)
-        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive', position: 'top-right'})
         emit('cancel')
     }catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 </script>

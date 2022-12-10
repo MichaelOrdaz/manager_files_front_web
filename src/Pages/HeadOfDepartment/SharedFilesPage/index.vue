@@ -10,16 +10,37 @@
       enableCursorPointerOnIcon
       data-cy="filter-docs-input"
     />
-    <PButton class="p-mt-4">
+    <PButton class="p-mt-6">
       Buscar
     </PButton>
   </div>
-  <PTabs @title-action="resetSelectedFolder">
+  <PTabs
+    v-if="store.getters.isRol('Jefe de Departamento')"
+    @title-action="resetSelectedFolder"
+  >
     <PTab title="Compartidos por mi">
-      <SharedFiles ref="sharedFilesCompRef" />
+      <SharedFiles
+        ref="sharedFilesCompRef"
+        @click="isSharedWithMe = false"
+      />
     </PTab>
     <PTab title="Compartidos conmigo">
-      <SharedWithMeTab ref="sharedWithMeCompRef" />
+      <SharedWithMeTab
+        ref="sharedWithMeCompRef"
+        :is-get-share="isSharedWithMe"
+        @click="isSharedWithMe = true"
+      />
+    </PTab>
+  </PTabs>
+  <PTabs
+    v-if="store.getters.isRol('Analista')"
+    @title-action="resetSelectedFolder"
+  >
+    <PTab title="Compartidos conmigo">
+      <SharedWithMeTab
+        ref="sharedWithMeCompRef"
+        is-get-share
+      />
     </PTab>
   </PTabs>
 </template>
@@ -33,6 +54,7 @@ import store from '@/store'
 const searchValue = ref<string>('')
 const sharedFilesCompRef = ref<{hideFolderInfo:() => void} | null>(null)
 const sharedWithMeCompRef = ref<{hideFolderInfo:() => void} | null>(null)
+const isSharedWithMe = ref<boolean>(false)
 function resetSelectedFolder() {
     store.commit('RESET_SELECTED_ITEM')
     store.commit('RESET_AUTHORIZATION')
@@ -50,5 +72,8 @@ store.commit('RESET_SELECTED_ITEM')
     width: 100%;
     justify-content: center;
     margin-top: 24px;
+}
+.p-mt-6{
+    margin-top: 6px;
 }
 </style>

@@ -27,24 +27,25 @@ describe('File actions', () => {
         cy.wait('@createFile').then((response) => {
             expect(response.response.statusCode).to.equal(201)
             cy.get('#q-notify').should('exist')
+            cy.wait(5000)
         })
     })
 
     it('Edit file name', function () {
-        cy.intercept('POST','**/api/v1/documents/**').as('editFileName')
+        cy.intercept('PUT','**/api/v1/documents/**').as('updateFile')
+        cy.get('[data-cy="filter-docs-input"] input').clear()
         cy.get('[data-cy="filter-docs-input"]').type(randomFileCharacters)
         cy.get('[data-cy="document-item-row"]').click()
         cy.get('[data-cy="edit-name"]').click()
-        cy.get('[data-cy="new-name-input"]').type(randomFileCharacters + randomFileCharacters)
-        cy.contains('Aceptar').click({force: true})
-        cy.wait('@editFileName').then((response) => {
-            expect(response.response.statusCode).to.equal(200)
-        })
+        cy.get('[data-cy="file-name"]').type(randomFileCharacters)
+        cy.get('[data-cy="file-desc"]').type(randomFileCharacters)
+        cy.get('[data-cy="input-date"]').type('2022-02-02')
+        cy.get('[data-cy="identifier-input"]').type(`${Math.floor(Math.random() * (9000 - 100 + 1) + 100)}`)
+        cy.get('[data-cy="load-file-btn"]').click({force: true})
     })
 
     it('Delete File', function () {
         cy.intercept('DELETE','**/api/v1/documents/**').as('deleteFile')
-        cy.get('[data-cy="filter-docs-input"]').type(randomFileCharacters)
         cy.get('[data-cy="document-item-row"]').click()
         cy.contains('Eliminar archivo').click()
         cy.contains('Aceptar').click()

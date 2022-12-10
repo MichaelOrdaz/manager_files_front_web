@@ -84,9 +84,9 @@ async function deleteUser() {
         showDeleteUserModal.value = false
         selectedUser.value = undefined
         await getUsers(filterValue.value, rolSelected.value, undefined)
-        Notify.create({message: 'Se ha eliminado al usuario', color: 'green', type: 'positive'})
+        Notify.create({message: 'Se ha eliminado al usuario', color: 'blue', type: 'positive', position: 'top-right'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 const filterUsers = computed<User[]>(() => users.value.filter(user => user.name.toLowerCase()

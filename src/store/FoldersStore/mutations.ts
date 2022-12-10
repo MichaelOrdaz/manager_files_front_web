@@ -1,5 +1,5 @@
 import type {MutationTree} from 'vuex'
-import type {FoldersStore} from '@/store/FoldersStore/foldersStore'
+import type {BreadcrumbItem, FoldersStore} from '@/store/FoldersStore/foldersStore'
 import type {Document} from '@/Types/Document'
 
 const mutations: MutationTree<FoldersStore> = {
@@ -44,8 +44,13 @@ const mutations: MutationTree<FoldersStore> = {
             state.breadcrumbStructure.splice(1, state.breadcrumbStructure.length)
         }
     },
-    SET_FOLDER_CONTENT(state, payload: Document[]): void {
-        state.folderContent = payload
+    SET_BREADCRUMB(state, payload: BreadcrumbItem[]): void {
+        state.breadcrumb = payload
+        state.breadcrumb.unshift({id: undefined, location: '/', name: 'Inicio', parent_id: undefined})
+    },
+    SET_FOLDER_CONTENT(state, payload: {data: Document[], meta: {total: number}}): void {
+        state.folderContent = payload.data
+        state.folderContentTotal = payload.meta.total
     },
     SET_SELECTED_ITEM(state, payload: Document): void {
         state.selectedItem = payload
@@ -55,6 +60,12 @@ const mutations: MutationTree<FoldersStore> = {
     },
     ADD_NODE_TO_TREE(state, payload): void {
         state.treeStructure[0].children.push(payload)
+    },
+    ADD_TO_FOLDER_CONTENT(state, payload): void {
+        state.folderContent.push(...payload)
+    },
+    SET_FOLDER_PERMISSION(state, payload): void {
+        state.folderPermission = payload
     }
 }
 

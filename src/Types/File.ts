@@ -1,4 +1,5 @@
 export type File = {
+    id?: number
     name: string,
     description: string,
     min_identifier: string,

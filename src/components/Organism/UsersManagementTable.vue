@@ -35,7 +35,7 @@
           <PText
             variant="subtitle-3"
           >
-            {{ item.row?.department?.name || 'Sin departamento' }}
+            {{ buildDepartmentTextByRol(item?.row) }}
           </PText>
         </q-td>
         <q-td class="text-left">
@@ -90,10 +90,20 @@
     width="411px"
     heigth="364px"
     @accept="validatePasswords"
-    @cancel="showUpdatePasswordModal = false"
+    @cancel="closeModal"
   >
     <template #body>
       <PForm ref="formRef">
+        <PText variant="text-5">
+          {{ selectedUSer.name || 'Sin nombre' }}
+        </PText>
+        <br>
+        <PText
+          variant="text-5"
+          class="q-mb-md"
+        >
+          {{ selectedUSer.email || 'Sin correo' }}
+        </PText>
         <PInput
           v-model="newPssword"
           label="Nueva contraseña"
@@ -160,11 +170,25 @@ function validatePasswords() {
 async function updatePassword() {
     try {
         await useUpdateUserPassword(selectedUSer.value.id, newPssword.value, passwordConfirmation.value)
-        Notify.create({message: 'La contraseña se ha actualizado', color: 'blue', type: 'positive'})
+        Notify.create({message: 'La contraseña se ha actualizado', color: 'blue', type: 'positive', position: 'top-right'})
+        newPssword.value = ''
+        passwordConfirmation.value = ''
         showUpdatePasswordModal.value = false
     }catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative', position: 'top-right'})
     }
+}
+function buildDepartmentTextByRol(user:User) {
+    if (user.role[0] === 'Administrador') {
+        return ''
+    }
+    return user.department?.name ?? 'Sin departamento'
+}
+
+function closeModal() {
+    newPssword.value = ''
+    passwordConfirmation.value = ''
+    showUpdatePasswordModal.value = false
 }
 </script>
 

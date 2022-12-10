@@ -1,8 +1,10 @@
 <template>
   <div class="dir-data-container">
     <PText
-      variant="text-3"
+      variant="text-4"
       class="p-mb-16"
+      fontWeight="600"
+      color="gray-6"
     >
       Información de carpeta
     </PText>
@@ -42,19 +44,24 @@
     >
       Creado por: {{ props.docData?.creator?.name ?? 'Sin nombre' }}
     </PText>
-    <PText
-      variant="text-5"
-      class="p-mb-16"
-    >
-      Ubicación: {{ props.docData?.location ?? 'Sin ubicación' }}
-    </PText>
+    <div>
+      <PText
+        variant="text-5"
+        class="p-mb-16 truncate"
+      >
+        Ubicación: {{ props.docData?.location ?? 'Sin ubicación' }}
+      </PText>
+    </div>
     <PText
       variant="text-5"
       class="p-mb-16"
     >
       Fecha de creación: {{ formatDate(props?.docData?.createdAt) ?? 'Sin fecha' }}
     </PText>
-    <div class="cursor-pointer p-mt-47 p-mb-16">
+    <div
+      v-if="store.getters.getFolderAuthorization === 'Todos los permisos'"
+      class="cursor-pointer p-mt-47 p-mb-16"
+    >
       <PIcon
         size="psm"
         color="link"
@@ -97,7 +104,7 @@ async function removeChip(index:number, tag: string) {
         await useDeleteFolderTag(props.docData.id, tag)
         tags.value.splice(index, 1)
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 
 }
@@ -106,9 +113,9 @@ async function updateTagsList(params: string[]) {
     showTagsModal.value = false
     try {
         await useUpdateFolderTags(props.docData.id, tags.value)
-        Notify.create({message: 'Se han actualizado las etiquetas', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se han actualizado las etiquetas', color: 'blue', type: 'positive', position: 'top-right'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error al intentar eliminar la etiqueta, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 watch(() => props.docData, () => {
@@ -124,6 +131,7 @@ watch(() => props.docData, () => {
     text-overflow: ellipsis;
 }
 .dir-data-container{
+    min-height: 290px;
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -137,4 +145,10 @@ watch(() => props.docData, () => {
 div :deep(.text-3){font-weight: bold}
 div :deep(.text-5){color: $grey-7}
 div :deep(.pchip-container){width: 117px}
+.truncate{
+    width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 </style>

@@ -13,19 +13,22 @@
         :iconName="store.getters.isFolder ?'folder': 'picture_as_pdf'"
       />
       <PText
-        class="q-mx-md"
+        color="gray-6"
+        class="q-mx-lg truncate"
         variant="text-4"
+        fontWeight="600"
+        :title="props.docData?.name"
       >
         {{ props.docData?.name ?? 'Sin nombre' }}
       </PText>
       <PIcon
-        v-if="store.getters.getAnalystHasAllPermission"
+        v-if="store.getters.getAnalystHasAllPermission && !!store.getters.getFolderPermission"
         class="cursor-pointer"
         color="black"
         iconName="edit"
         size="pmd"
         data-cy="edit-name"
-        @click="showEditFolderNameModal = true"
+        @click="openSection"
       />
     </div>
     <div
@@ -58,6 +61,7 @@
         width="100%"
         placeHolder="Nuevo nombre"
         data-cy="new-name-input"
+        :rules="[(val: string) => !!val.trim() || 'Agrega un nombre valido']"
       />
     </template>
   </PModal>
@@ -68,14 +72,20 @@
     @cancel="showDeleteFolderModal = false"
     @accept="deleteFolder"
   />
+  <LoadPdfModal
+    v-if="showEditPdfModal"
+    is-edit
+    @cancel="closeSection"
+  />
 </template>
 <script setup lang="ts">
 import PModal from '@/components/Molecules/PModal.vue'
-import {inject, ref} from 'vue'
+import {inject, ref, watch} from 'vue'
 import store from '@/store'
 import type {Document} from '@/Types/Document'
 import {useDeleteFolder, useEditItemName} from '@/Composables/useDocumentsClientMethods'
 import {Notify} from 'quasar'
+import LoadPdfModal from '../LoadPdfFileModal/LoadPdfFileModal.vue'
 
 interface Props { docData: Document}
 const props = defineProps<Props>()
@@ -85,44 +95,69 @@ const hideFolderInfoSection = inject<(reloadContent?: boolean) => void>('hide-fo
 const showEditFolderNameModal = ref<boolean>(false)
 const showDeleteFolderModal = ref<boolean>(false)
 const newFolderName = ref<string>('')
+const showEditPdfModal = ref<boolean>(false)
 
+
+function openSection() {
+    if (store.getters.isFolder) {
+        showEditFolderNameModal.value = true
+        return
+    }
+    showEditPdfModal.value = true
+}
 async function deleteFolder() {
     try {
         await useDeleteFolder(props.docData.id)
-        hideFolderInfoSection()
+        hideFolderInfoSection(true)
         showDeleteFolderModal.value = false
-        Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue', type: 'positive'})
+        Notify.create({message: 'Se ha eliminado la carpeta', color: 'blue', type: 'positive', position: 'top-right'})
         await store.dispatch('get_folder_content')
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error, intentalo de nuevo', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 
 async function editItemName() {
+    if (!newFolderName.value.trim()) return
     try {
         await useEditItemName(store.getters.getSelectedItem, newFolderName.value)
         hideFolderInfoSection(true)
         showEditFolderNameModal.value = false
-        Notify.create({message: 'El nombre ha sido editado', color: 'blue', type: 'positive'})
+        Notify.create({message: 'El nombre ha sido editado', color: 'blue', type: 'positive', position: 'top-right'})
     } catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 function closeSection() {
+    showEditPdfModal.value = false
     store.commit('RESET_CURRENT_FOLDER')
     hideFolderInfoSection()
 }
+watch(() => props.docData, () => {newFolderName.value = props.docData.name}, {deep: true})
 </script>
 
 <style scoped lang="scss">
 .header{
     width: 100%;
+    height: 73px;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
     padding: 12px;
     position: relative;
+    .folder-options{
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .truncate{
+        width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     .close-icon{
         position: absolute;
         top: 0;

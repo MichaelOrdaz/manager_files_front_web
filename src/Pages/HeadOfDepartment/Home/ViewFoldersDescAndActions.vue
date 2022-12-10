@@ -5,7 +5,7 @@
         variant="text-4"
         class="p-pt-5"
       >
-        Nombre de carpeta
+        Nombre de archivo
       </PText>
       <PText
         variant="text-4"
@@ -80,16 +80,16 @@ const newFolderName = ref<string>('')
 const newFile = ref<string | File>('')
 async function createNewFolder() {
     if (!newFolderName.value) {
-        Notify.create({message: 'Agrega un nombre de carpeta valido', color: 'red', type: 'negative'})
+        Notify.create({message: 'Agrega un nombre de carpeta valido', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     try {
         await useCreateFolder(newFolderName.value, store.getters?.getCurrentFolder ? store.getters?.getCurrentFolder?.id : undefined)
-        Notify.create({message: 'Se ha creaco la carpeta', color: 'green', type: 'positive'})
+        Notify.create({message: `Se ha creado la carpeta ${newFolderName.value}.`, color: 'blue', type: 'positive', position: 'top-right'})
         showCreateFolderModal.value = false
         emit('update-list')
     }catch (e) {
-        Notify.create({message: 'Se ha generado un error', color: 'red', type: 'negative'})
+        Notify.create({message: 'Se ha generado un error', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 

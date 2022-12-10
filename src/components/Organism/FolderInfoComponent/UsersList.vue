@@ -1,6 +1,10 @@
 <template>
   <div class="users-list">
-    <PText variant="text-4">
+    <PText
+      variant="text-4"
+      fontWeight="600"
+      color="gray-6"
+    >
       Gestionar permisos
     </PText>
     <div class="chip-list" />
@@ -21,7 +25,7 @@
       v-if="showPermissionsModal"
       width="630px"
       heigth="652px"
-      @cancel="showPermissionsModal = false"
+      @cancel="() => { showPermissionsModal = false; usersWithPermission = [...selectedItem.share]}"
       @accept="savePermissions"
     >
       <template #header>
@@ -36,11 +40,11 @@
       </template>
       <template #body>
         <div
-          v-if="selectedItem?.share?.length && models.length"
+          v-if="usersWithPermission?.length && models?.length"
           class="users"
         >
           <UserItem
-            v-for="(user, index) in selectedItem.share"
+            v-for="(user, index) in usersWithPermission"
             :key="user.id"
             :item-title-text="user.name"
             :item-subtitle-text="user.email"
@@ -59,6 +63,7 @@
                 <PIcon
                   color="gray"
                   iconName="close"
+                  @click="removeUser(index)"
                 />
               </div>
             </template>
@@ -87,27 +92,28 @@ import {
 } from '@/Composables/useShareDocumentClientMethods'
 import {UserDocsPermission} from '@/Types/UserDocsPermission'
 import {Notify} from 'quasar'
+import {User} from '@/Types/User'
 
 const showPermissionsModal = ref<boolean>(false)
-const models = ref<{id: number, permission: UserDocsPermission | string }[]>([])
+const models = ref<{id: number, permission: string }[]>([])
 const {permissionsList} = useGetShareDocumentsPermissions()
 const usersWithPermissionsList = ref<{permission: string, id: number}[]>([])
+const usersWithPermission = ref<User[]>([])
 
 function takeUser(permission: UserDocsPermission, userId: number, index: number) {
     usersWithPermissionsList.value[index] = {permission: permission.name, id: userId}
 }
 async function savePermissions() {
     if (!models.value.length) {
-        Notify.create({message: 'Se deben asignar permisos a los usuarios seleccionados', color: 'red', type: 'negative'})
+        Notify.create({message: 'Se deben asignar permisos a los usuarios seleccionados', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     try {
-        usersWithPermissionsList.value = models.value.map(user => ({permission: user.permission.name, id: user.id}))
-        await useSaveUsersDocumentPermissionShare(selectedItem.value.id, usersWithPermissionsList.value)
-        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive'})
+        await useSaveUsersDocumentPermissionShare(selectedItem.value.id, models.value.map(el => ({id: el.id, permission: el.permission?.name ? el.permission.name : el.permission})))
+        Notify.create({message: 'Se han aplicado los permisos', color: 'blue', type: 'positive', position: 'top-right'})
         showPermissionsModal.value = false
     }catch (e) {
-        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative'})
+        Notify.create({message: 'Ha ocurrido un error', color: 'red', type: 'negative', position: 'top-right'})
     }
 }
 const selectedItem = computed<Document>(() => store.getters.getSelectedItem ?? [])
@@ -116,8 +122,16 @@ function setModels() {
         selectedItem.value.share.forEach((user, index) => {models.value[index] = {id: user.id, permission: user.permission}})
     }
 }
+function removeUser(index:number) {
+    usersWithPermission.value.splice(index, 1)
+}
 watch(selectedItem, () => {
     setModels()
+    if (selectedItem.value.share) {
+        usersWithPermission.value = [...selectedItem.value.share]
+        return
+    }
+    usersWithPermission.value = []
 })
 </script>
 

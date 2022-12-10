@@ -1,5 +1,10 @@
 <template>
   <div class="modal-container">
+    <PIcon
+      iconName="close"
+      class="close-icon cursor-pointer"
+      @click="$emit('cancel')"
+    />
     <PText
       variant="subtitle-2"
       class="text-left"
@@ -26,9 +31,9 @@
       <PText variant="text-3">
         Selecciona usuarios
       </PText>
-      <div v-if="usersList.length && currentUserDepartment">
+      <div v-if="usersList.length && currentUserDepartment && !isLoading">
         <UserItem
-          v-for="user in usersList"
+          v-for="user in filterListOfUsers"
           :key="user.id"
           :icon-text="user.name"
           :item-title-text="user.fullName"
@@ -76,7 +81,7 @@
 /* eslint-disable */
 import PDropdown from '@/components/Molecules/PDropdown.vue'
 import type {DropdownOption} from '@/components/Molecules/PDropdown.vue'
-import {ref, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
 import {getDepartmentsList} from '@/Composables/useGetDepartmentsList'
 import UserItem from './UserItem.vue'
 import {User} from '@/Types/User'
@@ -97,7 +102,8 @@ const currentUserDepartment = ref<Department | undefined>(undefined)
 const {departmentsList} = getDepartmentsList()
 const {usersList, getUsersDocumentList} = useGetUsersOfDocumentList(props.selectedDoc.id, currentUserDepartment?.value?.id ? currentUserDepartment.value.id : undefined)
 const dropdownText = ref<string>('')
-
+const isLoading = ref<boolean>(true)
+const filterListOfUsers = computed<User[]>(() => usersList.value.filter(user => user.role[0] !== 'Administrador'))
 function addUserToSelectedList(user: User) {
     const index = selectedUsers.value.findIndex(el => el.id === user.id)
     if (index > -1){
@@ -111,14 +117,14 @@ function addUserToSelectedList(user: User) {
 
 function nextStep() {
     if (usersList.value.length && !selectedUsers.value.length) {
-        Notify.create({message: 'Debes seleccionar por lo menos un usuario', color: 'red', type: 'negative'})
+        Notify.create({message: 'Debes seleccionar por lo menos un usuario', color: 'red', type: 'negative', position: 'top-right'})
         return
     }
     emit('next-step')
 }
 
-watch(departmentsList, () => {
-    currentUserDepartment.value = departmentsList.value.find(el => el.name === store.getters.getUserData.user_data.department.name)
+watch(departmentsList, async () => {
+    currentUserDepartment.value = departmentsList.value.find(el => el.id === store.getters.getUserData.user_data.department.id)
     dropdownText.value = departmentsList.value.filter(el => el.name !== currentUserDepartment.value.name)[0].name ?? ''
     dropdownOptions.value = departmentsList.value.filter(val => val.name !== currentUserDepartment.value.name)
         .map(dep => ({
@@ -130,7 +136,8 @@ watch(departmentsList, () => {
             },
             extraData: dep
         }))
-    getUsersDocumentList(props.selectedDoc.id, currentUserDepartment.value.id)
+    await getUsersDocumentList(props.selectedDoc.id, departmentsList.value[0].id)
+    isLoading.value = false
 })
 </script>
 <style scoped lang="scss">

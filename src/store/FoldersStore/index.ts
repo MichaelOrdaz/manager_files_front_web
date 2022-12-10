@@ -6,7 +6,7 @@ import getters from '@/store/FoldersStore/getters'
 import actions from '@/store/FoldersStore/actions'
 
 
-export const foldersTree:Module<FoldersStore, StateInterface> = {
+export const foldersStore:Module<FoldersStore, StateInterface> = {
     state,
     actions,
     mutations,
