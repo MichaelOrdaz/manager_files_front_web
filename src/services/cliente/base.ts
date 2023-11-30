@@ -17,7 +17,8 @@ import { Configuration } from "./configuration";
 // @ts-ignore
 import {api, AxiosInstance} from '@/Axios';
 
-export const BASE_PATH = "http://api.qa-dixa.puller.mx/api/v1".replace(/\/+$/, "");
+// "http://api.qa-dixa.puller.mx/api/v1"
+export const BASE_PATH = `${import.meta.env.VITE_API_URL}api/v1`.replace(/\/+$/, "");
 
 /**
  *
